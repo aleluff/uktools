@@ -5,50 +5,60 @@
 # @link https://github.com/muhasturk/ukupgrade
 
 echo
-echo "Ubuntu Kernel Upgrade"
-
-cd /tmp
+echo "Ubuntu Kernel Upgrade - by Mustafa Hasturk"
 
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
 
 if [ "$(getconf LONG_BIT)" == "64" ]; then arch=amd64; else arch=i386; fi
 
+if [ "$(printf "$(wget --version | head -1 | cut -d' ' -f3)\n1.16" | sort -V | head -1)" = 1.16 ]; then _PROGRESS_OPT="-q --show-progress"; else _PROGRESS_OPT=""; fi
+
 function download() {
-   wget $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4)
-   checkdownload=`echo $?`
-   if [ "$checkdownload" == "1" ]; then echo "Download failed!"; exit; fi
+   wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4)
+   if [ "$(echo $?)" == "1" ]; then echo "Download failed!"; exit; fi
 }
 
 # Kernel URL
-read -p "Do you want the latest ReleaseCandidate [RC]? (y/n): " -n 1 -s rc
+read -p "Do you want the latest ReleaseCandidate [RC]? (y/n): " -n 1 -t 10 -s rc
 case "$rc" in
-   y | Y) echo "$rc - ReleaseCandidate"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
-   n | N) echo "$rc - Non ReleaseCandidate"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | tail -1) ;;
-   *) exit ;;
+   y | Y) echo "ReleaseCandidate"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
+   *) echo "StableRelease"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | tail -1) ;;
 esac
 
-read -p "Do you want the lowlatency kernel? (y/n): " -n 1 -s km
+read -p "Do you want the lowlatency kernel? (y/n): " -n 1 -t 10 -s km
 case "$km" in
-   y | Y) echo "$km - LowLatency"; kernelmode="lowlatency" ;;
-   n | n) echo "$km - Generic"; kernelmode="generic" ;;
-   *) exit ;;
+   y | Y) echo "LowLatency"; kernelmode="lowlatency" ;;
+   *) echo "Generic"; kernelmode="generic" ;;
 esac
 
-# Download Kernel
+# Download Kernel Header
+echo
 echo "Downloading the latest $kernelmode kernel header..."
-download $km header
-echo "Downloading the latest $kernelmode kernel image..."
-download $km image
+download $kernelmode header
 
-# Shared Kernel Header
+# Download Kernel Image
+echo
+echo "Downloading the latest $kernelmode kernel image..."
+download $kernelmode image
+
+# Download Shared Kernel Header
+echo
 echo "Downloading the shared kernel header..."
-wget $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | cut -d ' ' -f 4)
-checkdownload=`echo $?`
-if [ "$checkdownload" == "1" ]; then echo "Download failed!"; exit; fi
+wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | cut -d ' ' -f 4)
+if [ "$(echo $?)" == "1" ]; then echo "Download failed!"; exit; fi
 
 # Install Kernel
+echo
 echo "Installing Linux Kernel..."
-sudo dpkg -i linux*.deb
+sudo dpkg -i /tmp/linux*.deb
 
-echo "Done. We should reboot the machine."
-sudo reboot
+echo
+echo "Done."
+read -p "Do you want to reboot system now? (y/n): " -n 1 -t 10 -s rs
+case "$rs" in
+   n | N) echo "No, stay this wake uped!" ;;
+   *) echo "Yes, reboot this now!"; sleep 2; sudo reboot ;;
+esac
+
+echo
+echo "Thanks for using this script!!!"
