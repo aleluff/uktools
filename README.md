@@ -32,10 +32,15 @@ curl https://raw.githubusercontent.com/caio99br/uktools/master/ukpurge > ukpurge
 
 ### In order to call script as bash commannd
 
-* Run 
+* Run
 ```
 sudo mv ./ukupgrade /usr/bin/do-kernel-upgrade
 sudo mv ./ukpurge /usr/bin/do-purge-kernel
+```
+* Add executable permission
+```
+sudo chmod +x /usr/bin/do-kernel-upgrade
+sudo chmod +x /usr/bin/do-purge-kernel
 ```
 * Now you can call the script whereever you are
 ```
