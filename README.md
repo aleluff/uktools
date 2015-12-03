@@ -34,8 +34,8 @@ curl https://raw.githubusercontent.com/caio99br/uktools/master/ukpurge > ukpurge
 
 * Run 
 ```
-sudo cp ./ukupgrade /usr/bin/do-kernel-upgrade
-sudo cp ./ukupgrade /usr/bin/do-purge-kernel
+sudo mv ./ukupgrade /usr/bin/do-kernel-upgrade
+sudo mv ./ukpurge /usr/bin/do-purge-kernel
 ```
 * Now you can call the script whereever you are
 ```
