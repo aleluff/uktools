@@ -1,7 +1,7 @@
 ![Project Status: Active][Project Status Image]
 
-ukupgrade
-=========
+UKTools - ukupgrade/ukpurge
+===========================
 
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
 
@@ -44,15 +44,16 @@ do-purge-kernel
 ```
 
 ### Author's
-[Mustafa Hasturk](https://www.linkedin.com/in/muhasturk) - ukupgrade creator
+[Mustafa Hasturk](https://www.linkedin.com/in/muhasturk) - ukupgrade author
 
 |   homepage	|   [mustafahasturk.com](http://mustafahasturk.com "Official Web Site")   	|
 |:-:	|:-:	|
 |   email	|   hi@mustafahasturk.com	|
 
-[Caio Oliveira](https://plus.google.com/+CaioOBR) - ukpurge creator
+[Caio Oliveira](https://plus.google.com/+CaioOBR) - ukpurge author
 
 |   email	|   caiooliveirafarias0@gmail.com	|
+|:-:	|:-:	|
 
 [Project Status Image]: https://img.shields.io/badge/project-active-green.svg "Project Status: Active"
 
