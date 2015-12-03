@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# @author Caio Oliveira
+# @mail caiooliveirafarias0@gmail.com
+# @link https://github.com/caio99br/ukupgrade
+
+echo
+echo "Ubuntu Kernel Purge - by Caio Oliveira"
+
+lkv=`uname -r`
+if [ "$(echo $lkv | grep -o generic | head -1)" = "generic" ]
+   then lkve="Generic"; nlkv=`echo $lkv | rev | cut -c 9- | rev`
+   else lkve="LowLatency"; nlkv=`echo $lkv | rev | cut -c 12- | rev`
+fi
+
+echo
+echo "---Current version:"
+echo "Linux Kernel $nlkv $lkve (linux-image-$lkv)"
+
+echo
+echo "---Images to remove:"
+dpkg --list | awk '{ print $2 }' | grep -v $nlkv | sort -V | grep -E "linux-image|linux-headers"
+
+if ! [ "$(echo $?)" == "1" ]
+   then echo
+   read -p "---Do you want to remove the old kernels/headers versions? (y/n): " -n 1 -t 10 -s rr
+   case "$rr" in
+      y | Y) echo "Yes, remove this now!"; sleep 2; dpkg --list | awk '{ print $2 }' | grep -v $nlkv | sort -V | grep -E "linux-image|linux-headers" | xargs sudo apt-get -y purge ;;
+      *) echo "No, thanks!" ;;
+   esac
+   else echo "Nothing to remove!"
+fi
+
+echo
+echo "Thanks for using this script!!!"
+
