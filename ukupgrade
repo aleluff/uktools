@@ -9,7 +9,8 @@ echo "Ubuntu Kernel Upgrade - by Mustafa Hasturk"
 echo
 echo "Checking dependecies..."
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
-if [ "$(getconf LONG_BIT)" == "64" ]; then arch=amd64; else arch=i386; fi
+if ! which curl > /dev/null; then sudo apt-get install curl -y; fi
+if [ "$(getconf LONG_BIT)" == "64" ]; then arch="amd64"; else arch="i386"; fi
 wgetv="$(wget --version | head -1 | cut -d' ' -f3)"
 if ! [ "$wgetv" = 1.16 ]
 then
@@ -21,7 +22,6 @@ then
    read -p "You really want to build WGET version 1.16? (y/n)" -n 1 -t 10 -s wg
    case $wg in
    y | Y)
-      if ! which curl > /dev/null; then sudo apt-get install curl -y; fi
       curl -O  http://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz
       if ! which tar > /dev/null; then sudo apt-get install tar -y; fi
       tar -xzf wget-1.16.tar.gz
@@ -32,7 +32,6 @@ then
       cd ..
       rm -rf wget-1.16
    ::
-   *) if ! which curl > /dev/null; then sudo apt-get install curl -y; fi;;
    esac
 fi
 if [ "$wgetv" = 1.16 ]; then _PROGRESS_OPT="-q --show-progress"; fi
