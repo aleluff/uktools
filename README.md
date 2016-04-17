@@ -20,8 +20,8 @@ UKTools - ukupgrade/ukpurge
 
 * Download latest script (ukupgrade/ukpurge)
 ```
-curl https://raw.githubusercontent.com/caio99br/uktools/master/ukupgrade > ukupgrade
-curl https://raw.githubusercontent.com/caio99br/uktools/master/ukpurge > ukpurge
+curl https://raw.githubusercontent.com/TeamVee-B/uktools/master/ukupgrade > ukupgrade
+curl https://raw.githubusercontent.com/TeamVee-B/uktools/master/ukpurge > ukpurge
 ```
 
 * Call the script
