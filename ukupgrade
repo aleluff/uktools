@@ -6,11 +6,13 @@
 echo
 echo "Ubuntu Kernel Upgrade - by Mustafa Hasturk"
 
+echo
+echo "Checking dependecies..."
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
-
 if [ "$(getconf LONG_BIT)" == "64" ]; then arch=amd64; else arch=i386; fi
-
 if [ "$(printf "$(wget --version | head -1 | cut -d' ' -f3)\n1.16" | sort -V | head -1)" = 1.16 ]; then _PROGRESS_OPT="-q --show-progress"; else _PROGRESS_OPT=""; fi
+echo
+echo "Done, running the upgrader!"
 
 function download() {
    wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4)
@@ -18,10 +20,10 @@ function download() {
 }
 
 # Kernel URL
-read -p "Do you want the latest ReleaseCandidate [RC]? (y/n): " -n 1 -t 10 -s rc
+read -p "Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): " -n 1 -t 10 -s rc
 case "$rc" in
-   y | Y) echo "ReleaseCandidate"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
-   *) echo "StableRelease"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | tail -1) ;;
+   y | Y) echo "Oh! The Release Candidate"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
+   *) echo "Ok! The Stable Release"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | tail -1) ;;
 esac
 
 read -p "Do you want the lowlatency kernel? (y/n): " -n 1 -t 10 -s km
@@ -29,6 +31,11 @@ case "$km" in
    y | Y) echo "LowLatency"; kernelmode="lowlatency" ;;
    *) echo "Generic"; kernelmode="generic" ;;
 esac
+
+# Clean TMP Kernel
+echo
+echo "Cleaning old downloads on /tmp"
+rm -rf /tmp/linux*.deb
 
 # Download Kernel Header
 echo
@@ -53,11 +60,11 @@ sudo dpkg -i /tmp/linux*.deb
 
 echo
 echo "Done."
-read -p "Do you want to reboot system now? (y/n): " -n 1 -t 10 -s rs
+read -p "Do you want to reboot system now? (y/n)(10s to No): " -n 1 -t 10 -s rs
 case "$rs" in
-   n | N) echo "No, stay this wake uped!" ;;
-   *) echo "Yes, reboot this now!"; sleep 2; sudo reboot ;;
+   y | Y) echo "Yes, reboot this now!"; sleep 2; sudo reboot ;;
+   *) echo "No, stay this wake uped!" ;;
 esac
 
 echo
-echo "Thanks for using this script!!!"
+echo "Thanks for using this script! :D"
