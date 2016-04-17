@@ -25,6 +25,7 @@ then
       curl -O  http://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz
       if ! which tar > /dev/null; then sudo apt-get install tar -y; fi
       tar -xzf wget-1.16.tar.gz
+      rm -rf wget-1.16.tar.gz
       cd wget-1.16
       ./configure; ./configure --with-ssl=openssl; ./configure --without-ssl
       make
@@ -81,6 +82,7 @@ if [ "$(echo $?)" == "1" ]; then echo "Download failed!"; exit; fi
 echo
 echo "Installing Linux Kernel..."
 sudo dpkg -i /tmp/linux*.deb
+rm -rf /tmp/linux*.deb
 
 echo
 echo "Done."
