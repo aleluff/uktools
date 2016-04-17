@@ -10,7 +10,32 @@ echo
 echo "Checking dependecies..."
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
 if [ "$(getconf LONG_BIT)" == "64" ]; then arch=amd64; else arch=i386; fi
-if [ "$(printf "$(wget --version | head -1 | cut -d' ' -f3)\n1.16" | sort -V | head -1)" = 1.16 ]; then _PROGRESS_OPT="-q --show-progress"; else _PROGRESS_OPT=""; fi
+wgetv="$(wget --version | head -1 | cut -d' ' -f3)"
+if ! [ "$wgetv" = 1.16 ]
+then
+   echo "Download Source, Build and Install"
+   echo "-- Your version is         $wgetv"
+   echo "-- Wget version to make is 1.16 --"
+   echo "This will get some time, and errors may occur"
+   echo "If you get any error select 'n'"
+   read -p "You really want to build WGET version 1.16? (y/n)" -n 1 -t 10 -s wg
+   case $wg in
+   y | Y)
+      if ! which curl > /dev/null; then sudo apt-get install curl -y; fi
+      curl -O  http://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz
+      if ! which tar > /dev/null; then sudo apt-get install tar -y; fi
+      tar -xzf wget-1.16.tar.gz
+      cd wget-1.16
+      ./configure; ./configure --with-ssl=openssl; ./configure --without-ssl
+      make
+      sudo make install
+      cd ..
+      rm -rf wget-1.16
+   ::
+   *) if ! which curl > /dev/null; then sudo apt-get install curl -y; fi;;
+   esac
+fi
+if [ "$wgetv" = 1.16 ]; then _PROGRESS_OPT="-q --show-progress"; fi
 echo
 echo "Done, running the upgrader!"
 
