@@ -31,7 +31,6 @@ then
       sudo make install
       cd ..
       rm -rf wget-1.16
-   ::
    esac
 fi
 if [ "$wgetv" = 1.16 ]; then _PROGRESS_OPT="-q --show-progress"; fi
