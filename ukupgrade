@@ -27,7 +27,7 @@ then
       tar -xzf wget-1.16.tar.gz
       rm -rf wget-1.16.tar.gz
       cd wget-1.16
-      ./configure; ./configure --with-ssl=openssl; ./configure --without-ssl
+      ./configure || ./configure --with-ssl=openssl || ./configure --without-ssl
       make
       sudo make install
       cd ..
