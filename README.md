@@ -26,8 +26,8 @@ curl https://raw.githubusercontent.com/TeamVee-B/uktools/master/ukpurge > ukpurg
 
 * Call the script
 ```
-./ukupgrade
-./ukpurge
+. ukupgrade
+. ukpurge
 ```
 
 ### In order to call script as bash commannd
