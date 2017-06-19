@@ -46,7 +46,7 @@ function download() {
 read -p "Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): " -n 1 -t 10 -s rc
 case "$rc" in
    y | Y) echo "Oh! The Release Candidate"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
-   *) echo "Ok! The Stable Release"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev |egrep 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1) ;;
+   *) echo "Ok! The Stable Release"; kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev |egrep 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
 esac
 
 read -p "Do you want the lowlatency kernel? (y/n): " -n 1 -t 10 -s km
