@@ -38,7 +38,7 @@ echo
 echo "Done, running the upgrader!"
 
 function download() {
-   wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4)
+   wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)
    if [ "$(echo $?)" == "1" ]; then echo "Download failed!"; exit; fi
 }
 
@@ -73,7 +73,7 @@ download $kernelmode image
 # Download Shared Kernel Header
 echo
 echo "Downloading the shared kernel header..."
-wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | cut -d ' ' -f 4)
+wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | grep headers | cut -d ' ' -f 4 | tail -1)
 if [ "$(echo $?)" == "1" ]; then echo "Download failed!"; exit; fi
 
 # Install Kernel
