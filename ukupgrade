@@ -2,93 +2,140 @@
 
 # @author Mustafa Hasturk
 # @mail mustafa.hasturk@yandex.com
+# @author Caio Oliveira
+# @mail caiooliveirafarias0@gmail.com
+# @author Christoph Kepler
+# @mail development@kepler.international
 
-echo
-echo "Ubuntu Kernel Upgrade - by Mustafa Hasturk"
+cat << EOF
+Ubuntu Kernel Upgrade - by Mustafa Hasturk
+------------------------------------------
+This script is based on the work of Mustafa Hasturk and was reworked by
+Caio Oliveira and modified and fixed by Christoph Kepler
 
-echo
-echo "Checking dependecies..."
+Current Development and Maintenance by Christoph Kepler
+
+Checking dependecies...
+EOF
+
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
 if ! which curl > /dev/null; then sudo apt-get install curl -y; fi
-if [ "$(getconf LONG_BIT)" == "64" ]; then arch="amd64"; else arch="i386"; fi
+if [ "$(getconf LONG_BIT)" == "64" ]; then arch='amd64'; else arch='i386'; fi
 wgetv="$(wget --version | head -1 | cut -d' ' -f3)"
-if ! [ "$wgetv" = 1.16 ]
+reqv='1.16'
+
+# Compare installed and needed versions of wget
+if printf '%s\n%s\n' $wgetv $reqv | sort -CV
 then
-   echo "Download Source, Build and Install"
-   echo "-- Your version is         $wgetv"
-   echo "-- Wget version to make is 1.16 --"
-   echo "This will get some time, and errors may occur"
-   echo "If you get any error select 'n'"
-   read -p "You really want to build WGET version 1.16? (y/n)" -n 1 -t 10 -s wg
-   case $wg in
-   y | Y)
-      curl -O  http://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz
-      if ! which tar > /dev/null; then sudo apt-get install tar -y; fi
-      tar -xzf wget-1.16.tar.gz
-      rm -rf wget-1.16.tar.gz
-      cd wget-1.16
-      ./configure; make || ./configure --with-ssl=openssl; make || ./configure --without-ssl; make
-      sudo make install
-      cd ..
-      rm -rf wget-1.16
-   esac
+  cat << EOF
+  Download Source, Build and Install
+  -- Your version is         $wgetv
+  -- Wget version to make is 1.16 --
+  This will get some time, and errors may occur
+  If you get any error select 'n'
+EOF
+  read -p "You really want to build WGET version 1.16? (y/n)" -n 1 -t 10 -s wg
+  case $wg in
+  y | Y)
+    curl -O  http://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz
+    if ! which tar > /dev/null; then sudo apt-get install tar -y; fi
+    tar -xzf wget-1.16.tar.gz
+    rm -rf wget-1.16.tar.gz
+    cd wget-1.16
+    ./configure; make || ./configure --with-ssl=openssl; make || ./configure --without-ssl; make
+    sudo make install
+    cd ..
+    rm -rf wget-1.16
+    _PROGRESS_OPT='-q --show-progress'
+    echo '';;
+  n | N)
+    _PROGRESS_OPT=''
+    echo 'Okay. No nice output for you.'
+  esac
+else
+  _PROGRESS_OPT='-q --show-progress'
+  echo 'Nothing to do. Your wget supports everything needed.'
 fi
-if [ "$wgetv" = 1.16 ]; then _PROGRESS_OPT="-q --show-progress"; fi
-echo
-echo "Done, running the upgrader!"
 
 function download() {
-   wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)
-   if [ "$(echo $?)" == "1" ]; then echo "Download failed!"; exit; fi
+  wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)
+  if [ $? == "1" ]
+  then
+    echo "Download failed!"
+    exit 1
+  fi
 }
 
 # Kernel URL
-read -p "Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): " -n 1 -t 10 -s rc
+read -p 'Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): ' -n 1 -t 10 -s rc
 case "$rc" in
-   y | Y) echo "Oh! The Release Candidate"; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
-   *) echo "Ok! The Stable Release"; kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev |egrep 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
+   y | Y) echo 'Oh! The Release Candidate'; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
+   *) echo 'Ok! The Stable Release'; kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
 esac
 
-read -p "Do you want the lowlatency kernel? (y/n): " -n 1 -t 10 -s km
+read -p 'Do you want the lowlatency kernel? (y/n): ' -n 1 -t 10 -s km
 case "$km" in
-   y | Y) echo "LowLatency"; kernelmode="lowlatency" ;;
-   *) echo "Generic"; kernelmode="generic" ;;
+   y | Y) echo 'LowLatency'; kernelmode='lowlatency' ;;
+   *) echo 'Generic'; kernelmode='generic' ;;
 esac
 
 # Clean TMP Kernel
-echo
-echo "Cleaning old downloads on /tmp"
+cat << EOF
+
+Cleaning old downloads in /tmp
+EOF
 rm -rf /tmp/linux*.deb
 
 # Download Kernel Header
-echo
-echo "Downloading the latest $kernelmode kernel header..."
+cat << EOF
+
+Downloading the latest $kernelmode kernel header...
+EOF
 download $kernelmode header
 
 # Download Kernel Image
-echo
-echo "Downloading the latest $kernelmode kernel image..."
+cat << EOF
+
+Downloading the latest $kernelmode kernel image...
+EOF
 download $kernelmode image
 
 # Download Shared Kernel Header
-echo
-echo "Downloading the shared kernel header..."
+cat << EOF
+
+Downloading the shared kernel header...
+EOF
 wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | grep headers | cut -d ' ' -f 4 | tail -1)
-if [ "$(echo $?)" == "1" ]; then echo "Download failed!"; exit; fi
+if [ $? == '1' ]
+then
+  echo 'Download failed!'
+  exit 1
+fi
 
 # Install Kernel
-echo
-echo "Installing Linux Kernel..."
+cat << EOF
+
+Installing Kernel and Headers...
+EOF
 sudo dpkg -i /tmp/linux*.deb
 rm -rf /tmp/linux*.deb
 
-echo
-echo "Done."
-read -p "Do you want to reboot system now? (y/n)(10s to No): " -n 1 -t 10 -s rs
+cat << EOF
+
+Finished.
+EOF
+
+read -p 'Do you want to reboot system now? (y/n)(10s to No): ' -n 1 -t 10 -s rs
 case "$rs" in
-   y | Y) echo "Yes, reboot this now!"; sleep 2; sudo reboot ;;
-   *) echo "No, stay this wake uped!" ;;
+  y | Y)
+    echo "Yes, reboot this now!"
+    sleep 2
+    sudo reboot ;;
+  *) echo 'No, stay this wake uped!' ;;
 esac
 
-echo
-echo "Thanks for using this script! :D"
+cat << EOF
+
+  Thanks for using this script! Hope it helped.
+  Give it a star: https://github.com/MarauderXtreme/uktools
+EOF
