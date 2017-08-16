@@ -25,7 +25,7 @@ wgetv="$(wget --version | head -1 | cut -d' ' -f3)"
 reqv='1.16'
 
 # Compare installed and needed versions of wget
-if printf '%s\n%s\n' $wgetv $reqv | sort -CV
+if printf '%s\n%s\n' "$wgetv" "$reqv" | sort -CV
 then
   cat << EOF
   Download Source, Build and Install
@@ -58,7 +58,7 @@ else
 fi
 
 function download() {
-  wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)
+  wget "$_PROGRESS_OPT" -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)
   if [ $? == "1" ]
   then
     echo "Download failed!"
@@ -105,7 +105,7 @@ cat << EOF
 
 Downloading the shared kernel header...
 EOF
-wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | grep headers | cut -d ' ' -f 4 | tail -1)
+wget "$_PROGRESS_OPT" -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | grep headers | cut -d ' ' -f 4 | tail -1)
 if [ $? == '1' ]
 then
   echo 'Download failed!'
