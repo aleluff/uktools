@@ -15,10 +15,10 @@ UKTools - ukupgrade/ukpurge
 
 -----------------------------------------
 
-
 ## Usages
 
 * Download latest script (ukupgrade/ukpurge)
+
 ```
 curl https://raw.githubusercontent.com/TeamVee-B/uktools/master/ukupgrade > ukupgrade
 curl https://raw.githubusercontent.com/TeamVee-B/uktools/master/ukpurge > ukpurge
@@ -26,8 +26,8 @@ curl https://raw.githubusercontent.com/TeamVee-B/uktools/master/ukpurge > ukpurg
 
 * Call the script
 ```
-. ukupgrade
-. ukpurge
+./ukupgrade
+./ukpurge
 ```
 
 ### In order to call script as bash commannd
@@ -35,17 +35,17 @@ curl https://raw.githubusercontent.com/TeamVee-B/uktools/master/ukpurge > ukpurg
 * Run
 ```
 sudo mv ./ukupgrade /usr/bin/do-kernel-upgrade
-sudo mv ./ukpurge /usr/bin/do-purge-kernel
+sudo mv ./ukpurge /usr/bin/do-kernel-purge
 ```
 * Add executable permission
 ```
 sudo chmod +x /usr/bin/do-kernel-upgrade
-sudo chmod +x /usr/bin/do-purge-kernel
+sudo chmod +x /usr/bin/do-kernel-purge
 ```
 * Now you can call the script whereever you are
 ```
 do-kernel-upgrade
-do-purge-kernel
+do-kernel-purge
 ```
 
 ### Author's
@@ -58,6 +58,10 @@ do-purge-kernel
 [Caio Oliveira](https://plus.google.com/+CaioOBR) - ukpurge author
 
 |   email	|   caiooliveirafarias0@gmail.com	|
+|:-:	|:-:	|
+
+[Christoph Kepler](https://github.com/MarauderXtreme) - Current Maintainer and Developer
+|   email |  development@kepler.international |
 |:-:	|:-:	|
 
 [Project Status Image]: https://img.shields.io/badge/project-active-green.svg "Project Status: Active"
