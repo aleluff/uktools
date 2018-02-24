@@ -21,18 +21,20 @@ Mint and derivatives. Non-Based
 
 ## Usages
 
-* Download latest script (ukupgrade/ukpurge)
+* Download
 
 ```
-curl https://raw.githubusercontent.com/MarauderXtreme/uktools/master/ukupgrade > ukupgrade
-curl https://raw.githubusercontent.com/MarauderXtreme/uktools/master/ukpurge   > ukpurge
+git clone https://github.com/MarauderXtreme/uktools && cd uktools
 ```
 
-* Call the script
+* Call the setup
+
 ```
-./ukupgrade
-./ukpurge
+./setup
 ```
+It will store config, so if you want to update kernel with same settings, just run ./ukupgrade
+
+The daily update works fine but at 5am ... (on ubuntu 17.10 desktop) so you have to be early =)
 
 ### In order to call script as bash commannd
 
@@ -69,5 +71,10 @@ do-kernel-purge
 | homepage | [Kepler International](https://kepler.international/ "Kepler International") |
 |:-:|:-:|
 | email | development@kepler.international |
+
+[Usb Key] - setup author
+
+| email | usbkey9@gmail.com |
+|:-:|:-:|
 
 [Project Status Image]: https://img.shields.io/badge/project-active-green.svg "Project Status: Active"

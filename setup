@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# @author Mustafa Hasturk
+# @mail mustafa.hasturk@yandex.com
+# @author Caio Oliveira
+# @mail caiooliveirafarias0@gmail.com
+# @author Christoph Kepler
+# @mail development@kepler.international
+# @author Usb Key
+# @mail usbkey9@gmail.com
+
+cat << EOF
+Ubuntu Kernel Upgrade - by Mustafa Hasturk
+------------------------------------------
+This script is based on the work of Mustafa Hasturk and was reworked by
+Caio Oliveira and modified and fixed by Christoph Kepler
+
+Current Development and Maintenance by Christoph Kepler
+
+Checking dependecies...
+EOF
+
+cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [ -f ./uk.cfg ]; then rm ./uk.cfg; fi
+
+if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
+if ! which curl > /dev/null; then sudo apt-get install curl -y; fi
+if [ "$(getconf LONG_BIT)" == "64" ]; then echo 'arch="amd64"' >> uk.cfg; else echo 'arch="i386"' >> uk.cfg; fi
+wgetv="$(wget --version | head -1 | cut -d' ' -f3)"
+reqv='1.16'
+
+# Compare installed and needed versions of wget
+if printf '%s\n%s\n' $wgetv $reqv | sort -CV
+then
+  cat << EOF
+  Download Source, Build and Install
+  -- Your version is         $wgetv
+  -- Wget version to make is 1.16 --
+  This will get some time, and errors may occur
+  If you get any error select 'n'
+EOF
+  read -p "You really want to build WGET version 1.16? (y/n)" -n 1 -s wg
+  case $wg in
+  y | Y)
+    curl -O  http://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz
+    if ! which tar > /dev/null; then sudo apt-get install tar -y; fi
+    tar -xzf wget-1.16.tar.gz
+    rm -rf wget-1.16.tar.gz
+    cd wget-1.16
+    ./configure; make || ./configure --with-ssl=openssl; make || ./configure --without-ssl; make
+    sudo make install
+    cd ..
+    rm -rf wget-1.16
+    _PROGRESS_OPT='-q --show-progress'
+    echo '';;
+  n | N)
+    _PROGRESS_OPT=''
+    echo 'Okay. No nice output for you.'
+  esac
+else
+  _PROGRESS_OPT='-q --show-progress'
+  echo 'Nothing to do. Your wget supports everything needed.'
+fi
+
+# Kernel URL
+read -p 'Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): ' -n 1 -s rc
+case "$rc" in
+   y | Y) echo 'Oh! The Release Candidate'; echo 'kernelrc="1"' >> uk.cfg ;;
+   *) echo 'Ok! The Stable Release'; echo 'kernelrc="0"' >> uk.cfg ;;
+esac
+
+read -p 'Do you want the lowlatency kernel? (y/n): ' -n 1 -s km
+case "$km" in
+   y | Y) echo 'LowLatency'; echo 'kernelmode=lowlatency"' >> uk.cfg ;;
+   *) echo 'Generic'; echo 'kernelmode="generic"' >> uk.cfg ;;
+esac
+
+read -p 'Setup complete. Do you want to run it daily? (y/n): ' -n 1 -s day
+case "$day" in
+   y | Y) echo 'Cronning'
+   	sudo cp -f uk.cfg ukupgrade /etc/cron.daily/ ;;
+   *) if [ -f /etc/cron.daily/ukupgrade ]; then
+   	echo 'Deleting cron daily'
+   	sudo rm /etc/cron.daily/ukupgrade
+   	sudo rm /etc/cron.daily/uk.cfg
+      fi ;;
+esac
+
+cat << EOF
+
+EOF
+
+read -p 'Do you want to download the last kernel right now ? (y/n): ' -n 1 -s now
+case "$now" in
+   y | Y) echo 'Downloading'; ./ukupgrade ;;
+esac
+
+cat << EOF
+
+  Thanks for using this script! Hope it helped.
+  Give it a star: https://github.com/MarauderXtreme/uktools
+EOF

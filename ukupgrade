@@ -6,56 +6,14 @@
 # @mail caiooliveirafarias0@gmail.com
 # @author Christoph Kepler
 # @mail development@kepler.international
+# @author Usb Key
+# @mail usbkey9@gmail.com
 
-cat << EOF
-Ubuntu Kernel Upgrade - by Mustafa Hasturk
-------------------------------------------
-This script is based on the work of Mustafa Hasturk and was reworked by
-Caio Oliveira and modified and fixed by Christoph Kepler
+if [ ! /etc/cron.daily = pwd ]; then cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"; fi
 
-Current Development and Maintenance by Christoph Kepler
+if [ ! -f ./uk.cfg ]; then ./setup ; fi
 
-Checking dependecies...
-EOF
-
-if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
-if ! which curl > /dev/null; then sudo apt-get install curl -y; fi
-if [ "$(getconf LONG_BIT)" == "64" ]; then arch='amd64'; else arch='i386'; fi
-wgetv="$(wget --version | head -1 | cut -d' ' -f3)"
-reqv='1.16'
-
-# Compare installed and needed versions of wget
-if printf '%s\n%s\n' $wgetv $reqv | sort -CV
-then
-  cat << EOF
-  Download Source, Build and Install
-  -- Your version is         $wgetv
-  -- Wget version to make is 1.16 --
-  This will get some time, and errors may occur
-  If you get any error select 'n'
-EOF
-  read -p "You really want to build WGET version 1.16? (y/n)" -n 1 -t 10 -s wg
-  case $wg in
-  y | Y)
-    curl -O  http://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz
-    if ! which tar > /dev/null; then sudo apt-get install tar -y; fi
-    tar -xzf wget-1.16.tar.gz
-    rm -rf wget-1.16.tar.gz
-    cd wget-1.16
-    ./configure; make || ./configure --with-ssl=openssl; make || ./configure --without-ssl; make
-    sudo make install
-    cd ..
-    rm -rf wget-1.16
-    _PROGRESS_OPT='-q --show-progress'
-    echo '';;
-  n | N)
-    _PROGRESS_OPT=''
-    echo 'Okay. No nice output for you.'
-  esac
-else
-  _PROGRESS_OPT='-q --show-progress'
-  echo 'Nothing to do. Your wget supports everything needed.'
-fi
+source ./uk.cfg
 
 function download() {
   wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)
@@ -66,18 +24,16 @@ function download() {
   fi
 }
 
-# Kernel URL
-read -p 'Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): ' -n 1 -t 10 -s rc
-case "$rc" in
-   y | Y) echo 'Oh! The Release Candidate'; kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
-   *) echo 'Ok! The Stable Release'; kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
+case "$kernelrc" in
+   "1") kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
+   *) kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
 esac
 
-read -p 'Do you want the lowlatency kernel? (y/n): ' -n 1 -t 10 -s km
-case "$km" in
-   y | Y) echo 'LowLatency'; kernelmode='lowlatency' ;;
-   *) echo 'Generic'; kernelmode='generic' ;;
-esac
+# Same version test
+if [ $(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1) = $(uname -r | cut -d'-' -f 1) ]; then
+	echo 'Kernel up to date. Finishing'
+	exit
+fi
 
 # Clean TMP Kernel
 cat << EOF
@@ -125,17 +81,13 @@ cat << EOF
 Finished.
 EOF
 
-read -p 'Do you want to reboot system now? (y/n)(10s to No): ' -n 1 -t 10 -s rs
-case "$rs" in
-  y | Y)
-    echo "Yes, reboot this now!"
-    sleep 2
-    sudo reboot ;;
-  *) echo 'No, stay this wake uped!' ;;
-esac
-
-cat << EOF
-
-  Thanks for using this script! Hope it helped.
-  Give it a star: https://github.com/MarauderXtreme/uktools
-EOF
+if [ ! /etc/cron.daily = pwd ]; then
+	read -p 'Do you want to reboot system now? (y/n)(10s to No): ' -n 1 -t 10 -s rs
+	case "$rs" in
+	  y | Y)
+	    echo "Yes, reboot this now!"
+	    sleep 2
+	    sudo reboot ;;
+	  *) echo 'No, stay this wake uped!' ;;
+	esac ;
+fi
