@@ -11,8 +11,8 @@
 
 cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-if [ ! -f ./uk.cfg ]; then ./setup ; fi
-source ./uk.cfg
+if [ ! -f ./uku.cfg ]; then ./setup ; fi
+source ./uku.cfg
 
 function download() {
 	wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)

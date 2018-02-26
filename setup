@@ -22,11 +22,11 @@ EOF
 
 cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-if [ -f ./uk.cfg ]; then rm ./uk.cfg; fi
+if [ -f ./uku.cfg ]; then rm ./uku.cfg; fi
 
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
 if ! which curl > /dev/null; then sudo apt-get install curl -y; fi
-if [ "$(getconf LONG_BIT)" == "64" ]; then echo 'arch="amd64"' >> uk.cfg; else echo 'arch="i386"' >> uk.cfg; fi
+if [ "$(getconf LONG_BIT)" == "64" ]; then echo 'arch="amd64"' >> uku.cfg; else echo 'arch="i386"' >> uku.cfg; fi
 wgetv="$(wget --version | head -1 | cut -d' ' -f3)"
 reqv='1.16'
 
@@ -66,14 +66,14 @@ fi
 # Kernel URL
 read -p 'Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): ' -n 1 -s rc
 case "$rc" in
-	y | Y) echo 'Oh! The Release Candidate'; echo 'kernelrc=1' >> uk.cfg ;;
-	*) echo 'Ok! The Stable Release'; echo 'kernelrc=0' >> uk.cfg ;;
+	y | Y) echo 'Oh! The Release Candidate'; echo 'kernelrc=1' >> uku.cfg ;;
+	*) echo 'Ok! The Stable Release'; echo 'kernelrc=0' >> uku.cfg ;;
 esac
 
 read -p 'Do you want the lowlatency kernel? (y/n): ' -n 1 -s km
 case "$km" in
-	y | Y) echo 'LowLatency'; echo 'kernelmode="lowlatency"' >> uk.cfg ;;
-	*) echo 'Generic'; echo 'kernelmode="generic"' >> uk.cfg ;;
+	y | Y) echo 'LowLatency'; echo 'kernelmode="lowlatency"' >> uku.cfg ;;
+	*) echo 'Generic'; echo 'kernelmode="generic"' >> uku.cfg ;;
 esac
 
 script=$(readlink -f ukupgrade)
@@ -82,10 +82,10 @@ sudo crontab -u root -l | grep -v $script | sudo crontab -u root -
 read -p 'Setup complete. Do you want to run it daily? (y/n): ' -n 1 -s day
 case "$day" in
 	y | Y) echo 'Cronning'
-		echo 'cron=1' >> uk.cfg
+		echo 'cron=1' >> uku.cfg
 		(sudo crontab -u root -l ; echo "0 15 * * * $script") | sudo crontab -u root - ;;
 	*) echo 'Deleting cron daily'
-		echo 'cron=0' >> uk.cfg ;;
+		echo 'cron=0' >> uku.cfg ;;
 esac
 
 read -p 'Do you want to download the last kernel right now ? (y/n): ' -n 1 -s now
