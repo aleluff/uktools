@@ -9,7 +9,7 @@
 # @author Usb Key
 # @mail usbkey9@gmail.com
 
-cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+if [ $(pwd) = "/usr/bin" ]; then cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"; fi
 
 if [ ! -f ./uku.cfg ]; then ./setup ; fi
 source ./uku.cfg
