@@ -33,71 +33,69 @@ reqv='1.16'
 # Compare installed and needed versions of wget
 if printf '%s\n%s\n' $wgetv $reqv | sort -CV
 then
-  cat << EOF
-  Download Source, Build and Install
-  -- Your version is         $wgetv
-  -- Wget version to make is 1.16 --
-  This will get some time, and errors may occur
-  If you get any error select 'n'
+cat << EOF
+Download Source, Build and Install
+-- Your version is         $wgetv
+-- Wget version to make is 1.16 --
+This will get some time, and errors may occur
+If you get any error select 'n'
 EOF
-  read -p "You really want to build WGET version 1.16? (y/n)" -n 1 -s wg
-  case $wg in
-  y | Y)
-    curl -O  http://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz
-    if ! which tar > /dev/null; then sudo apt-get install tar -y; fi
-    tar -xzf wget-1.16.tar.gz
-    rm -rf wget-1.16.tar.gz
-    cd wget-1.16
-    ./configure; make || ./configure --with-ssl=openssl; make || ./configure --without-ssl; make
-    sudo make install
-    cd ..
-    rm -rf wget-1.16
-    _PROGRESS_OPT='-q --show-progress'
-    echo '';;
-  n | N)
-    _PROGRESS_OPT=''
-    echo 'Okay. No nice output for you.'
-  esac
+	read -p "You really want to build WGET version 1.16? (y/n)" -n 1 -s wg
+	case $wg in
+	y | Y)
+		curl -O  http://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz
+		if ! which tar > /dev/null; then sudo apt-get install tar -y; fi
+		tar -xzf wget-1.16.tar.gz
+		rm -rf wget-1.16.tar.gz
+		cd wget-1.16
+		./configure; make || ./configure --with-ssl=openssl; make || ./configure --without-ssl; make
+		sudo make install
+		cd ..
+		rm -rf wget-1.16
+		_PROGRESS_OPT='-q --show-progress'
+		echo '';;
+	n | N)
+		_PROGRESS_OPT=''
+		echo 'Okay. No nice output for you.' ;;
+	esac
 else
-  _PROGRESS_OPT='-q --show-progress'
-  echo 'Nothing to do. Your wget supports everything needed.'
+	_PROGRESS_OPT='-q --show-progress'
+	echo 'Nothing to do. Your wget supports everything needed.'
 fi
 
 # Kernel URL
 read -p 'Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): ' -n 1 -s rc
 case "$rc" in
-   y | Y) echo 'Oh! The Release Candidate'; echo 'kernelrc="1"' >> uk.cfg ;;
-   *) echo 'Ok! The Stable Release'; echo 'kernelrc="0"' >> uk.cfg ;;
+	y | Y) echo 'Oh! The Release Candidate'; echo 'kernelrc=1' >> uk.cfg ;;
+	*) echo 'Ok! The Stable Release'; echo 'kernelrc=0' >> uk.cfg ;;
 esac
 
 read -p 'Do you want the lowlatency kernel? (y/n): ' -n 1 -s km
 case "$km" in
-   y | Y) echo 'LowLatency'; echo 'kernelmode=lowlatency"' >> uk.cfg ;;
-   *) echo 'Generic'; echo 'kernelmode="generic"' >> uk.cfg ;;
+	y | Y) echo 'LowLatency'; echo 'kernelmode="lowlatency"' >> uk.cfg ;;
+	*) echo 'Generic'; echo 'kernelmode="generic"' >> uk.cfg ;;
 esac
+
+script=$(readlink -f ukupgrade)
+sudo crontab -u root -l | grep -v $script | sudo crontab -u root -
 
 read -p 'Setup complete. Do you want to run it daily? (y/n): ' -n 1 -s day
 case "$day" in
-   y | Y) echo 'Cronning'
-   	sudo cp -f uk.cfg ukupgrade /etc/cron.daily/ ;;
-   *) if [ -f /etc/cron.daily/ukupgrade ]; then
-   	echo 'Deleting cron daily'
-   	sudo rm /etc/cron.daily/ukupgrade
-   	sudo rm /etc/cron.daily/uk.cfg
-      fi ;;
+	y | Y) echo 'Cronning'
+		echo 'cron=1' >> uk.cfg
+		(sudo crontab -u root -l ; echo "0 15 * * * $script") | sudo crontab -u root - ;;
+	*) echo 'Deleting cron daily'
+		echo 'cron=0' >> uk.cfg ;;
 esac
-
-cat << EOF
-
-EOF
 
 read -p 'Do you want to download the last kernel right now ? (y/n): ' -n 1 -s now
 case "$now" in
-   y | Y) echo 'Downloading'; ./ukupgrade ;;
+	y | Y) echo 'Downloading'; ./ukupgrade ;;
 esac
 
 cat << EOF
 
-  Thanks for using this script! Hope it helped.
-  Give it a star: https://github.com/MarauderXtreme/uktools
+
+Thanks for using this script! Hope it helped.
+Give it a star: https://github.com/MarauderXtreme/uktools
 EOF

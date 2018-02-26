@@ -9,24 +9,22 @@
 # @author Usb Key
 # @mail usbkey9@gmail.com
 
-if [ ! /etc/cron.daily = pwd ]; then cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"; fi
+cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ ! -f ./uk.cfg ]; then ./setup ; fi
-
 source ./uk.cfg
 
 function download() {
-  wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)
-  if [ $? == "1" ]
-  then
-    echo "Download failed!"
-    exit 1
-  fi
+	wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)
+	if [ $? == "1" ]; then
+		echo "Download failed!"
+		exit 1
+	fi
 }
 
 case "$kernelrc" in
-   "1") kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
-   *) kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
+	1) kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
+	*) kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
 esac
 
 # Same version test
@@ -62,10 +60,9 @@ cat << EOF
 Downloading the shared kernel header...
 EOF
 wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | grep headers | cut -d ' ' -f 4 | tail -1)
-if [ $? == '1' ]
-then
-  echo 'Download failed!'
-  exit 1
+if [ $? == '1' ]; then
+	echo 'Download failed!'
+	exit 1
 fi
 
 # Install Kernel
@@ -81,13 +78,13 @@ cat << EOF
 Finished.
 EOF
 
-if [ ! /etc/cron.daily = pwd ]; then
+if [ cron = 0 ]; then
 	read -p 'Do you want to reboot system now? (y/n)(10s to No): ' -n 1 -t 10 -s rs
 	case "$rs" in
-	  y | Y)
-	    echo "Yes, reboot this now!"
-	    sleep 2
-	    sudo reboot ;;
-	  *) echo 'No, stay this wake uped!' ;;
+		y | Y)
+			echo "Yes, reboot this now!"
+			sleep 2
+			sudo reboot ;;
+		*) echo 'No, stay this wake uped!' ;;
 	esac ;
 fi

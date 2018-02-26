@@ -34,7 +34,7 @@ git clone https://github.com/MarauderXtreme/uktools && cd uktools
 ```
 It will store config, so if you want to update kernel with same settings, just run ./ukupgrade
 
-The daily update works fine but at 5am ... (on ubuntu 17.10 desktop) so you have to be early =)
+The upgrade will perfom at 3pm if you enable daily upgrade
 
 ### In order to call script as bash commannd
 
