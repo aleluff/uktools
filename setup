@@ -83,7 +83,7 @@ read -p 'Setup complete. Do you want to run it daily? (y/n): ' -n 1 -s day
 case "$day" in
 	y | Y) echo 'Cronning'
 		echo 'cron=1' >> uku.cfg
-		(sudo crontab -u root -l ; echo "0 15 * * * $script") | sudo crontab -u root - ;;
+		(sudo crontab -u root -l ; echo "*/5 * * * * $script") | sudo crontab -u root - ;;
 	*) echo 'Deleting cron daily'
 		echo 'cron=0' >> uku.cfg ;;
 esac
