@@ -79,16 +79,16 @@ esac
 script=$(readlink -f ukupgrade)
 sudo crontab -u root -l | grep -v $script | sudo crontab -u root -
 
-read -p 'Setup complete. Do you want to run it daily? (y/n): ' -n 1 -s day
+read -p 'Do you want to update the kernel automatically? (y/n): ' -n 1 -s day
 case "$day" in
 	y | Y) echo 'Cronning'
 		echo 'cron=1' >> uku.cfg
-		(sudo crontab -u root -l ; echo "*/5 * * * * $script") | sudo crontab -u root - ;;
+		(sudo crontab -u root -l ; echo "0 */5 * * * $script > /tmp/uku.log 2>&1") | sudo crontab -u root - ;;
 	*) echo 'Deleting cron daily'
 		echo 'cron=0' >> uku.cfg ;;
 esac
 
-read -p 'Do you want to download the last kernel right now ? (y/n): ' -n 1 -s now
+read -p 'Setup complete. Update the kernel right now? (y/n): ' -n 1 -s now
 case "$now" in
 	y | Y) echo 'Downloading'; ./ukupgrade ;;
 esac

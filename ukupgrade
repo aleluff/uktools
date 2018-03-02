@@ -9,7 +9,7 @@
 # @author Usb Key
 # @mail usbkey9@gmail.com
 
-if [ $(pwd) = "/usr/bin" ]; then cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"; fi
+if [ ! $(pwd) = "/usr/bin" ]; then cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"; fi
 
 if [ ! -f ./uku.cfg ]; then ./setup ; fi
 source ./uku.cfg
@@ -26,8 +26,6 @@ case "$kernelrc" in
 	1) kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
 	*) kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
 esac
-
-#TODO cronjob uku.cfg problem
 
 # Same version test
 reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
