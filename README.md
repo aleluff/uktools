@@ -34,7 +34,9 @@ sudo make
 ```
 It'll install necessary files and run setup
 
+
 * Now you can call the script whereever you are
+
 ```
 do-kernel-upgrade
 do-kernel-purge
@@ -42,15 +44,9 @@ do-kernel-purge
 
 * Optionnal
 
-
 You can re-run setup script by:
 ```
 ./setup
-```
-
-You can run manual update by:
-```
-./ukupgrade
 ```
 
 ## Author's
