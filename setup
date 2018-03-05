@@ -20,7 +20,15 @@ Current Development and Maintenance by Christoph Kepler
 Checking dependecies...
 EOF
 
-cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+if [ -f ./ukupgrade ]; then
+	SOURCE="${BASH_SOURCE[0]}"
+	while [ -h "$SOURCE" ]; do
+	  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	  SOURCE="$(readlink "$SOURCE")"
+	  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+	done
+	cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+fi
 
 if [ -f ./uku.cfg ]; then rm ./uku.cfg; fi
 
@@ -67,7 +75,8 @@ fi
 read -p 'Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): ' -n 1 -s rc
 case "$rc" in
 	y | Y) echo 'Oh! The Release Candidate'; echo 'kernelrc=1' >> uku.cfg ;;
-	*) echo 'Ok! The Stable Release'; echo 'kernelrc=0' >> uku.cfg ;;
+	n | N) echo 'Ok! The Stable Release'; echo 'kernelrc=0' >> uku.cfg ;;
+	*) echo 'Cron try to run script while setup not runned. Aborting'; exit ;;
 esac
 
 read -p 'Do you want the lowlatency kernel? (y/n): ' -n 1 -s km

@@ -9,7 +9,14 @@
 # @author Usb Key
 # @mail usbkey9@gmail.com
 
-if [ ! $(pwd) = "/usr/bin" ]; then cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"; fi
+#Follow symlink and cd to right directory
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 if [ ! -f ./uku.cfg ]; then ./setup ; fi
 source ./uku.cfg

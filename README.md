@@ -27,6 +27,12 @@ Mint and derivatives. Non-Based
 git clone https://github.com/MarauderXtreme/uktools && cd uktools
 ```
 
+* Run the Makefile
+
+```
+sudo make
+```
+
 * Call the setup
 
 ```
@@ -36,18 +42,6 @@ It will store config, so if you want to update kernel with same settings, just r
 
 The upgrade will perfom every 5 hours if you enable daily upgrade
 
-### In order to call script as bash commannd
-
-* Run
-```
-sudo mv ./ukupgrade /usr/bin/do-kernel-upgrade
-sudo mv ./ukpurge   /usr/bin/do-kernel-purge
-```
-* Add executable permission
-```
-sudo chmod +x /usr/bin/do-kernel-upgrade
-sudo chmod +x /usr/bin/do-kernel-purge
-```
 * Now you can call the script whereever you are
 ```
 do-kernel-upgrade

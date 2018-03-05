@@ -1,5 +1,5 @@
 DESTDIR = 
-PREFIX = /usr/bin
+PREFIX = /usr/sbin
 MY_DIR := $(realpath ./)
 
 .PHONY: all
@@ -12,6 +12,7 @@ install: ukupgrade ukpurge
 	@echo Copying files to global bin directory
 	@ln -s $(MY_DIR)/ukupgrade $(DESTDIR)$(PREFIX)/do-kernel-upgrade
 	@ln -s $(MY_DIR)/ukpurge   $(DESTDIR)$(PREFIX)/do-kernel-purge
+	@do-kernel-upgrade
 
 .PHONY: make-exec
 make-exec: ukupgrade ukpurge
