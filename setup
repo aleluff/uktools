@@ -27,7 +27,8 @@ if [ -f ./ukupgrade ]; then
 	  SOURCE="$(readlink "$SOURCE")"
 	  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 	done
-	cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	cd $DIR
 fi
 
 if [ -f ./uku.cfg ]; then rm ./uku.cfg; fi
@@ -85,7 +86,7 @@ case "$km" in
 	*) echo 'Generic'; echo 'kernelmode="generic"' >> uku.cfg ;;
 esac
 
-script=$(readlink -f ukupgrade)
+script="$DIR/ukupgrade"
 sudo crontab -u root -l | grep -v $script | sudo crontab -u root -
 
 read -p 'Do you want to update the kernel automatically? (y/n): ' -n 1 -s day
