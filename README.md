@@ -67,7 +67,7 @@ You can re-run setup script by:
 |:-:|:-:|
 | email | development@kepler.international |
 
-[Usb Key](https://github.com/usbkey9) - setup and motd author
+[Usb Key](https://github.com/usbkey9) - setup, cronjob and motd author
 
 | email | usbkey9@gmail.com |
 |:-:|:-:|
