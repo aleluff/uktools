@@ -82,6 +82,7 @@ Installing Kernel and Headers...
 EOF
 sudo dpkg -i /tmp/linux*.deb
 rm -rf /tmp/linux*.deb
+touch /tmp/ukupgrade.nr
 
 cat << EOF
 
