@@ -34,6 +34,8 @@ case "$kernelrc" in
 	*) kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
 esac
 
+if [ $arm = 1 ]; then ./ukpurge ; fi
+
 # Same version test
 reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
 locVersion=$(dpkg -l |grep linux-image | grep $kernelmode | awk '{print $2}' | sed -e 's/.0-.*rc/.rc/' | cut -d'-' -f 3 | sed -e 's/.rc/-rc/')

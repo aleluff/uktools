@@ -86,6 +86,12 @@ case "$km" in
 	*) echo 'Generic'; echo 'kernelmode="generic"' >> uku.cfg ;;
 esac
 
+read -p 'Do you want to autoremove old kernel? (y/n): ' -n 1 -s arm
+case "$km" in
+	y | Y) echo 'Auto Remove'; echo 'arm=1' >> uku.cfg ;;
+	*) echo 'Manual Remove'; echo 'arm=0' >> uku.cfg ;;
+esac
+
 script="$DIR/ukupgrade"
 sudo crontab -u root -l | grep -v $script | sudo crontab -u root -
 
