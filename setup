@@ -17,15 +17,14 @@ Caio Oliveira and modified and fixed by Christoph Kepler
 
 Current Development and Maintenance by Christoph Kepler
 
-Checking dependecies...
 EOF
 
 if [ -f ./ukupgrade ]; then
 	SOURCE="${BASH_SOURCE[0]}"
 	while [ -h "$SOURCE" ]; do
-	  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-	  SOURCE="$(readlink "$SOURCE")"
-	  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+		DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+		SOURCE="$(readlink "$SOURCE")"
+		[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 	done
 	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 	cd $DIR
@@ -33,44 +32,7 @@ fi
 
 if [ -f ./uku.cfg ]; then rm ./uku.cfg; fi
 
-if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
-if ! which curl > /dev/null; then sudo apt-get install curl -y; fi
-if [ "$(getconf LONG_BIT)" == "64" ]; then echo 'arch="amd64"' >> uku.cfg; else echo 'arch="i386"' >> uku.cfg; fi
-wgetv="$(wget --version | head -1 | cut -d' ' -f3)"
-reqv='1.16'
-
-# Compare installed and needed versions of wget
-if printf '%s\n%s\n' $wgetv $reqv | sort -CV
-then
-cat << EOF
-Download Source, Build and Install
--- Your version is         $wgetv
--- Wget version to make is 1.16 --
-This will get some time, and errors may occur
-If you get any error select 'n'
-EOF
-	read -p "You really want to build WGET version 1.16? (y/n)" -n 1 -s wg
-	case $wg in
-	y | Y)
-		curl -O  http://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz
-		if ! which tar > /dev/null; then sudo apt-get install tar -y; fi
-		tar -xzf wget-1.16.tar.gz
-		rm -rf wget-1.16.tar.gz
-		cd wget-1.16
-		./configure; make || ./configure --with-ssl=openssl; make || ./configure --without-ssl; make
-		sudo make install
-		cd ..
-		rm -rf wget-1.16
-		_PROGRESS_OPT='-q --show-progress'
-		echo '';;
-	n | N)
-		_PROGRESS_OPT=''
-		echo 'Okay. No nice output for you.' ;;
-	esac
-else
-	_PROGRESS_OPT='-q --show-progress'
-	echo 'Nothing to do. Your wget supports everything needed.'
-fi
+script="$DIR/ukupgrade"
 
 # Kernel URL
 read -p 'Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): ' -n 1 -s rc
@@ -92,7 +54,6 @@ case "$km" in
 	*) echo 'Manual Remove'; echo 'arm=0' >> uku.cfg ;;
 esac
 
-script="$DIR/ukupgrade"
 sudo crontab -u root -l | grep -v $script | sudo crontab -u root -
 
 read -p 'Do you want to update the kernel automatically? (y/n): ' -n 1 -s day

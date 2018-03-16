@@ -9,17 +9,33 @@
 # @author Usb Key
 # @mail usbkey9@gmail.com
 
+help="Usage: ukupgrade [OPTION]...
+Dowload and install last available kernel for ubuntu systems.
+Settings can be saved if no options provided or by running setup script
+
+  -r,			Get Release Candidate kernel (default: Stable kernel)
+  -l,			Get Low Latency kernel (default: Generic kernel)
+  -a,			Run ukpurge script after upgrade
+  -h,			Show this help
+  -simple,		Use default settings (stable, generic, no purge)
+
+Examples:
+  ukupgrade -simple	Download, install the last kernel using defaults settings
+  ukupgrade -a		Same behavior of previous but uninstall old kernels
+"
+
 #Follow symlink and cd to right directory
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
-  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	SOURCE="$(readlink "$SOURCE")"
+	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-if [ ! -f ./uku.cfg ]; then ./setup ; fi
-source ./uku.cfg
+if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
+
+arch=$(dpkg --print-architecture)
 
 function download() {
 	wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)
@@ -28,6 +44,32 @@ function download() {
 		exit 1
 	fi
 }
+
+if [ "$1" = "-simple" ]; then
+	source ./sample.uku.cfg ;
+else
+	if [ $# -eq 0 ]; then
+		if [ ! -f ./uku.cfg ]; then ./setup ; fi
+		source ./uku.cfg ;
+	else
+		source ./sample.uku.cfg ;
+
+		while getopts 'rlph' flag; do
+			case "${flag}" in
+				r) kernelrc=1 ;;
+				l) kernelmode='lowlatency' ;;
+				p) arm=1 ;;
+				h) 	echo "${help}";
+					exit;
+					;;
+				*) 	echo "Unexpected option ${flag}";
+					echo "${help}";
+					exit;
+					;;
+			esac
+		done
+	fi ;
+fi
 
 case "$kernelrc" in
 	1) kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;

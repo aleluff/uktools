@@ -8,13 +8,16 @@
 #Follow symlink and cd to right directory
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
-  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	SOURCE="$(readlink "$SOURCE")"
+	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 if [ -f ./uku.cfg ]; then source ./uku.cfg ; else arm=0; fi
+
+lkv=`uname -r`
+kernels=$(dpkg --list | grep -E "linux-image" | awk '{ print $2 }' | grep -Po '^.+-\K[0-9]+[.][0-9]+[.][0-9]+-' | cut -d'-' -f1 | sort -uV | head -n -2 | tail -n +2)
 
 function remove() {
 	for kernel in "${kernels[@]}"
@@ -23,12 +26,12 @@ function remove() {
 	done
 }
 
+
 echo
 echo "Ubuntu Kernel Purge - by Caio Oliveira"
 echo
 echo "This script will only keep three versions: the first and the last two, others will be purge"
 
-lkv=`uname -r`
 if [ "$(echo $lkv | grep -o generic | head -1)" = "generic" ]
 	then lkve="Generic"; nlkv=`echo $lkv | rev | cut -c 9- | rev`
 	else lkve="LowLatency"; nlkv=`echo $lkv | rev | cut -c 12- | rev`
@@ -37,8 +40,6 @@ fi
 echo
 echo "---Current version:"
 echo "Linux Kernel $nlkv $lkve (linux-image-$lkv)"
-
-kernels=$(dpkg --list | grep -E "linux-image" | awk '{ print $2 }' | grep -Po '^.+-\K[0-9]+[.][0-9]+[.][0-9]+-' | cut -d'-' -f1 | sort -uV | head -n -2 | tail -n +2)
 
 if [ -z "$kernels" ];
 then echo "Nothing to remove!" ;
