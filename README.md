@@ -23,7 +23,7 @@ Mint and derivatives. Non-Based
 
 ```
 cd /usr/src && \
-sudo wget https://github.com/MarauderXtreme/uktools/archive/master.tar.gz uktools.tar.gz && \
+sudo wget https://github.com/usbkey9/uktools/archive/master.tar.gz uktools.tar.gz && \
 sudo tar -xvf uktools.tar.gz && \
 sudo rm -fr uktools.tar.gz && \
 cd uktools && \
