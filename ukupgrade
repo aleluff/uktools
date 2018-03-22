@@ -45,6 +45,10 @@ function download() {
 	fi
 }
 
+function cleanTmp() {
+	sudo rm -rf /tmp/linux*.deb
+}
+
 if [ "$1" = "-simple" ]; then
 	source ./sample.uku.cfg ;
 else
@@ -90,7 +94,7 @@ cat << EOF
 
 Cleaning old downloads in /tmp
 EOF
-rm -rf /tmp/linux*.deb
+cleanTmp
 
 # Download Kernel Header
 cat << EOF
@@ -123,7 +127,7 @@ cat << EOF
 Installing Kernel and Headers...
 EOF
 sudo dpkg -i /tmp/linux*.deb
-rm -rf /tmp/linux*.deb
+cleanTmp
 touch /tmp/ukupgrade.nr
 
 cat << EOF
