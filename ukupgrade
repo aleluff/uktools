@@ -126,6 +126,11 @@ cat << EOF
 
 Installing Kernel and Headers...
 EOF
+
+while fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
+    sleep 0.5
+done
+
 sudo dpkg -i /tmp/linux*.deb
 cleanTmp
 touch /tmp/ukupgrade.nr
