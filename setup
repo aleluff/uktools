@@ -49,7 +49,7 @@ case "$km" in
 esac
 
 read -p 'Do you want to autoremove old kernel? (y/n): ' -n 1 -s arm
-case "$km" in
+case "$arm" in
 	y | Y) echo 'Auto Remove'; echo 'arm=1' >> uku.cfg ;;
 	*) echo 'Manual Remove'; echo 'arm=0' >> uku.cfg ;;
 esac
