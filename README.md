@@ -72,13 +72,13 @@ You can re-run setup script by:
 | email | caiooliveirafarias0@gmail.com |
 |:-:|:-:|
 
-[Christoph Kepler](https://github.com/MarauderXtreme) - current maintainer and developer
+[Christoph Kepler](https://github.com/MarauderXtreme) - developer
 
 | homepage | [Kepler International](https://kepler.international/ "Kepler International") |
 |:-:|:-:|
 | email | development@kepler.international |
 
-[Usb Key](https://github.com/usbkey9) - setup, cronjob and motd author
+[Usb Key](https://github.com/usbkey9) - current maintainer and setup, cronjob and motd author
 
 | email | usbkey9@gmail.com |
 |:-:|:-:|
