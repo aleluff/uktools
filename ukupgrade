@@ -142,7 +142,7 @@ EOF
 
 if [ $arm = 1 ]; then ./ukpurge ; fi
 
-if [ cron = 0 ]; then
+if [ $cron = 0 ]; then
 	read -p 'Do you want to reboot system now? (y/n)(10s to No): ' -n 1 -t 10 -s rs
 	case "$rs" in
 		y | Y)
