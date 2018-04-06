@@ -29,7 +29,7 @@ function keepBaseVersion(){
 		if [[ $base = $(echo "$kernel" | cut -d'-' -f1) ]]; then ((nb++)) ;fi
 	done
 
-	if [[ $nb > 1 ]]; then unset 'kernels[nb-1]'; fi
+	unset 'kernels[nb-1]';
 }
 
 function remove() {
