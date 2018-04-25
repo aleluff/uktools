@@ -30,8 +30,6 @@ if [ -f ./ukupgrade ]; then
 	cd $DIR
 fi
 
-if [ -f ./uku.cfg ]; then rm ./uku.cfg; fi
-
 script="$DIR/ukupgrade"
 
 # Kernel URL
@@ -64,6 +62,8 @@ case "$day" in
 	*) echo 'Deleting cron daily'
 		cron=0 ;;
 esac
+
+if [ -f ./uku.cfg ]; then rm ./uku.cfg; fi
 
 echo "kernelrc=$kernelrc" >> uku.cfg;
 echo "kernelmode=$kernelmode" >> uku.cfg;
