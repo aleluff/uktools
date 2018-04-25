@@ -20,6 +20,7 @@ Mint and derivatives. Non-Based
 -----------------------------------------
 
 # One-line Install
+**Only use for testing, prefer normal setup**
 
 ```
 cd /usr/src && \
@@ -31,7 +32,7 @@ sudo chown ${USER:=$(/usr/bin/id -run)}:$USER ../uktools-master && \
 ./ukupgrade -simple
 ```
 
-## Usages
+# Normal Setup
 
 * Download
 
