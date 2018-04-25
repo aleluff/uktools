@@ -38,28 +38,40 @@ if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
 arch=$(dpkg --print-architecture)
 trys=0
 
-function download() {
-    local package=$(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1);
-    local filename=$(basename "$package");
-	wget -P /tmp $package
+function cleanTmp() {
+	sudo rm -rf /tmp/linux-*.deb
+}
 
-	if [ $? == "1" ]; then
-		echo "Download of $package failed!";
-		exit 1
-	fi
+function fatalError() {
+    echo $1;
+    cleanTmp
+    exit;
+}
+
+function download() {
+
+    local filename=$(basename "$package");
+	wget -q -P /tmp $package
+
+	if [ $? == "1" ]; then fatalError "Download of $package failed!"; fi
 
     if [[ ! "${checksums[@]}" =~ "$(shasum /tmp/$filename | awk '{ print $1 }')" ]]; then
         echo "Checksum failed for $filename !!!";
-        if [[ $trys > 3 ]]; then echo "Too many attemps !!! Exiting"; exit; fi
+        if [[ $trys > 3 ]]; then fatalError "Too many attemps !!! Exiting"; fi
         echo "Redownloading ...";
         download "$@";
     else
         echo "Checksum for $filename succeed";
-    fi;
+    fi
 }
 
-function cleanTmp() {
-	sudo rm -rf /tmp/linux-*.deb
+function downloadMulti() {
+
+    local packages=($(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$3" | awk '{print $2}' | sort | uniq));
+    for package in "${packages[@]}"
+	do
+	    download $package
+	done
 }
 
 if [ "$1" = "-simple" ]; then
@@ -97,46 +109,31 @@ checksums="$(wget -qO- $kernelURL/CHECKSUMS)"
 
 # Same version test
 reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
-locVersion=$(dpkg -l |grep linux-image | grep $kernelmode | awk '{print $2}' | sed -e 's/.0-.*rc/.rc/' | cut -d'-' -f 3 | sed -e 's/.rc/-rc/')
+locVersion=$(dpkg -l |grep linux-image | grep $kernelmode | awk '{print $3}' | sed -e 's/.0-.*rc/.rc/' | cut -d'-' -f 1 | sed -e 's/.rc/-rc/')
 
 if grep -Fxq "$reqVersion" <<< "$locVersion"; then
 	echo 'Kernel up to date. Finishing'
 	exit
 fi
 
-# Clean TMP Kernel
 cat << EOF
 
 Cleaning old downloads in /tmp
 EOF
 cleanTmp
 
-# Download Kernel Header
 cat << EOF
 
-Downloading the latest $kernelmode kernel header...
+Downloading the kernel's components...
 EOF
-download $kernelmode header
+downloadMulti "$kernelmode" "" "$arch"
 
-# Download Kernel Image
-cat << EOF
-
-Downloading the latest $kernelmode kernel image...
-EOF
-download $kernelmode image
-
-# Download Shared Kernel Header
 cat << EOF
 
 Downloading the shared kernel header...
 EOF
-wget -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | grep headers | cut -d ' ' -f 4 | tail -1)
-if [ $? == '1' ]; then
-	echo 'Download failed!'
-	exit 1
-fi
+downloadMulti "all" "headers" ""
 
-# Install Kernel
 cat << EOF
 
 Installing Kernel and Headers...
@@ -147,11 +144,7 @@ while fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
 done
 
 sudo dpkg -i /tmp/linux-*.deb
-if [[ $? > 0 ]]; then
-    echo "Installation failed !!! Exiting";
-    cleanTmp
-    exit
-fi
+if [[ $? > 0 ]]; then fatalError "Installation failed !!! Exiting"; fi
 
 cleanTmp
 touch /tmp/ukupgrade.nr
