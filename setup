@@ -35,23 +35,23 @@ if [ -f ./uku.cfg ]; then rm ./uku.cfg; fi
 script="$DIR/ukupgrade"
 
 # Kernel URL
-read -p "Do you want the RC Build (if not sure, press y)? (y/n): " -n 1 -s rc
+read -p "Do you want the Stable Release (if not sure, press y)? (y/n): " -n 1 -s rc
 case "$rc" in
-	y | Y) echo 'Stable Release'; echo 'kernelrc=0' >> uku.cfg ;;
-	n | N) echo 'Release Candidate'; echo 'kernelrc=1' >> uku.cfg ;;
-	*) echo 'Cron try to run script while setup not runned. Aborting'; exit ;;
+	y | Y) echo 'Stable Release'; kernelrc=0 ;;
+	n | N) echo 'Release Candidate'; kernelrc=1 ;;
+	*) echo 'Bad input. Aborting'; exit ;;
 esac
 
 read -p 'Do you want the generic kernel? (y/n): ' -n 1 -s km
 case "$km" in
-	y | Y) echo 'Generic'; echo 'kernelmode="generic"' >> uku.cfg ;;
-	*) echo 'LowLatency'; echo 'kernelmode="lowlatency"' >> uku.cfg ;;
+	y | Y) echo 'Generic'; kernelmode="generic" ;;
+	*) echo 'LowLatency'; kernelmode="lowlatency" ;;
 esac
 
 read -p 'Do you want to autoremove old kernel? (y/n): ' -n 1 -s arm
 case "$arm" in
-	y | Y) echo 'Auto Remove'; echo 'arm=1' >> uku.cfg ;;
-	*) echo 'Manual Remove'; echo 'arm=0' >> uku.cfg ;;
+	y | Y) echo 'Auto Remove'; arm=1 ;;
+	*) echo 'Manual Remove'; arm=0 ;;
 esac
 
 sudo crontab -u root -l | grep -v $script | sudo crontab -u root -
@@ -59,11 +59,16 @@ sudo crontab -u root -l | grep -v $script | sudo crontab -u root -
 read -p 'Do you want to update the kernel automatically? (y/n): ' -n 1 -s day
 case "$day" in
 	y | Y) echo 'Cronning'
-		echo 'cron=1' >> uku.cfg
+		cron=1
 		(sudo crontab -u root -l ; echo "0 */5 * * * $script > /tmp/uku.log 2>&1") | sudo crontab -u root - ;;
 	*) echo 'Deleting cron daily'
-		echo 'cron=0' >> uku.cfg ;;
+		cron=0 ;;
 esac
+
+echo "kernelrc=$kernelrc" >> uku.cfg;
+echo "kernelmode=$kernelmode" >> uku.cfg;
+echo "arm=$arm" >> uku.cfg;
+echo "cron=$cron" >> uku.cfg;
 
 read -p 'Setup complete. Update the kernel right now? (y/n): ' -n 1 -s now
 case "$now" in
