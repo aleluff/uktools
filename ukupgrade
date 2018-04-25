@@ -59,7 +59,7 @@ function download() {
 }
 
 function cleanTmp() {
-	sudo rm -rf /tmp/linux*.deb
+	sudo rm -rf /tmp/linux-*.deb
 }
 
 if [ "$1" = "-simple" ]; then
@@ -146,7 +146,13 @@ while fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
     sleep 0.5
 done
 
-sudo dpkg -i /tmp/linux*.deb
+sudo dpkg -i /tmp/linux-*.deb
+if [[ $? > 0 ]]; then
+    echo "Installation failed !!! Exiting";
+    cleanTmp
+    exit
+fi
+
 cleanTmp
 touch /tmp/ukupgrade.nr
 
