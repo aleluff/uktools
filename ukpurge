@@ -20,9 +20,8 @@ lkv=`uname -r`
 kernels=($(dpkg --list | grep -E "linux-headers" | grep -v "generic" | awk '{ print $2 }' | cut -d'-' -f3- | sort -uV | head -n -2))
 
 function keepBaseVersion(){
-
-	nb=0
-	base=$(echo "${kernels[0]}" | cut -d'-' -f1)
+	local nb=0
+	local base=$(echo "${kernels[0]}" | cut -d'-' -f1)
 
 	for kernel in "${kernels[@]}"
 	do

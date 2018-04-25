@@ -36,13 +36,26 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
 
 arch=$(dpkg --print-architecture)
+trys=0
 
 function download() {
-	wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1)
+    local package=$(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$arch" | cut -d ' ' -f 4 | tail -1);
+    local filename=$(basename "$package");
+	wget -P /tmp $package
+
 	if [ $? == "1" ]; then
-		echo "Download failed!"
+		echo "Download of $package failed!";
 		exit 1
 	fi
+
+    if [[ ! "${checksums[@]}" =~ "$(shasum /tmp/$filename | awk '{ print $1 }')" ]]; then
+        echo "Checksum failed for $filename !!!";
+        if [[ $trys > 3 ]]; then echo "Too many attemps !!! Exiting"; exit; fi
+        echo "Redownloading ...";
+        download "$@";
+    else
+        echo "Checksum for $filename succeed";
+    fi;
 }
 
 function cleanTmp() {
@@ -80,6 +93,8 @@ case "$kernelrc" in
 	*) kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v rc | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
 esac
 
+checksums="$(wget -qO- $kernelURL/CHECKSUMS)"
+
 # Same version test
 reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
 locVersion=$(dpkg -l |grep linux-image | grep $kernelmode | awk '{print $2}' | sed -e 's/.0-.*rc/.rc/' | cut -d'-' -f 3 | sed -e 's/.rc/-rc/')
@@ -115,7 +130,7 @@ cat << EOF
 
 Downloading the shared kernel header...
 EOF
-wget $_PROGRESS_OPT -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | grep headers | cut -d ' ' -f 4 | tail -1)
+wget -P /tmp $(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep all | grep headers | cut -d ' ' -f 4 | tail -1)
 if [ $? == '1' ]; then
 	echo 'Download failed!'
 	exit 1
