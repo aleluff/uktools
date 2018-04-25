@@ -35,17 +35,17 @@ if [ -f ./uku.cfg ]; then rm ./uku.cfg; fi
 script="$DIR/ukupgrade"
 
 # Kernel URL
-read -p 'Do you want the Latest Build (aka ReleaseCandidate/RC)? (y/n): ' -n 1 -s rc
+read -p "Do you want the RC Build (if not sure, press y)? (y/n): " -n 1 -s rc
 case "$rc" in
-	y | Y) echo 'Oh! The Release Candidate'; echo 'kernelrc=1' >> uku.cfg ;;
-	n | N) echo 'Ok! The Stable Release'; echo 'kernelrc=0' >> uku.cfg ;;
+	y | Y) echo 'Stable Release'; echo 'kernelrc=0' >> uku.cfg ;;
+	n | N) echo 'Release Candidate'; echo 'kernelrc=1' >> uku.cfg ;;
 	*) echo 'Cron try to run script while setup not runned. Aborting'; exit ;;
 esac
 
-read -p 'Do you want the lowlatency kernel? (y/n): ' -n 1 -s km
+read -p 'Do you want the generic kernel? (y/n): ' -n 1 -s km
 case "$km" in
-	y | Y) echo 'LowLatency'; echo 'kernelmode="lowlatency"' >> uku.cfg ;;
-	*) echo 'Generic'; echo 'kernelmode="generic"' >> uku.cfg ;;
+	y | Y) echo 'Generic'; echo 'kernelmode="generic"' >> uku.cfg ;;
+	*) echo 'LowLatency'; echo 'kernelmode="lowlatency"' >> uku.cfg ;;
 esac
 
 read -p 'Do you want to autoremove old kernel? (y/n): ' -n 1 -s arm

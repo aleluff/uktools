@@ -14,7 +14,7 @@ install: ukupgrade ukpurge
 	@echo Linking files to global sbin directory
 	@ln -s $(MY_DIR)/ukupgrade	$(DESTDIR)$(PREFIX)/do-kernel-upgrade
 	@ln -s $(MY_DIR)/ukpurge  	$(DESTDIR)$(PREFIX)/do-kernel-purge
-	@do-kernel-upgrade
+	@$(MY_DIR)/setup
 
 .PHONY: make-exec
 make-exec: ukupgrade ukpurge
@@ -28,6 +28,8 @@ uninstall:
 	@rm -f $(DESTDIR)$(PREFIX)/do-kernel-*
 	@echo Removing profile.d file
 	@rm -f /etc/profile.d/ukupgrade.sh
+	@echo Removing config file
+	@rm -f $(MY_DIR)/uku.cfg
 
 .PHONY: upgrade
 upgrade: uninstall make-exec install
