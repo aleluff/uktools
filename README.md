@@ -63,6 +63,12 @@ You can re-run setup script by:
 ```
 
 ## Author's
+
+[Usb Key](https://github.com/usbkey9) - current maintainer and setup, cronjob and motd author
+
+| email | usbkey9@gmail.com |
+|:-:|:-:|
+
 [Mustafa Hasturk](https://www.linkedin.com/in/muhasturk) - ukupgrade author
 
 | homepage | [mustafahasturk.com](http://mustafahasturk.com "Official Web Site") |
@@ -80,9 +86,5 @@ You can re-run setup script by:
 |:-:|:-:|
 | email | development@kepler.international |
 
-[Usb Key](https://github.com/usbkey9) - current maintainer and setup, cronjob and motd author
-
-| email | usbkey9@gmail.com |
-|:-:|:-:|
 
 [Project Status Image]: https://img.shields.io/badge/project-active-green.svg "Project Status: Active"
