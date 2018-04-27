@@ -21,7 +21,7 @@ Settings can be saved if no options provided or by running setup script
 
 Examples:
   ukupgrade -simple	Download, install the last kernel using defaults settings
-  ukupgrade -a		Same behavior of previous but uninstall old kernels
+  ukupgrade -a		Use default settings but uninstall old kernels
 "
 
 #Follow symlink and cd to right directory
