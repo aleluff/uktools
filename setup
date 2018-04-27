@@ -40,7 +40,7 @@ case "$rc" in
 	*) echo 'Bad input. Aborting'; exit ;;
 esac
 
-read -p 'Do you want the generic kernel? (y/n): ' -n 1 -s km
+read -p 'Do you want the Generic kernel? (y/n): ' -n 1 -s km
 case "$km" in
 	y | Y) echo 'Generic'; kernelmode="generic" ;;
 	*) echo 'LowLatency'; kernelmode="lowlatency" ;;

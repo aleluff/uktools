@@ -74,6 +74,16 @@ function downloadMulti() {
 	done
 }
 
+function notifyUpdate() {
+
+    if [[ -x "$(command -v notify-send)" ]]; then
+        user=$(w -h | awk '{print $1}')
+        su $user -c "notify-send 'Kernel Updated' 'System restart required'"
+    else
+        touch /tmp/ukupgrade.nr
+    fi
+}
+
 if [ "$1" = "-simple" ]; then
 	source ./sample.uku.cfg ;
 else
@@ -147,7 +157,7 @@ sudo dpkg -i /tmp/linux-*.deb
 if [[ $? > 0 ]]; then fatalError "Installation failed !!! Exiting"; fi
 
 cleanTmp
-touch /tmp/ukupgrade.nr
+notifyUpdate
 
 cat << EOF
 
