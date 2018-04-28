@@ -43,52 +43,49 @@ function cleanTmp() {
 }
 
 function fatalError() {
-    echo $1;
-    cleanTmp
-    exit;
+	echo $1;
+	cleanTmp
+	exit;
 }
 
 function download() {
 
-    local filename=$(basename "$package");
+	local filename=$(basename "$package");
 	wget -q -P /tmp $package
 
 	if [ $? == "1" ]; then fatalError "Download of $package failed!"; fi
 
-    if [[ ! "${checksums[@]}" =~ "$(shasum /tmp/$filename | awk '{ print $1 }')" ]]; then
-        echo "Checksum failed for $filename !!!";
-        if [[ $trys > 3 ]]; then fatalError "Too many checksums fails !!! Exiting"; fi
-        echo "Redownloading ...";
-        download "$@";
-    else
-        echo "Checksum for $filename succeed";
-    fi
+	if [[ ! "${checksums[@]}" =~ "$(shasum /tmp/$filename | awk '{ print $1 }')" ]]; then
+		echo "Checksum failed for $filename !!!";
+		if [[ $trys > 3 ]]; then fatalError "Too many checksums fails !!! Exiting"; fi
+		echo "Redownloading ...";
+		download "$@";
+	else
+		echo "Checksum for $filename succeed";
+	fi
 }
 
 function downloadMulti() {
 
-    local packages=($(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$3" | awk '{print $2}' | sort | uniq));
-    for package in "${packages[@]}"
+	local packages=($(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$3" | awk '{print $2}' | sort | uniq));
+	for package in "${packages[@]}"
 	do
-	    download $package
+		download $package
 	done
 }
 
 function notifyUpdate() {
 
-    if [[ -x "$(command -v notify-send)" ]]; then
-        user=$(w -h | awk '{print $1}')
-        userId=$(id -u $user)
-        export DISPLAY=:0.0
-        export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$userId/bus
-        su $user -c "notify-send 'Kernel Updated' 'System restart required'"
-    else
-        touch /tmp/ukupgrade.nr
-    fi
+	if [[ -x "$(command -v notify-send)" ]]; then
+		user=$(w -h | awk '{print $1}')
+		userId=$(id -u $user)
+		export DISPLAY=:0.0
+		export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$userId/bus
+		su $user -c "notify-send 'Kernel Updated' 'System restart required'"
+	else
+		touch /tmp/ukupgrade.nr
+	fi
 }
-
-notifyUpdate
-exit
 
 if [ "$1" = "-simple" ]; then
 	source ./sample.uku.cfg ;
@@ -156,7 +153,7 @@ Installing Kernel and Headers...
 EOF
 
 while fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
-    sleep 0.5
+	sleep 0.5
 done
 
 sudo dpkg -i /tmp/linux-*.deb
