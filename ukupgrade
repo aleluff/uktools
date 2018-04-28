@@ -78,11 +78,17 @@ function notifyUpdate() {
 
     if [[ -x "$(command -v notify-send)" ]]; then
         user=$(w -h | awk '{print $1}')
+        userId=$(id -u $user)
+        export DISPLAY=:0.0
+        export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$userId/bus
         su $user -c "notify-send 'Kernel Updated' 'System restart required'"
     else
         touch /tmp/ukupgrade.nr
     fi
 }
+
+notifyUpdate
+exit
 
 if [ "$1" = "-simple" ]; then
 	source ./sample.uku.cfg ;
