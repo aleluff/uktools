@@ -43,7 +43,8 @@ function cleanTmp() {
 }
 
 function fatalError() {
-	echo $1;
+	red=`tput setaf 1`
+	echo "${red}$1"
 	cleanTmp
 	exit;
 }
@@ -86,6 +87,9 @@ function notifyUpdate() {
 		touch /tmp/ukupgrade.nr
 	fi
 }
+
+wget -q --spider http://google.com
+if [[ ! $? -eq 0 ]]; then fatalError "No network available !!! Exiting"; fi
 
 if [ "$1" = "-simple" ]; then
 	source ./sample.uku.cfg ;
