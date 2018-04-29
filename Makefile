@@ -3,7 +3,7 @@ PREFIX = /usr/sbin
 MY_DIR := $(realpath ./)
 
 .PHONY: all
-all: make-exec install
+all: install
 
 .PHONY: install
 install: ukupgrade ukpurge
@@ -16,12 +16,6 @@ install: ukupgrade ukpurge
 	@ln -s $(MY_DIR)/ukpurge  	$(DESTDIR)$(PREFIX)/do-kernel-purge
 	@$(MY_DIR)/setup
 
-.PHONY: make-exec
-make-exec: ukupgrade ukpurge
-	@echo adding x to files
-	@chmod +x ukupgrade
-	@chmod +x ukpurge
-
 .PHONY: uninstall
 uninstall:
 	@echo Removing do-kernel- links
@@ -32,4 +26,4 @@ uninstall:
 	@rm -f $(MY_DIR)/uku.cfg
 
 .PHONY: upgrade
-upgrade: uninstall make-exec install
+upgrade: uninstall install
