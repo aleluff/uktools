@@ -54,8 +54,8 @@ echo
 echo "---Current version:"
 echo "Linux Kernel $nlkv $lkve (linux-image-$lkv)"
 
-if [ -z "$kernels" ];
-then echo "Nothing to remove!" ;
+if [[ ${#kernels[@]} < 1 ]]; then
+    echo "Nothing to remove!" ;
 else
 	echo
 	echo "---Versions to remove:"
