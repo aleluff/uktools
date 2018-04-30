@@ -15,13 +15,13 @@ Settings can be saved if no options provided or by running setup script
 
   -r,			Get Release Candidate kernel (default: Stable kernel)
   -l,			Get Low Latency kernel (default: Generic kernel)
-  -a,			Run ukpurge script after upgrade
+  -p,			Run ukpurge script after upgrade
   -h,			Show this help
-  -simple,		Use default settings (stable, generic, no purge)
+  --simple,		Use default settings (stable, generic, no auto run, no purge)
 
 Examples:
-  ukupgrade -simple	Download, install the last kernel using defaults settings
-  ukupgrade -a		Use default settings but uninstall old kernels
+  ukupgrade --simple	Download, install the last kernel using defaults settings
+  ukupgrade -p		Use default settings but uninstall old kernels
 "
 
 #Follow symlink and cd to right directory
@@ -91,7 +91,7 @@ function notifyUpdate() {
 wget -q --spider http://google.com
 if [[ ! $? -eq 0 ]]; then fatalError "No network available !!! Exiting"; fi
 
-if [ "$1" = "-simple" ]; then
+if [ "$1" = "--simple" ]; then
 	source ./sample.uku.cfg ;
 else
 	if [ $# -eq 0 ]; then
