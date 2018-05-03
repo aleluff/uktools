@@ -62,6 +62,11 @@ You can re-run setup script by:
 ./setup
 ```
 
+## Improvements
+
+* Help is welcome if you want to test scripts with docker (eg get and check each kersion version)
+* Any other contributions
+
 ## Author's
 
 [Usb Key](https://github.com/usbkey9) - current maintainer and setup, cronjob and motd author
