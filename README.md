@@ -62,7 +62,7 @@ You can re-run setup script by:
 ./setup
 ```
 
-## TODO
+## TODO (Tests)
 #### Qemu/KVM are the tools for testing
 
 * Test MakeFile
