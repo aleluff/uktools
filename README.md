@@ -62,10 +62,29 @@ You can re-run setup script by:
 ./setup
 ```
 
-## Improvements
+## TODO
+#### Qemu/KVM are the tools for testing
 
-* Help is welcome if you want to test scripts with docker (eg get and check each kersion version)
-* Any other contributions
+* Test MakeFile
+
+### Ukuprage
+* check install of each kernel's versions
+* check message of the day with ssh connection just after install
+* check call parameters
+* check "no need to upgrade" by running script two times in a row
+
+### Ukpurge
+* check if script purge right versions and keep only 3 ones
+* check if script keep the very last version of base kernel
+* eg with Ubuntu 18.04 : 
+  - 4.15.0-20.21 base kernel [to delete]
+  - 4.15.0.20.23 updated base kernel [to keep]
+  - 4.16.5 updated kernel from script [to delete]
+  - 4.16.6 updated kernel from script [to keep]
+  - 4.16.7 updated kernel from script [to keep]
+
+
+### Any other contributions is welcome (trad, etc)
 
 ## Author's
 
