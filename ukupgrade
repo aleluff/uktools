@@ -1,13 +1,24 @@
 #!/bin/bash
 
+# @author Usb Key
+# @mail usbkey9@gmail.com
 # @author Mustafa Hasturk
 # @mail mustafa.hasturk@yandex.com
 # @author Caio Oliveira
 # @mail caiooliveirafarias0@gmail.com
 # @author Christoph Kepler
 # @mail development@kepler.international
-# @author Usb Key
-# @mail usbkey9@gmail.com
+
+#Follow symlink and cd to right directory
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	SOURCE="$(readlink "$SOURCE")"
+	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
 
 help="Usage: ukupgrade [OPTION]...
 Dowload and install last available kernel for ubuntu systems.
@@ -23,18 +34,6 @@ Examples:
   ukupgrade --simple	Download, install the last kernel using defaults settings
   ukupgrade -p		Use default settings but uninstall old kernels
 "
-
-#Follow symlink and cd to right directory
-SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do
-	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-	SOURCE="$(readlink "$SOURCE")"
-	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-done
-cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-
-if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
-
 arch=$(dpkg --print-architecture)
 trys=0
 
@@ -87,6 +86,12 @@ function notifyUpdate() {
 		touch /tmp/ukupgrade.nr
 	fi
 }
+
+cat << EOF
+UkTools Upgrade
+------------------------------------------
+
+EOF
 
 wget -q --spider http://google.com
 if [[ ! $? -eq 0 ]]; then fatalError "No network available !!! Exiting"; fi

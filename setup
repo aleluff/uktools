@@ -9,16 +9,6 @@
 # @author Usb Key
 # @mail usbkey9@gmail.com
 
-cat << EOF
-Ubuntu Kernel Upgrade - by Mustafa Hasturk
-------------------------------------------
-This script is based on the work of Mustafa Hasturk and was reworked by
-Caio Oliveira and modified and fixed by Christoph Kepler
-
-Current Development and Maintenance by Christoph Kepler
-
-EOF
-
 if [ -f ./ukupgrade ]; then
 	SOURCE="${BASH_SOURCE[0]}"
 	while [ -h "$SOURCE" ]; do
@@ -31,6 +21,16 @@ if [ -f ./ukupgrade ]; then
 fi
 
 script="$DIR/ukupgrade"
+
+cat << EOF
+UkTools Setup
+------------------------------------------
+
+You can use this script as many time as you want
+------------------------------------------
+
+
+EOF
 
 # Kernel URL
 read -p "Do you want the Stable Release (if not sure, press y)? (y/n): " -n 1 -s rc

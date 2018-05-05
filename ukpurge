@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# @author Caio Oliveira
-# @mail caiooliveirafarias0@gmail.com
 # @author Usb Key
 # @mail usbkey9@gmail.com
+# @author Caio Oliveira
+# @mail caiooliveirafarias0@gmail.com
 
 #Follow symlink and cd to right directory
 SOURCE="${BASH_SOURCE[0]}"
@@ -40,10 +40,15 @@ function remove() {
 
 keepBaseVersion
 
-echo
-echo "Ubuntu Kernel Purge - by Caio Oliveira"
-echo
-echo "This script will only keep three versions: the first and the last two, others will be purge"
+cat << EOF
+UkTools Purge
+------------------------------------------
+
+This script will only keep three versions: the first and the last two, others will be purge
+------------------------------------------
+
+
+EOF
 
 if [ "$(echo $lkv | grep -o generic | head -1)" = "generic" ]
 	then lkve="Generic"; nlkv=`echo $lkv | rev | cut -c 9- | rev`
