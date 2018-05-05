@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# @author Usb Key
+# @mail usbkey9@gmail.com
+
+#Follow symlink and cd to right directory
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	SOURCE="$(readlink "$SOURCE")"
+	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+function checkEverUp() {
+
+	file="autoup.tmp";
+	ts=$(date +%s);
+	fileTs=0;
+
+	if [[ -f $file ]]; then	fileTs=$(($(cat $file)+3600)); fi
+
+	if [[ $fileTs > $ts ]]; then
+		#Ever up-to-date
+		exit 0;
+	else
+		echo $ts > $file
+	fi
+}
+
+function refresh() {
+
+	git fetch -a
+	local=$(git rev-parse HEAD)
+	base=$(git rev-parse @{u})
+}
+
+checkEverUp
+
+#Test if it's a valid git repo
+if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then
+	exit 0;
+fi
+
+refresh
+
+if [ ! $local = $base ]; then
+	git pull -q >> /dev/null 2>&1
+	refresh
+	if [ ! $local = $base ]; then
+		#ERROR: Repo still outdated
+		exit 2;
+	else
+		#Repo successfully updated
+		exit 1;
+	fi
+fi
+
+#Repo up-to-date
+exit 0;

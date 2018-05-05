@@ -18,6 +18,18 @@ while [ -h "$SOURCE" ]; do
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
+./autoup
+gitup="$?";
+
+if [[ $gitup == 1 ]]; then
+	#Need to reload script
+	./$0 $@
+	exit;
+elif [[ $gitup == 2 ]]; then
+	echo "Error while git auto-update. Exiting Now!";
+	exit;
+fi
+
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
 
 help="Usage: ukupgrade [OPTION]...
