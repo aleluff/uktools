@@ -16,6 +16,9 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 if [ -f ./uku.cfg ]; then source ./uku.cfg ; else arm=0; fi
 
+./autoup ./$0 $@
+
+
 lkv=`uname -r`
 kernels=($(dpkg --list | grep -E "linux-headers" | grep -v "generic" | awk '{ print $2 }' | cut -d'-' -f3- | sort -uV | head -n -2))
 
@@ -80,6 +83,3 @@ else
 	else remove ;
 	fi
 fi
-
-echo
-echo "Thanks for using this script!!!"
