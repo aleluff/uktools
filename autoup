@@ -28,9 +28,9 @@ function getScriptArgs() {
 	done
 
 	if [[ ${#BASH_ARGV[@]} < 1 ]]; then
-        echo "You have to pass caller script name as parameter (./autoup \$0)";
-        exit;
-    fi
+		echo "You have to pass caller script name as parameter (./autoup \$0)";
+		exit;
+	fi
 }
 
 function ex(){
