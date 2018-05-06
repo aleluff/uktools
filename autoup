@@ -67,7 +67,7 @@ function checkTimeStamp() {
 
 function refresh() {
 
-	git fetch -a;
+	git fetch -aq;
 	local=$(git rev-parse HEAD);
 	base=$(git rev-parse @{u});
 }
