@@ -71,6 +71,9 @@ function refresh() {
 	base=$(git rev-parse @{u})
 }
 
+#Must be call first of all (in case of ex 1)
+getScriptArgs
+
 checkTimeStamp
 
 #Test if it's a valid git repo
