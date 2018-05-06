@@ -41,8 +41,8 @@ function ex(){
 	elif [[ $1 == 1 ]]; then
 		#Need to reload script;
 		./${BASH_ARGV[0]} ${args[@]};
+		echo;
 		pkill -f ${BASH_ARGV[0]};
-		exit;
 	elif [[ $gitup == 2 ]]; then
 		echo "Error while git auto-update. Exiting Now!";
 		exit;
