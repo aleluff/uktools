@@ -40,7 +40,7 @@ function ex(){
 	elif [[ $1 == 1 ]]; then
 		#Need to reload script;
 		./${BASH_ARGV[0]} ${args[@]};
-		pkill -f ${BASH_ARGV[0]};
+		pkill -f ${BASH_ARGV[0]} &> /dev/null;
 		exit;
 	elif [[ $gitup == 2 ]]; then
 		echo "Error while git auto-update. Exiting Now!";
@@ -66,9 +66,9 @@ function checkTimeStamp() {
 
 function refresh() {
 
-	git fetch -a
-	local=$(git rev-parse HEAD)
-	base=$(git rev-parse @{u})
+	git fetch -a;
+	local=$(git rev-parse HEAD);
+	base=$(git rev-parse @{u});
 }
 
 #Must be call first of all (in case of `ex 1`)
