@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# @author Usb Key
+# @mail usbkey9@gmail.com
+
+#This script auto update current repo
+#It's designed to recall script in parameter with same arguments after updating
+#It has been develop to be call by every directly callable script
+#It prevent to be execute too many times so don't worry if yours scripts call themselves
+
+#Follow symlink and cd to right directory
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	SOURCE="$(readlink "$SOURCE")"
+	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+function getScriptArgs() {
+
+	args=();
+
+	for ((i=${#BASH_ARGV[@]}-2; i >= 0; i--))
+	do
+		args+=(${BASH_ARGV[$i]});
+	done
+
+	if [[ ${#BASH_ARGV[@]} < 1 ]]; then
+		echo "You have to pass caller script name as parameter (./autoup \$0)";
+		exit;
+	fi
+}
+
+function ex(){
+
+	if [[ $1 == 0 ]]; then
+		#Continue normal execution (not a git repo or up-to-date)
+		exit;
+	elif [[ $1 == 1 ]]; then
+		#Need to reload script;
+		./${BASH_ARGV[0]} ${args[@]};
+		echo;
+		pkill -f ${BASH_ARGV[0]};
+	elif [[ $gitup == 2 ]]; then
+		echo "Error while git auto-update. Exiting Now!";
+		exit;
+	fi
+}
+
+function checkTimeStamp() {
+
+	local file="autoup.tmp";
+	local ts=$(date +%s);
+	local fileTs=0;
+
+	if [[ -f $file ]]; then	fileTs=$(($(cat $file)+3600)); fi
+
+	if [[ $fileTs > $ts ]]; then
+		#Consider as up-to-date (useful when call multiple time by other script)
+		ex 0;
+	else
+		echo $ts > $file
+	fi
+}
+
+function refresh() {
+
+	git fetch -aq;
+	local=$(git rev-parse HEAD);
+	base=$(git rev-parse @{u});
+}
+
+#Must be call first of all (in case of `ex 1`)
+getScriptArgs
+
+checkTimeStamp
+
+#Test if it's a valid git repo
+if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then
+	ex 0;
+fi
+
+refresh
+
+if [ ! $local = $base ]; then
+	git pull -q
+	refresh
+	if [ ! $local = $base ]; then
+		#ERROR: Repo still outdated
+		ex 2;
+	else
+		#Repo successfully updated
+		ex 1;
+	fi
+fi
+
+#Repo up-to-date
+ex 0;

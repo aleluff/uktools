@@ -16,6 +16,9 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 if [ -f ./uku.cfg ]; then source ./uku.cfg ; else arm=0; fi
 
+./autoup $0 $@
+
+
 lkv=`uname -r`
 kernels=($(dpkg --list | grep -E "linux-headers" | grep -v "generic" | awk '{ print $2 }' | cut -d'-' -f3- | sort -uV | head -n -2))
 
@@ -28,7 +31,7 @@ function keepBaseVersion(){
 		if [[ $base = $(echo "$kernel" | cut -d'-' -f1) ]]; then ((nb++)) ;fi
 	done
 
-	unset 'kernels[nb-1]';
+	if [[ $nb > 0 ]]; then unset 'kernels[nb-1]'; fi
 }
 
 function remove() {
@@ -55,15 +58,14 @@ if [ "$(echo $lkv | grep -o generic | head -1)" = "generic" ]
 	else lkve="LowLatency"; nlkv=`echo $lkv | rev | cut -c 12- | rev`
 fi
 
-echo
-echo "---Current version:"
+echo "---Current version:---"
 echo "Linux Kernel $nlkv $lkve (linux-image-$lkv)"
 
 if [[ ${#kernels[@]} < 1 ]]; then
     echo "Nothing to remove!" ;
 else
 	echo
-	echo "---Versions to remove:"
+	echo "---Versions to remove:---"
 	printf '%s\n' "${kernels[@]}"
     sleep 2
 	echo
@@ -80,6 +82,3 @@ else
 	else remove ;
 	fi
 fi
-
-echo
-echo "Thanks for using this script!!!"

@@ -20,6 +20,9 @@ if [ -f ./ukupgrade ]; then
 	cd $DIR
 fi
 
+./autoup $0 $@
+
+
 script="$DIR/ukupgrade"
 
 cat << EOF
@@ -75,10 +78,3 @@ read -p 'Setup complete. Update the kernel right now? (y/n): ' -n 1 -s now
 case "$now" in
 	y | Y) echo 'Downloading'; ./ukupgrade ;;
 esac
-
-cat << EOF
-
-
-Thanks for using this script! Hope it helped.
-Give it a star: https://github.com/MarauderXtreme/uktools
-EOF
