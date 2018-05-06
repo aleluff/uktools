@@ -31,7 +31,7 @@ function keepBaseVersion(){
 		if [[ $base = $(echo "$kernel" | cut -d'-' -f1) ]]; then ((nb++)) ;fi
 	done
 
-	unset 'kernels[nb-1]';
+	if [[ $nb > 0 ]]; then unset 'kernels[nb-1]'; fi
 }
 
 function remove() {
@@ -58,7 +58,6 @@ if [ "$(echo $lkv | grep -o generic | head -1)" = "generic" ]
 	else lkve="LowLatency"; nlkv=`echo $lkv | rev | cut -c 12- | rev`
 fi
 
-echo
 echo "---Current version:---"
 echo "Linux Kernel $nlkv $lkve (linux-image-$lkv)"
 
