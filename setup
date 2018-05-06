@@ -20,7 +20,7 @@ if [ -f ./ukupgrade ]; then
 	cd $DIR
 fi
 
-./autoup ./$0 $@
+./autoup $0 $@
 
 
 script="$DIR/ukupgrade"

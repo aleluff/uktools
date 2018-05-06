@@ -16,7 +16,7 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 if [ -f ./uku.cfg ]; then source ./uku.cfg ; else arm=0; fi
 
-./autoup ./$0 $@
+./autoup $0 $@
 
 
 lkv=`uname -r`
