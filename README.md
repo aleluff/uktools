@@ -84,7 +84,7 @@ You can re-run setup script by:
   - 4.16.7 updated kernel from script [to keep]
 
 
-### Any other contributions is welcome (trad, etc)
+### Any other contributions is welcome (trad, display, etc)
 
 ## Author's
 
