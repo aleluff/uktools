@@ -40,7 +40,7 @@ function ex(){
 		exit;
 	elif [[ $1 == 1 ]]; then
 		#Need to reload script;
-		./$1 ${args[@]}
+		./${BASH_ARGV[0]} ${args[@]}
 		exit;
 	elif [[ $gitup == 2 ]]; then
 		echo "Error while git auto-update. Exiting Now!";
