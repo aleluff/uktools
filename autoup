@@ -17,7 +17,6 @@ while [ -h "$SOURCE" ]; do
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-
 function getScriptArgs() {
 
 	args=();
