@@ -59,14 +59,14 @@ if [ "$(echo $lkv | grep -o generic | head -1)" = "generic" ]
 fi
 
 echo
-echo "---Current version:"
+echo "---Current version:---"
 echo "Linux Kernel $nlkv $lkve (linux-image-$lkv)"
 
 if [[ ${#kernels[@]} < 1 ]]; then
     echo "Nothing to remove!" ;
 else
 	echo
-	echo "---Versions to remove:"
+	echo "---Versions to remove:---"
 	printf '%s\n' "${kernels[@]}"
     sleep 2
 	echo
