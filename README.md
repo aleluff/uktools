@@ -17,7 +17,7 @@ and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/ma
 It provide to us remove old linux kernel images/headers in machine for Ubuntu/
 Mint and derivatives. Non-Based
 
-**Auto Update**
+**Auto Update:**
 This repo implement auto-update, which means that it'll automatically get last available github's version when using "normal setup"
 
 -----------------------------------------
