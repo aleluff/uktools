@@ -17,6 +17,8 @@ and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/ma
 It provide to us remove old linux kernel images/headers in machine for Ubuntu/
 Mint and derivatives. Non-Based
 
+This repo implement auto-update, which means that it'll automatically get last available github's version when using "normal setup"
+
 -----------------------------------------
 
 # One-line Install
@@ -82,7 +84,9 @@ You can re-run setup script by:
   - 4.16.5 updated kernel from script [to delete]
   - 4.16.6 updated kernel from script [to keep]
   - 4.16.7 updated kernel from script [to keep]
-
+  
+### AutoUp
+* check if auto-update works well when current repo is outdated by running normal script (setup, ukupgrade, ukpurge) which update to last gihub version
 
 ### Any other contributions is welcome (trad, display, etc)
 
