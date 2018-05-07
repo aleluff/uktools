@@ -67,8 +67,6 @@ case "$day" in
 		cron=0 ;;
 esac
 
-wget
-
 read -p 'Do you want to activate code auto update (if not sure, press y)? (y/n): ' -n 1 -s aup
 case "$day" in
 	y | Y) echo 'Enable'; touch $autoupFile ;;
