@@ -43,7 +43,9 @@ function ex(){
 		echo;
 		pkill -f ${BASH_ARGV[0]};
 	elif [[ $gitup = 2 ]]; then
+		echo
 		echo "Error while git auto-update. Exiting Now!";
+		echo
 		exit;
 	fi
 }

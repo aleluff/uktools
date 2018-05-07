@@ -26,6 +26,7 @@ autoupFile="autoup.on";
 script="$DIR/ukupgrade";
 
 cat << EOF
+
 UkTools Setup
 ------------------------------------------
 
