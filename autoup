@@ -34,15 +34,15 @@ function getScriptArgs() {
 
 function ex(){
 
-	if [[ $1 == 0 ]]; then
+	if [[ $1 = 0 ]]; then
 		#Continue normal execution (not a git repo or up-to-date)
 		exit;
-	elif [[ $1 == 1 ]]; then
+	elif [[ $1 = 1 ]]; then
 		#Need to reload script;
 		./${BASH_ARGV[0]} ${args[@]};
 		echo;
 		pkill -f ${BASH_ARGV[0]};
-	elif [[ $gitup == 2 ]]; then
+	elif [[ $gitup = 2 ]]; then
 		echo "Error while git auto-update. Exiting Now!";
 		exit;
 	fi
@@ -70,6 +70,14 @@ function refresh() {
 	local=$(git rev-parse HEAD);
 	base=$(git rev-parse @{u});
 }
+
+if [[ -f uku.cfg ]]; then
+    source ./uku.cfg ;
+else
+    source ./sample.uku.cfg ;
+fi
+
+if [[ $aup = 0 ]]; then ex 0; fi
 
 #Must be call first of all (in case of `ex 1`)
 getScriptArgs

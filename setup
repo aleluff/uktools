@@ -67,14 +67,23 @@ case "$day" in
 		cron=0 ;;
 esac
 
+read -p 'Do you want to activate code auto update (if not sure, press y)? (y/n): ' -n 1 -s aup
+case "$day" in
+	y | Y) echo 'Enable'; aup=1 ;;
+	*) echo 'Disable'; aup=0 ;;
+esac
+
 if [ -f ./uku.cfg ]; then rm ./uku.cfg; fi
 
 echo "kernelrc=$kernelrc" >> uku.cfg;
 echo "kernelmode=$kernelmode" >> uku.cfg;
 echo "arm=$arm" >> uku.cfg;
 echo "cron=$cron" >> uku.cfg;
+echo "aup=$aup" >> uku.cfg;
 
 read -p 'Setup complete. Update the kernel right now? (y/n): ' -n 1 -s now
 case "$now" in
 	y | Y) echo 'Downloading'; ./ukupgrade ;;
 esac
+
+echo
