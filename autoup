@@ -71,13 +71,8 @@ function refresh() {
 	base=$(git rev-parse @{u});
 }
 
-if [[ -f uku.cfg ]]; then
-    source ./uku.cfg ;
-else
-    source ./sample.uku.cfg ;
-fi
-
-if [[ $aup = 0 ]]; then ex 0; fi
+#Test if code auto update is activated
+if [[ ! -f ./autoup.on ]]; then ex 0; fi
 
 #Must be call first of all (in case of `ex 1`)
 getScriptArgs

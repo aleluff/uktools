@@ -21,12 +21,7 @@ Mint and derivatives. Non-Based
 [Disable by default], updatable in setup<br>
 This repo implement auto-update, which means that it'll automatically get last available github's version when using "normal setup"
 
-You can implement this feature in your project by downloading autoup script and call it (./autoup $0 $@) in each of your callable script<br>
-It doesn't support subrepo/submodule for now (external help is welcome)
-
-* Disclaimer
-I know it can be a (big backdoor), that is why it's disable by default and from now, only signed commit will be accepted
-
+You can implement this feature in your project with [https://github.com/usbkey9/autoup/](https://github.com/usbkey9/autoup/)
 
 -----------------------------------------
 
