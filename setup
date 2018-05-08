@@ -69,7 +69,7 @@ case "$day" in
 esac
 
 read -p 'Do you want to activate code auto update (if not sure, press y)? (y/n): ' -n 1 -s aup
-case "$day" in
+case "$aup" in
 	y | Y) echo 'Enable'; touch $autoupFile ;;
 	*) echo 'Disable'; rm $autoupFile ;;
 esac
