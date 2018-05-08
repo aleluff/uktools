@@ -22,7 +22,7 @@ fi
 
 ./autoup $0 $@
 
-autoupFile="autoup.on";
+autoupFile="./autoup.on";
 script="$DIR/ukupgrade";
 
 cat << EOF
@@ -71,7 +71,7 @@ esac
 read -p 'Do you want to activate code auto update (if not sure, press y)? (y/n): ' -n 1 -s aup
 case "$aup" in
 	y | Y) echo 'Enable'; touch $autoupFile ;;
-	*) echo 'Disable'; rm $autoupFile >> /dev/null 2>&1 ;;
+	*) echo 'Disable'; if [ -f $autoupFile ]; then rm $autoupFile; fi ;;
 esac
 
 if [ -f ./uku.cfg ]; then rm ./uku.cfg; fi
