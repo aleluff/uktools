@@ -34,7 +34,7 @@ sudo wget https://github.com/usbkey9/uktools/archive/master.tar.gz && \
 sudo tar -xvf master.tar.gz && \
 sudo rm -fr master.tar.gz && \
 cd uktools-master && \
-sudo chown ${USER:=$(/usr/bin/id -run)}:$USER ../uktools-master && \
+sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 ./ukupgrade --simple
 ```
 
