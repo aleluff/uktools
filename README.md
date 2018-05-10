@@ -74,17 +74,17 @@ cat /var/log/uku.log
 ```
 
 ## TODO (Tests)
-#### Qemu/KVM are the tools for testing
+### Qemu/KVM are the tools for testing
 
 * Test MakeFile
 
-### Ukuprage
+#### Ukuprage
 * check install of each kernel's versions
 * check message of the day with ssh connection just after install
 * check call parameters
 * check "no need to upgrade" by running script two times in a row
 
-### Ukpurge
+#### Ukpurge
 * check if script purge right versions and keep only 3 ones
 * check if script keep the very last version of base kernel
 * eg with Ubuntu 18.04 : 
@@ -94,7 +94,7 @@ cat /var/log/uku.log
   - 4.16.6 updated kernel from script [to keep]
   - 4.16.7 updated kernel from script [to keep]
   
-### AutoUp
+#### AutoUp
 * check if auto-update works well when current repo is outdated by running normal script (setup, ukupgrade, ukpurge) which update to last gihub version
 
 ### Any other contributions is welcome (trad, display, etc)
