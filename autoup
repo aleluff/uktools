@@ -71,7 +71,7 @@ function refresh() {
 }
 
 #Test if code auto update is activated
-if [[ ! -f ./autoup.on ]]; then ex 0; fi
+if [[ ! -f ./autoup.on ]]; then normalEx; fi
 
 if [[ ! -f ./autoup.debug ]]; then checkTimeStamp; fi
 
