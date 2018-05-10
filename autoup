@@ -17,35 +17,34 @@ while [ -h "$SOURCE" ]; do
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-function getScriptArgs() {
+if [[ -z "$1" ]]; then
+	echo "You have to pass caller script id as parameter (./autoup \$$)";
+	exit;
+fi
 
-	args=();
+ppid=$1;
 
-	for ((i=${#BASH_ARGV[@]}-2; i >= 0; i--))
-	do
-		args+=(${BASH_ARGV[$i]});
-	done
+#Continue normal execution (not a git repo or up-to-date)
+function normalEx(){
 
-	if [[ ${#BASH_ARGV[@]} < 1 ]]; then
-		echo "You have to pass caller script name as parameter (./autoup \$0)";
-		exit;
-	fi
+	exit;
 }
 
-function ex(){
+#Update Success, need to reload script
+function reloadEx(){
 
-	if [[ $1 = 0 ]]; then
-		#Continue normal execution (not a git repo or up-to-date)
-		exit;
-	elif [[ $1 = 1 ]]; then
-		#Need to reload script;
-		${BASH_ARGV[0]} ${args[@]};
-		echo;
-		pkill -f ${BASH_ARGV[0]};
-	elif [[ $gitup = 2 ]]; then
-		echo "Error while git auto-update. Exiting Now!";
-		exit;
-	fi
+	cmdl=$(cat -v /proc/$ppid/cmdline | sed 's/\^@/\ /g' && echo)
+
+	$cmdl;
+	echo;
+	kill $ppid;
+}
+
+#All is in the name
+function errorEx(){
+
+	echo "Error while git auto-update. Exiting Now!";
+	exit;
 }
 
 function checkTimeStamp() {
@@ -58,7 +57,7 @@ function checkTimeStamp() {
 
 	if [[ $fileTs > $ts ]]; then
 		#Consider as up-to-date (useful when call multiple time by other script)
-		ex 0;
+		normalEx
 	else
 		echo $ts > $file
 	fi
@@ -74,14 +73,11 @@ function refresh() {
 #Test if code auto update is activated
 if [[ ! -f ./autoup.on ]]; then ex 0; fi
 
-#Must be call first of all (in case of `ex 1`)
-getScriptArgs
-
 if [[ ! -f ./autoup.debug ]]; then checkTimeStamp; fi
 
 #Test if it's a valid git repo
 if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then
-	ex 0;
+	normalEx
 fi
 
 refresh
@@ -93,14 +89,14 @@ if [ ! $local = $base ]; then
 	refresh
 	if [ ! $local = $base ]; then
 		#ERROR: Repo still outdated
-		ex 2;
+		errorEx
 	else
 		echo
 		echo "Code Successfully Updated";
 		#Repo successfully updated
-		ex 1;
+		reloadEx
 	fi
 fi
 
 #Repo up-to-date
-ex 0;
+normalEx
