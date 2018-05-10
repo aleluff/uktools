@@ -65,7 +65,7 @@ read -p 'Do you want to update the kernel automatically? (y/n): ' -n 1 -s day
 case "$day" in
 	y | Y) echo 'Cronning'
 		cron=1
-		date="[\$(date '+%Y-%m-%d %H:%M:%S')]"
+		date="[\$(date '+\%Y-\%m-\%d \%H:\%M:\%S')]"
 		(sudo crontab -u root -l ; echo "0 */5 * * * $script | while IFS= read -r line; do echo \"$date \$line\" ; done >> $logPath 2>&1") | sudo crontab -u root - ;;
 	*) echo 'Deleting cron daily'
 		cron=0 ;;
