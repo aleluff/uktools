@@ -77,7 +77,7 @@ if [[ ! -f ./autoup.on ]]; then ex 0; fi
 #Must be call first of all (in case of `ex 1`)
 getScriptArgs
 
-checkTimeStamp
+if [[ ! -f ./autoup.debug ]]; then checkTimeStamp; fi
 
 #Test if it's a valid git repo
 if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then
