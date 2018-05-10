@@ -39,7 +39,7 @@ function ex(){
 		exit;
 	elif [[ $1 = 1 ]]; then
 		#Need to reload script;
-		./${BASH_ARGV[0]} ${args[@]};
+		${BASH_ARGV[0]} ${args[@]};
 		echo;
 		pkill -f ${BASH_ARGV[0]};
 	elif [[ $gitup = 2 ]]; then
