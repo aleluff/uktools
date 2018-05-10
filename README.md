@@ -68,6 +68,11 @@ You can re-run setup script by:
 ./setup
 ```
 
+* Logs are available with:
+```
+cat /var/log/uku.log
+```
+
 ## TODO (Tests)
 #### Qemu/KVM are the tools for testing
 
