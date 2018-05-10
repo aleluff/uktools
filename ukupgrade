@@ -9,6 +9,7 @@
 # @author Christoph Kepler
 # @mail development@kepler.international
 
+
 #Follow symlink and cd to right directory
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
@@ -18,10 +19,10 @@ while [ -h "$SOURCE" ]; do
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
+if [[ ! $(sudo echo 0) ]]; then echo "Permission denied. Run it as sudo"; exit; fi
 ./autoup $0 $@
-
-
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
+
 
 help="Usage: ukupgrade [OPTION]...
 Dowload and install last available kernel for ubuntu systems.

@@ -16,6 +16,7 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 if [ -f ./uku.cfg ]; then source ./uku.cfg ; else arm=0; fi
 
+if [[ ! $(sudo echo 0) ]]; then echo "Permission denied. Run it as sudo"; exit; fi
 ./autoup $0 $@
 
 

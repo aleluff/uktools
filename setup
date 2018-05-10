@@ -9,6 +9,7 @@
 # @author Usb Key
 # @mail usbkey9@gmail.com
 
+
 if [ -f ./ukupgrade ]; then
 	SOURCE="${BASH_SOURCE[0]}"
 	while [ -h "$SOURCE" ]; do
@@ -20,7 +21,9 @@ if [ -f ./ukupgrade ]; then
 	cd $DIR
 fi
 
+if [[ ! $(sudo echo 0) ]]; then echo "Permission denied. Run it as sudo"; exit; fi
 ./autoup $0 $@
+
 
 autoupFile="./autoup.on";
 script="$DIR/ukupgrade";
