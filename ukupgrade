@@ -19,7 +19,6 @@ while [ -h "$SOURCE" ]; do
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-if [[ ! $(sudo echo 0) ]]; then echo "Permission denied. Run it as sudo"; exit; fi
 ./autoup $0 $@
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
 
@@ -142,6 +141,8 @@ if echo "$locVersion" | grep -Fxq "$reqVersion"; then
 	echo 'Kernel up to date. Finishing'
 	exit
 fi
+
+if [[ ! $(sudo echo 0) ]]; then echo "Permission denied. Require sudo access"; exit; fi
 
 cat << EOF
 

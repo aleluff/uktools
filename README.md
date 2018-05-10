@@ -49,7 +49,7 @@ git clone https://github.com/usbkey9/uktools && cd uktools
 * Run the Makefile
 
 ```
-sudo make
+make
 ```
 It'll install necessary files and run setup
 
