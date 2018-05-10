@@ -142,7 +142,7 @@ if echo "$locVersion" | grep -Fxq "$reqVersion"; then
 	exit
 fi
 
-if [[ ! $(sudo echo 0) ]]; then echo "Permission denied. Require sudo access"; exit; fi
+if [[ ! $(sudo echo 0) ]]; then fatalError "Permission denied. Require sudo access"; fi
 
 cat << EOF
 
