@@ -86,14 +86,14 @@ function downloadMulti() {
 function notifyUpdate() {
 
 	if [[ -x "$(command -v notify-send)" ]]; then
-		user=$(w -h | awk '{print $1}')
+		user=$(w -h | awk '{print $1}' | head -n 1)
 		userId=$(id -u $user)
 		export DISPLAY=:0.0
 		export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$userId/bus
 		su $user -c "notify-send 'Kernel Updated' 'System restart required'"
-	else
-		touch /tmp/ukupgrade.nr
 	fi
+
+	touch /tmp/ukupgrade.nr
 }
 
 cat << EOF
