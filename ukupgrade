@@ -71,6 +71,11 @@ function download() {
 function downloadMulti() {
 
 	local packages=($(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$3" | awk '{print $2}' | sort | uniq));
+
+	if [[ ${#packages[@]} < 1 ]]; then
+		fatalError "Kernel package missing. Please wait until next release";
+	fi;
+
 	for package in "${packages[@]}"
 	do
 		download $package
@@ -144,28 +149,13 @@ fi
 
 if [[ ! $(sudo echo 0) ]]; then fatalError "Permission denied. Require sudo access"; fi
 
-cat << EOF
-
-Cleaning old downloads in /tmp
-EOF
 cleanTmp
 
-cat << EOF
-
-Downloading the kernel's components...
-EOF
+#kernel's components
 downloadMulti "$kernelmode" "" "$arch"
 
-cat << EOF
-
-Downloading the shared kernel header...
-EOF
+#Kernel header
 downloadMulti "all" "headers" ""
-
-cat << EOF
-
-Installing Kernel and Headers...
-EOF
 
 while fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
 	sleep 0.5
