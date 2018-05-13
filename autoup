@@ -65,7 +65,7 @@ function checkTimeStamp() {
 
 function refresh() {
 
-	git fetch -aq;
+	su $userName -c "git fetch -aq"
 	local=$(git rev-parse HEAD);
 	base=$(git rev-parse @{u});
 }
@@ -80,12 +80,14 @@ if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then
 	normalEx
 fi
 
+userName=$(stat -c '%U' $0)
+
 refresh
 
 if [ ! $local = $base ]; then
 	echo
 	echo "Code Updating...";
-	git pull -q
+	su $userName -c "git pull -q"
 	refresh
 	if [ ! $local = $base ]; then
 		#ERROR: Repo still outdated
