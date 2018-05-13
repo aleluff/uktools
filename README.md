@@ -57,6 +57,7 @@ make
 ```
 It'll install necessary files and run setup
 
+### Optionnal
 
 * Now you can call the script whereever you are
 
@@ -65,19 +66,17 @@ do-kernel-upgrade
 do-kernel-purge
 ```
 
-* Optionnal
-
-You can re-run setup script by:
+* You can re-run setup script by
 ```
 ./setup
 ```
 
-* Logs are available with:
+* Logs are available with
 ```
 cat /var/log/uku.log
 ```
 
-* Uninstall (cron job included):
+* Uninstall (cron job included)
 ```
 make uninstall
 ```
