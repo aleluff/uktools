@@ -150,6 +150,12 @@ fi
 
 if [[ ! $(sudo echo 0) ]]; then fatalError "Permission denied. Require sudo access"; fi
 
+cat << EOF
+
+Downloading Linux Kernel $reqVersion
+
+EOF
+
 cleanTmp
 
 #kernel's components
