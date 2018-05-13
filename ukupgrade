@@ -36,9 +36,9 @@ Settings can be saved if no options provided or by running setup script
 Examples:
   ukupgrade --simple	Download, install the last kernel using defaults settings
   ukupgrade -p		Use default settings but uninstall old kernels
-"
-arch=$(dpkg --print-architecture)
-trys=0
+";
+arch=$(dpkg --print-architecture);
+trys=0;
 
 function cleanTmp() {
 	sudo rm -rf /tmp/linux-*.deb
