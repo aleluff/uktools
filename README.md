@@ -18,7 +18,7 @@ It provide to us remove old linux kernel images/headers in machine for Ubuntu/
 Mint and derivatives. Non-Based
 
 **Auto Run**:
-If you set auto run in setup, upgrade will be do automatically by cronjob each 5hours.
+If you set auto run in setup, upgrade will be do automatically by cronjob each 2hours.
 
 <br><br>
 **Code Auto Update:**
