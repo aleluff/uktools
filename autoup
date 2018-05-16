@@ -63,25 +63,22 @@ function checkTimeStamp() {
 	fi
 }
 
+function execCmd() {
+
+	currUser=$(whoami);
+
+	if [[ $currUser = $gitOwner ]]; then
+		$1;
+	else
+		echo "User for Git Update: $gitOwner";
+		su $gitOwner -c $1;
+	fi
+}
 function refresh() {
 
-	su $userName -c "git fetch -aq"
+	execCmd "git fetch -aq";
 	local=$(git rev-parse HEAD);
 	base=$(git rev-parse @{u});
-}
-
-function checkPass() {
-
-	echo "User: $userName";
-	try=0;
-	test=$(su $userName -c "echo 1");
-
-	while [[ ! $test = 1 ]] && [[ $try < 2 ]]; do
-		((try++))
-	   test=$(su $userName -c "echo 1");
-	done
-
-	if [[ ! $test = 1 ]]; then normalEx; fi
 }
 
 #Test if code auto update is activated
@@ -94,16 +91,14 @@ if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then
 	normalEx
 fi
 
-userName=$(stat -c '%U' $0)
-
-checkPass
+gitOwner=$(stat -c '%U' $0)
 
 refresh
 
 if [ ! $local = $base ]; then
 	echo
 	echo "Code Updating...";
-	su $userName -c "git pull -q"
+	execCmd "git pull -q";
 	refresh
 	if [ ! $local = $base ]; then
 		#ERROR: Repo still outdated
