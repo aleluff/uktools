@@ -9,7 +9,6 @@
 # @author Usb Key
 # @mail usbkey9@gmail.com
 
-
 if [ -f ./ukupgrade ]; then
 	SOURCE="${BASH_SOURCE[0]}"
 	while [ -h "$SOURCE" ]; do
