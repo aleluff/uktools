@@ -61,7 +61,10 @@ function download() {
 
 	if [[ ! "${checksums[@]}" =~ "$(shasum /tmp/$filename | awk '{ print $1 }')" ]]; then
 		echo "Checksum failed for $filename !!!";
+
+		((trys++))
 		if [[ $trys > 3 ]]; then fatalError "Too many checksums fails !!! Exiting"; fi
+
 		echo "Redownloading ...";
 		download "$@";
 	else
