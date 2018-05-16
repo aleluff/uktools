@@ -33,7 +33,7 @@ function normalEx(){
 #Update Success, need to reload script
 function reloadEx(){
 
-	cmdl=$(cat -v /proc/$ppid/cmdline | sed 's/\^@/\ /g' && echo)
+	local cmdl=$(cat -v /proc/$ppid/cmdline | sed 's/\^@/\ /g' && echo)
 
 	$cmdl;
 	echo;
@@ -65,9 +65,7 @@ function checkTimeStamp() {
 
 function execCmd() {
 
-	currUser=$(whoami);
-
-	if [[ $currUser = $gitOwner ]]; then
+	if [[ "$(whoami)" = $gitOwner ]]; then
 		$1;
 	else
 		echo "User for Git Update: $gitOwner";
@@ -91,7 +89,7 @@ if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then
 	normalEx
 fi
 
-gitOwner=$(stat -c '%U' $0)
+gitOwner=$(stat -c '%U' $(basename $0));
 
 refresh
 
