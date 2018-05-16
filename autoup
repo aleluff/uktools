@@ -70,6 +70,20 @@ function refresh() {
 	base=$(git rev-parse @{u});
 }
 
+function checkPass() {
+
+	echo "User: $userName";
+	try=0;
+	test=$(su $userName -c "echo 1");
+
+	while [[ ! $test = 1 ]] && [[ $try < 2 ]]; do
+		((try++))
+	   test=$(su $userName -c "echo 1");
+	done
+
+	if [[ ! $test = 1 ]]; then normalEx; fi
+}
+
 #Test if code auto update is activated
 if [[ ! -f ./autoup.on ]]; then normalEx; fi
 
@@ -81,6 +95,8 @@ if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then
 fi
 
 userName=$(stat -c '%U' $0)
+
+checkPass
 
 refresh
 
