@@ -22,7 +22,7 @@ If you set auto run in setup, upgrade will be do automatically by cronjob each 2
 
 <br><br>
 **Code Auto Update:**
-[Disable by default], updatable in setup<br>
+[Disable by default], can be enabled/disabled in setup<br>
 This repo implement auto-update, which means that it'll automatically get last available github's version when using "normal setup"
 
 You can implement this feature in your project with [https://github.com/usbkey9/autoup/](https://github.com/usbkey9/autoup/)
