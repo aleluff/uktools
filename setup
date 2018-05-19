@@ -30,8 +30,12 @@ Create config file based on your chooses
   -rcron,			Remove cron line
 ";
 
+function deleteCron() {
+	sudo crontab -u root -l | grep -v "$logPath" | sudo crontab -u root -
+}
+
 if [[ "$1" = "-rcron" ]]; then
-	sudo crontab -u root -l | grep -v $logPath | sudo crontab -u root -
+	deleteCron;
 	exit;
 fi
 
@@ -63,7 +67,7 @@ case "$arm" in
 	*)		echo 'Manual Remove'; arm=0 ;;
 esac
 
-sudo crontab -u root -l | grep -v $logPath | sudo crontab -u root -
+deleteCron;
 
 read -p 'Do you want to update the kernel automatically? (y/n): ' -n 1 -s day
 case "$day" in

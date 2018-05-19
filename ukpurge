@@ -17,9 +17,6 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 ./autoup $$
 
 
-lkv=$(uname -r)
-kernels=($(dpkg --list | grep -E "linux-headers" | grep -v "generic" | awk '{ print $2 }' | cut -d'-' -f3- | sort -uV | head -n -2))
-
 function keepBaseVersion(){
 	local nb=0
 	local base=$(echo "${kernels[0]}" | cut -d'-' -f1)
@@ -45,6 +42,9 @@ else
 	arm=0;
 fi
 
+current=$(uname -r | cut -d'-' -f-2);
+kernels=($(dpkg -l | grep "linux-headers" | grep -v "generic" | awk '{ print $2 }' | cut -d'-' -f3- | sort -uV | head -n -2 | grep -v "$current"));
+
 keepBaseVersion
 
 echo "
@@ -54,22 +54,14 @@ UkTools Purge
 This script will only keep three versions: the first and the last two, others will be purge
 ------------------------------------------
 
-";
-
-if [[ "$(echo $lkv | grep -o generic | head -1)" = "generic" ]]; then
-	lkve="Generic"; nlkv=$(echo $lkv | rev | cut -c 9- | rev)
-else
-	lkve="LowLatency"; nlkv=$(echo $lkv | rev | cut -c 12- | rev)
-fi
-
-echo "---Current version:---
-Linux Kernel $nlkv $lkve (linux-image-$lkv)
+------------ Current Version -------------
+Linux Kernel $current $kernelmode ($(uname -r))
 ";
 
 if [[ ${#kernels[@]} < 1 ]]; then
 	echo "Nothing to remove!" ;
 else
-	echo "---Versions to remove:---"
+	echo "----------- Versions to Remove -----------"
 	printf '%s\n' "${kernels[@]}"
 	sleep 2
 	echo
