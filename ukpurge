@@ -7,19 +7,17 @@
 
 #Follow symlink and cd to right directory
 SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do
+while [[ -h "$SOURCE" ]]; do
 	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 	SOURCE="$(readlink "$SOURCE")"
 	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-if [ -f ./uku.cfg ]; then source ./uku.cfg ; else arm=0; fi
-
 ./autoup $$
 
 
-lkv=`uname -r`
+lkv=$(uname -r)
 kernels=($(dpkg --list | grep -E "linux-headers" | grep -v "generic" | awk '{ print $2 }' | cut -d'-' -f3- | sort -uV | head -n -2))
 
 function keepBaseVersion(){
@@ -41,45 +39,50 @@ function remove() {
 	done
 }
 
+if [[ -f ./uku.cfg ]]; then
+	source ./uku.cfg;
+else
+	arm=0;
+fi
+
 keepBaseVersion
 
-cat << EOF
-
+echo "
 UkTools Purge
 ------------------------------------------
 
 This script will only keep three versions: the first and the last two, others will be purge
 ------------------------------------------
 
+";
 
-EOF
-
-if [ "$(echo $lkv | grep -o generic | head -1)" = "generic" ]
-	then lkve="Generic"; nlkv=`echo $lkv | rev | cut -c 9- | rev`
-	else lkve="LowLatency"; nlkv=`echo $lkv | rev | cut -c 12- | rev`
+if [[ "$(echo $lkv | grep -o generic | head -1)" = "generic" ]]; then
+	lkve="Generic"; nlkv=$(echo $lkv | rev | cut -c 9- | rev)
+else
+	lkve="LowLatency"; nlkv=$(echo $lkv | rev | cut -c 12- | rev)
 fi
 
-echo "---Current version:---"
-echo "Linux Kernel $nlkv $lkve (linux-image-$lkv)"
+echo "---Current version:---
+Linux Kernel $nlkv $lkve (linux-image-$lkv)
+";
 
 if [[ ${#kernels[@]} < 1 ]]; then
-    echo "Nothing to remove!" ;
+	echo "Nothing to remove!" ;
 else
-	echo
 	echo "---Versions to remove:---"
 	printf '%s\n' "${kernels[@]}"
-    sleep 2
+	sleep 2
 	echo
 
-	if [ $arm = 0 ];
-	then
+	if [[ $arm = 0 ]]; then
 		read -p "---Do you want to remove the old kernels/headers versions? (Y/n): " -n 1 -t 10 -s rr
 		case "$rr" in
-			Y) echo "Yes, remove this now!";
-			sleep 2;
-			remove ;;
-			*) echo "No, thanks!" ;;
-		esac ;
-	else remove ;
+			Y)	echo "Yes, remove this now!";
+				sleep 2;
+				remove ;;
+			*)	echo "No, thanks!" ;;
+		esac;
+	else
+		remove;
 	fi
 fi

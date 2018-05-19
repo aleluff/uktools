@@ -10,12 +10,13 @@
 
 #Follow symlink and cd to right directory
 SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do
+while [[ -h "$SOURCE" ]]; do
 	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 	SOURCE="$(readlink "$SOURCE")"
 	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
 
 if [[ -z "$1" ]]; then
 	echo "You have to pass caller script id as parameter (./autoup \$$)";
@@ -82,23 +83,22 @@ function refresh() {
 #Test if code auto update is activated
 if [[ ! -f ./autoup.on ]]; then normalEx; fi
 
+#If debug, always update
 if [[ ! -f ./autoup.debug ]]; then checkTimeStamp; fi
 
 #Test if it's a valid git repo
-if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then
-	normalEx
-fi
+if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then normalEx; fi
 
 gitOwner=$(stat -c '%U' $(basename $0));
 
 refresh
 
-if [ ! $local = $base ]; then
+if [[ ! $local = $base ]]; then
 	echo
 	echo "Code Updating...";
 	execCmd "git pull -q";
 	refresh
-	if [ ! $local = $base ]; then
+	if [[ ! $local = $base ]]; then
 		#ERROR: Repo still outdated
 		errorEx
 	else

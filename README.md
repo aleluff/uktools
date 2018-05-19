@@ -5,7 +5,7 @@ UKTools - ukupgrade/ukpurge
 
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
 
-**ukupgrade** stands for "*Ubuntu Kernel Upgrade*"   
+**ukupgrade** stands for "*Ubuntu Kernel Upgrade*"
 
 **Purpose**:
 It provides us to upgrade linux kernel to latest stable version for Ubuntu/Mint
@@ -96,12 +96,12 @@ make uninstall
 * check if script purge right versions and keep only 3 ones
 * check if script keep the very last version of base kernel
 * eg with Ubuntu 18.04 : 
-  - 4.15.0-20.21 base kernel [to delete]
-  - 4.15.0.20.23 updated base kernel [to keep]
-  - 4.16.5 updated kernel from script [to delete]
-  - 4.16.6 updated kernel from script [to keep]
-  - 4.16.7 updated kernel from script [to keep]
-  
+	- 4.15.0-20.21 base kernel [to delete]
+	- 4.15.0.20.23 updated base kernel [to keep]
+	- 4.16.5 updated kernel from script [to delete]
+	- 4.16.6 updated kernel from script [to keep]
+	- 4.16.7 updated kernel from script [to keep]
+
 #### AutoUp
 * check if auto-update works well when current repo is outdated by running normal script (setup, ukupgrade, ukpurge) which update to last gihub version
 

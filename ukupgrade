@@ -12,7 +12,7 @@
 
 #Follow symlink and cd to right directory
 SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do
+while [[ -h "$SOURCE" ]]; do
 	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 	SOURCE="$(readlink "$SOURCE")"
 	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
@@ -23,6 +23,8 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
 
 
+arch=$(dpkg --print-architecture);
+trys=0;
 help="Usage: ukupgrade [OPTION]...
 Dowload and install last available kernel for ubuntu systems.
 Settings can be saved if no options provided or by running setup script
@@ -37,16 +39,14 @@ Examples:
   ukupgrade --simple	Download, install the last kernel using defaults settings
   ukupgrade -p		Use default settings but uninstall old kernels
 ";
-arch=$(dpkg --print-architecture);
-trys=0;
 
 function cleanTmp() {
 	sudo rm -rf /tmp/linux-*.deb
 }
 
 function fatalError() {
-	local red=`tput setaf 1`
-	local reset=`tput sgr0`
+	local red=$(tput setaf 1)
+	local reset=$(tput sgr0)
 	echo "${red}$1${reset}"
 	cleanTmp
 	exit;
@@ -57,7 +57,7 @@ function download() {
 	local filename=$(basename "$package");
 	wget -q -P /tmp $package
 
-	if [ $? == "1" ]; then fatalError "Download of $package failed!"; fi
+	if [[ "$?" = "1" ]]; then fatalError "Download of $package failed!"; fi
 
 	if [[ ! "${checksums[@]}" =~ "$(shasum /tmp/$filename | awk '{ print $1 }')" ]]; then
 		echo "Checksum failed for $filename !!!";
@@ -99,21 +99,20 @@ function notifyUpdate() {
 	touch /tmp/ukupgrade.nr
 }
 
-cat << EOF
-
+echo "
 UkTools Upgrade
 ------------------------------------------
 
-EOF
+";
 
 wget -q --spider http://google.com
-if [[ ! $? -eq 0 ]]; then fatalError "No network available !!! Exiting"; fi
+if [[ ! "$?" = "0" ]]; then fatalError "No network available !!! Exiting"; fi
 
-if [ "$1" = "--simple" ]; then
+if [[ "$1" = "--simple" ]]; then
 	source ./sample.uku.cfg ;
 else
-	if [ $# -eq 0 ]; then
-		if [ ! -f ./uku.cfg ]; then ./setup ; fi
+	if [[ "$#" = "0" ]]; then
+		if [[ ! -f "./uku.cfg" ]]; then ./setup ; fi
 		source ./uku.cfg ;
 	else
 		source ./sample.uku.cfg ;
@@ -153,10 +152,10 @@ fi
 
 if [[ ! $(sudo echo 0) ]]; then fatalError "Permission denied. Require sudo access"; fi
 
-cat << EOF
+echo "
 Downloading Linux Kernel $reqVersion
 
-EOF
+";
 
 cleanTmp
 
@@ -176,14 +175,14 @@ if [[ $? > 0 ]]; then fatalError "Installation failed !!! Exiting"; fi
 cleanTmp
 notifyUpdate
 
-cat << EOF
+echo "
 
-Finished.
-EOF
+Upgrade Finished
+";
 
-if [ $arm = 1 ]; then ./ukpurge ; fi
+if [[ $arm = 1 ]]; then ./ukpurge ; fi
 
-if [ $cron = 0 ]; then
+if [[ $cron = 0 ]]; then
 	read -p 'Do you want to reboot system now? (y/n)(10s to No): ' -n 1 -t 10 -s rs
 	case "$rs" in
 		y | Y)
