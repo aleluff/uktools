@@ -7,25 +7,28 @@ UKTools - ukupgrade/ukpurge
 
 **ukupgrade** stands for "*Ubuntu Kernel Upgrade*"
 
-**Purpose**:
+**Purpose**
 It provides us to upgrade linux kernel to latest stable version for Ubuntu/Mint
 and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
 
 **ukpurge** stands for "*Ubuntu Kernel Purge*"
 
-**Purpose**:
+**Purpose**
 It provide to us remove old linux kernel images/headers in machine for Ubuntu/
 Mint and derivatives. Non-Based
 
-**Auto Run**:
+**Auto Run**
 If you set auto run in setup, upgrade will be do automatically by cronjob each 2hours.
 
 <br><br>
-**Code Auto Update:**
+**Code Auto Update**
 [Disable by default], can be enabled/disabled in setup<br>
 This repo implement auto-update, which means that it'll automatically get last available github's version when using "normal setup"
 
 You can implement this feature in your project with [https://github.com/usbkey9/autoup/](https://github.com/usbkey9/autoup/)
+
+**Disclaimer**
+Linux Tools (perf, usb over ether, kbuild) are not available with lastest kernel's versions so, if you need them, use regular kernels
 
 -----------------------------------------
 
@@ -81,8 +84,8 @@ cat /var/log/uku.log
 make uninstall
 ```
 
-## TODO (Tests)
-### Qemu/KVM are the tools for testing
+## TODO (Bash Unit Test)
+### Qemu/KVM are the container tools for testing
 
 * Test MakeFile
 
