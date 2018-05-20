@@ -69,7 +69,7 @@ function execCmd() {
 		$1;
 	else
 		echo "User for Git Update: $gitOwner";
-		su $gitOwner -c $1;
+		su $gitOwner -c "$1";
 	fi
 }
 function refresh() {
