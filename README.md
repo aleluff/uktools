@@ -5,17 +5,13 @@ UKTools - ukupgrade/ukpurge
 
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
 
-**ukupgrade** stands for "*Ubuntu Kernel Upgrade*"
+**UkUpgrade** stands for "Ubuntu Kernel Upgrade"
+*It provides us to upgrade linux kernel to latest stable version for Ubuntu/Mint
+and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)*
 
-**Purpose**
-It provides us to upgrade linux kernel to latest stable version for Ubuntu/Mint
-and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
-
-**ukpurge** stands for "*Ubuntu Kernel Purge*"
-
-**Purpose**
-It provide to us remove old linux kernel images/headers in machine for Ubuntu/
-Mint and derivatives. Non-Based
+**ukpurge** stands for "Ubuntu Kernel Purge"
+*It provide to us remove old linux kernel images/headers in machine for Ubuntu/
+Mint and derivatives. Non-Based*
 
 **Auto Run**
 If you set auto run in setup, upgrade will be do automatically by cronjob each 2hours.
