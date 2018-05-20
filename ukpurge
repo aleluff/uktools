@@ -54,7 +54,7 @@ displayTitle "This script will only keep three versions: the first and the last 
 
 echo "
 ------------ Current Version -------------
-Linux Kernel $current $kernelmode ($(uname -r))
+Linux Kernel $current $(uname -r | cut -d'-' -f3) ($(uname -r))
 ";
 
 if [[ ${#kernels[@]} < 1 ]]; then
