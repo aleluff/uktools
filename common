@@ -13,7 +13,7 @@ splPath="./sample.uku.cfg";
 
 function execCmd() {
 
-	cmd=$1;
+	local cmd=$1;
 	if [[ ! $($cmd &>> /dev/null && echo 0) = 0 ]]; then
 		return 1;
 	else
