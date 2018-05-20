@@ -26,6 +26,8 @@ uninstall:
 	@sudo rm -f $(MY_DIR)/uku.cfg
 	@echo Removing cron line
 	@sudo $(MY_DIR)/setup -rcron
+	@echo Disable autoup
+	@sudo rm $(MY_DIR)/autoup.on
 
 .PHONY: upgrade
 upgrade: uninstall install
