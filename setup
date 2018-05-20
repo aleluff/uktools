@@ -25,7 +25,7 @@ autoupFile="./autoup.on";
 help="Usage: setup [OPTION]...
 Create config file based on your chooses
 
-  -rcron,			Remove cron line
+  -unin,			Uninstall (delete cronjob)
 ";
 
 function deleteCron() {
