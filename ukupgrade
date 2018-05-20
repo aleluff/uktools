@@ -104,16 +104,14 @@ else
 
 		while getopts 'rlph' flag; do
 			case "${flag}" in
-				r) kernelrc=1 ;;
-				l) kernelmode="lowlatency" ;;
-				p) arm=1 ;;
-				h) 	echo "${help}";
-					exit;
-					;;
-				*) 	echo "Unexpected option ${flag}";
+				r)	kernelrc=1 ;;
+				l)	kernelmode="lowlatency" ;;
+				p)	arm=1 ;;
+				h)	echo "${help}";
+					exit ;;
+				*)	echo "Unexpected option ${flag}";
 					echo "${help}";
-					exit;
-					;;
+					exit ;;
 			esac
 		done
 	fi ;
