@@ -14,7 +14,7 @@ while [[ -h "$SOURCE" ]]; do
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-./autoup $$
+source ./common $$
 
 
 function keepBaseVersion(){
@@ -32,12 +32,14 @@ function keepBaseVersion(){
 function remove() {
 	for kernel in "${kernels[@]}"
 	do
-		dpkg --list | awk '{ print $2 }' | grep "$kernel" | xargs sudo apt-get -y purge
+		if ! execCmd "dpkg -l | awk '{ print $2 }' | grep "$kernel" | xargs sudo apt-get -y purge"; then
+			fatalError "Error while removing $kernel. Aborting!!!";
+		fi
 	done
 }
 
-if [[ -f ./uku.cfg ]]; then
-	source ./uku.cfg;
+if [[ -f $cfgPath ]]; then
+	source $cfgPath;
 else
 	arm=0;
 fi
@@ -47,13 +49,10 @@ kernels=($(dpkg -l | grep "linux-headers" | grep -v "generic" | awk '{ print $2 
 
 keepBaseVersion
 
+displayTitle "UkTools Purge";
+displayTitle "This script will only keep three versions: the first and the last two, others will be purge";
+
 echo "
-UkTools Purge
-------------------------------------------
-
-This script will only keep three versions: the first and the last two, others will be purge
-------------------------------------------
-
 ------------ Current Version -------------
 Linux Kernel $current $kernelmode ($(uname -r))
 ";

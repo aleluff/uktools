@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# @author Usb Key
+# @mail usbkey9@gmail.com
+
+./autoup $1
+
+
+logPath="/var/log/uku.log";
+cfgPath="./uku.cfg";
+splPath="./sample.uku.cfg";
+
+
+function execCmd() {
+
+	cmd=$1;
+
+	if [[ ! $($1 &>> /dev/null && echo 0) = 0 ]]; then
+		return 1;
+	else
+		return 0;
+	fi
+
+}
+
+function fatalError() {
+	local red=$(tput setaf 1)
+	local reset=$(tput sgr0)
+	echo "${red}$1${reset}"
+	cleanTmp
+	exit;
+}
+
+function displayTitle() {
+
+	echo ;
+	echo $1;
+	echo "------------------------------------------";
+	echo ;
+}
+
+function displaySubTitle() {
+
+	echo ;
+	echo $1;
+	echo ;
+}

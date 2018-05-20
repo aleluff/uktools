@@ -9,7 +9,6 @@
 # @author Christoph Kepler
 # @mail development@kepler.international
 
-
 #Follow symlink and cd to right directory
 SOURCE="${BASH_SOURCE[0]}"
 while [[ -h "$SOURCE" ]]; do
@@ -19,9 +18,9 @@ while [[ -h "$SOURCE" ]]; do
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-./autoup $$
-if ! which lynx > /dev/null; then sudo apt-get install lynx -y; fi
+source ./common $$
 
+if ! execCmd "dpkg -s lynx"; then sudo apt-get install lynx -y; fi
 
 arch=$(dpkg --print-architecture);
 trys=0;
@@ -44,20 +43,11 @@ function cleanTmp() {
 	sudo rm -rf /tmp/linux-*.deb
 }
 
-function fatalError() {
-	local red=$(tput setaf 1)
-	local reset=$(tput sgr0)
-	echo "${red}$1${reset}"
-	cleanTmp
-	exit;
-}
-
 function download() {
 
 	local filename=$(basename "$package");
-	wget -q -P /tmp $package
 
-	if [[ "$?" = "1" ]]; then fatalError "Download of $package failed!"; fi
+	if ! execCmd "wget -q -P /tmp $package"; then fatalError "Download of $package failed!"; fi
 
 	if [[ ! "${checksums[@]}" =~ "$(shasum /tmp/$filename | awk '{ print $1 }')" ]]; then
 		echo "Checksum failed for $filename !!!";
@@ -93,34 +83,29 @@ function notifyUpdate() {
 		userId=$(id -u $user)
 		export DISPLAY=:0.0
 		export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$userId/bus
-		su $user -c "notify-send 'Kernel Updated' 'System restart required'"
+		su $user -c "notify-send 'Kernel Updated to $1' 'System restart required'"
 	fi
 
 	touch /tmp/ukupgrade.nr
 }
 
-echo "
-UkTools Upgrade
-------------------------------------------
+displayTitle "UkTools Upgrade";
 
-";
-
-wget -q --spider http://google.com
-if [[ ! "$?" = "0" ]]; then fatalError "No network available !!! Exiting"; fi
+if ! execCmd "wget -q --spider http://google.com"; then fatalError "No network available !!! Exiting"; fi
 
 if [[ "$1" = "--simple" ]]; then
-	source ./sample.uku.cfg ;
+	source $splPath ;
 else
 	if [[ "$#" = "0" ]]; then
-		if [[ ! -f "./uku.cfg" ]]; then ./setup ; fi
-		source ./uku.cfg ;
+		if [[ ! -f $cfgPath ]]; then ./setup -noup; fi
+		source $cfgPath ;
 	else
-		source ./sample.uku.cfg ;
+		source $splPath ;
 
 		while getopts 'rlph' flag; do
 			case "${flag}" in
 				r) kernelrc=1 ;;
-				l) kernelmode='lowlatency' ;;
+				l) kernelmode="lowlatency" ;;
 				p) arm=1 ;;
 				h) 	echo "${help}";
 					exit;
@@ -146,16 +131,13 @@ reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
 locVersion=$(dpkg -l |grep "linux-image" | grep "$kernelmode" | awk '{print $3}' | sed -e 's/-/./' | cut -d'.' -f-4 | sed -e 's/.0.*rc/-rc/' | cut -d'.' -f-3)
 
 if echo "$locVersion" | grep -Fxq "$reqVersion"; then
-	echo 'Kernel up to date. Finishing'
+	echo "Kernel up to date. Finishing"
 	exit
 fi
 
 if [[ ! $(sudo echo 0) ]]; then fatalError "Permission denied. Require sudo access"; fi
 
-echo "
-Downloading Linux Kernel $reqVersion
-
-";
+displaySubTitle "Downloading Linux Kernel $reqVersion";
 
 cleanTmp
 
@@ -165,30 +147,27 @@ downloadMulti "$kernelmode" "" "$arch"
 #Kernel header
 downloadMulti "all" "headers" ""
 
-while fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
+while execCmd "fuser /var/lib/dpkg/lock"; do
 	sleep 0.5
 done
 
-sudo dpkg -i /tmp/linux-*.deb
-if [[ $? > 0 ]]; then fatalError "Installation failed !!! Exiting"; fi
+if ! execCmd "sudo dpkg -i /tmp/linux-*.deb"; then fatalError "Installation failed !!! Exiting"; fi
 
 cleanTmp
-notifyUpdate
 
-echo "
+notifyUpdate $reqVersion
 
-Upgrade Finished
-";
+displaySubTitle "Upgrade Finished";
 
 if [[ $arm = 1 ]]; then ./ukpurge ; fi
 
 if [[ $cron = 0 ]]; then
-	read -p 'Do you want to reboot system now? (y/n)(10s to No): ' -n 1 -t 10 -s rs
+	read -p "Do you want to reboot system now? (y/n)(10s to No):" -n 1 -t 10 -s rs
 	case "$rs" in
 		y | Y)
 			echo "Yes, reboot this now!"
 			sleep 2
 			sudo reboot ;;
-		*) echo 'No, stay this wake uped!' ;;
+		*) echo "No, stay this wake uped!" ;;
 	esac ;
 fi
