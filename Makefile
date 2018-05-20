@@ -24,10 +24,8 @@ uninstall:
 	@sudo rm -f /etc/update-motd.d/85-ukupgrade
 	@echo Removing config file
 	@sudo rm -f $(MY_DIR)/uku.cfg
-	@echo Removing cron line
-	@sudo $(MY_DIR)/setup -rcron
-	@echo Disable autoup
-	@sudo rm $(MY_DIR)/autoup.on
+	@echo Removing other stuff
+	@sudo $(MY_DIR)/setup -unin
 
 .PHONY: upgrade
 upgrade: uninstall install

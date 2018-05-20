@@ -32,8 +32,13 @@ function deleteCron() {
 	sudo crontab -u root -l | grep -v "$logPath" | sudo crontab -u root -
 }
 
-if [[ "$1" = "-rcron" ]]; then
+function rmAutoup() {
+	if [[ -f $autoupFile ]]; then rm $autoupFile; fi
+}
+
+if [[ "$1" = "-unin" ]]; then
 	deleteCron;
+	rmAutoup;
 	exit;
 fi
 
@@ -76,7 +81,7 @@ esac
 read -p "Do you want to activate code auto update (if not sure, press y)? (y/n): " -n 1 -s aup
 case "$aup" in
 	y | Y)	echo "Enable"; touch $autoupFile ;;
-	*)		echo "Disable"; if [[ -f $autoupFile ]]; then rm $autoupFile; fi ;;
+	*)		echo "Disable"; rmAutoup ;;
 esac
 
 if [[ -f $cfgPath ]]; then rm $cfgPath; fi
