@@ -16,6 +16,7 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source ./common $$
 
+
 function keepBaseVersion(){
 	local nb=0
 	local base=$(echo "${kernels[0]}" | cut -d'-' -f1)
