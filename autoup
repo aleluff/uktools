@@ -24,6 +24,12 @@ if [[ -z "$1" ]]; then
 fi
 
 ppid=$1;
+verbGit=" -q";
+verbShell=" &>> /dev/null";
+if [[ -f ./autoup.debug ]]; then
+	verbGit="";
+	verbShell="";
+fi
 
 #Continue normal execution (not a git repo or up-to-date)
 function normalEx(){
@@ -33,7 +39,6 @@ function normalEx(){
 
 #Update Success, need to reload script
 function reloadEx(){
-
 	local cmdl=$(cat -v /proc/$ppid/cmdline | sed 's/\^@/\ /g' && echo)
 
 	$cmdl;
@@ -49,7 +54,6 @@ function errorEx(){
 }
 
 function checkTimeStamp() {
-
 	local file="autoup.tmp";
 	local ts=$(date +%s);
 	local fileTs=0;
@@ -70,14 +74,14 @@ function execCmd() {
 		$1;
 	else
 		echo "User for Git Update: $gitOwner";
-		su $gitOwner -c "$1 &>> /dev/null";
+		su $gitOwner -c "$1 $verbShell";
 	fi
 }
-function refresh() {
+function isRepoUp() {
 
-	execCmd "git fetch -aq";
-	local=$(git rev-parse HEAD);
-	base=$(git rev-parse @{u});
+	execCmd "git fetch -a $verbGit";
+
+	[[ $(git rev-parse HEAD) = $(git rev-parse @{u}) ]];
 }
 
 #Test if code auto update is activated
@@ -91,14 +95,12 @@ if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then normalEx; fi
 
 gitOwner=$(stat -c '%U' $(basename $0));
 
-refresh
-
-if [[ ! $local = $base ]]; then
+if ! isRepoUp; then
 	echo
 	echo "Code Updating...";
-	execCmd "git pull -q";
-	refresh
-	if [[ ! $local = $base ]]; then
+	execCmd "git pull $verbGit";
+
+	if ! isRepoUp; then
 		#ERROR: Repo still outdated
 		errorEx
 	else
@@ -110,4 +112,5 @@ if [[ ! $local = $base ]]; then
 fi
 
 #Repo up-to-date
+if [[ -f ./autoup.debug ]]; then echo "Already Up To Date"; fi
 normalEx
