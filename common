@@ -10,10 +10,17 @@ logPath="/var/log/uku.log";
 cfgPath="./uku.cfg";
 splPath="./sample.uku.cfg";
 
+function fctExist() {
+    if [[ $(type -t $1) == function ]]; then
+        return 0;
+    else
+       return 1;
+	fi
+}
 
 function execCmd() {
-
 	local cmd=$1;
+
 	if [[ ! $($cmd &>> /dev/null && echo 0) = 0 ]]; then
 		return 1;
 	else
@@ -25,13 +32,13 @@ function execCmd() {
 function fatalError() {
 	local red=$(tput setaf 1)
 	local reset=$(tput sgr0)
+
 	echo "${red}$1${reset}"
-	cleanTmp
+	if fctExist cleanTmp; then cleanTmp; fi
 	exit;
 }
 
 function displayTitle() {
-
 	echo ;
 	echo $1;
 	echo "------------------------------------------";
@@ -39,7 +46,6 @@ function displayTitle() {
 }
 
 function displaySubTitle() {
-
 	echo ;
 	echo $1;
 	echo ;

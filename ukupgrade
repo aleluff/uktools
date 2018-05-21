@@ -44,7 +44,6 @@ function cleanTmp() {
 }
 
 function download() {
-
 	local filename=$(basename "$package");
 
 	if ! execCmd "wget -q -P /tmp $package"; then fatalError "Download of $package failed!"; fi
@@ -63,7 +62,6 @@ function download() {
 }
 
 function downloadMulti() {
-
 	local packages=($(lynx -dump -listonly -dont-wrap-pre $kernelURL | grep "$1" | grep "$2" | grep "$3" | awk '{print $2}' | sort | uniq));
 
 	if [[ ${#packages[@]} < 1 ]]; then
