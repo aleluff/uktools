@@ -32,7 +32,7 @@ function keepBaseVersion(){
 function remove() {
 	for kernel in "${kernels[@]}"
 	do
-		if ! execCmd "dpkg -l | awk '{ print $2 }' | grep "$kernel" | xargs sudo apt-get -y purge"; then
+		if ! execCmd "dpkg -l | awk '{ print \$2 }' | grep "$kernel" | xargs sudo apt-get -y purge"; then
 			fatalError "Error while removing $kernel. Aborting!!!";
 		fi
 	done
