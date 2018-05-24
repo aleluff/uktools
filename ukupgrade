@@ -88,6 +88,23 @@ function notifyUpdate() {
 	touch /tmp/ukupgrade.nr
 }
 
+function checkSameVersion() {
+
+	local locVersion=$(dpkg -l |grep "linux-image" | grep "$kernelmode" | awk '{print $3}' | sed -e 's/-/./' | cut -d'.' -f-4 | sed -e 's/.0.*rc/-rc/' | cut -d'.' -f-3)
+
+	if echo "$locVersion" | grep -Fxq "$reqVersion"; then
+		echo "Kernel up to date. Finishing"
+		exit
+	fi
+}
+
+function waitDpkg() {
+
+	while execCmd "fuser /var/lib/dpkg/lock"; do
+		sleep 0.5
+	done
+}
+
 displayTitle "UkTools Upgrade";
 
 if ! execCmd "wget -q --spider http://google.com"; then fatalError "No network available !!! Exiting"; fi
@@ -123,30 +140,21 @@ esac
 
 checksums="$(wget -qO- $kernelURL/CHECKSUMS)"
 
-# Same version test
 reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
-locVersion=$(dpkg -l |grep "linux-image" | grep "$kernelmode" | awk '{print $3}' | sed -e 's/-/./' | cut -d'.' -f-4 | sed -e 's/.0.*rc/-rc/' | cut -d'.' -f-3)
 
-if echo "$locVersion" | grep -Fxq "$reqVersion"; then
-	echo "Kernel up to date. Finishing"
-	exit
-fi
+checkSameVersion
 
-if [[ ! $(sudo echo 0) ]]; then fatalError "Permission denied. Require sudo access"; fi
+if ! execCmd "sudo echo 0"; then fatalError "Permission denied. Require sudo access"; fi
 
 displaySubTitle "Downloading Linux Kernel $reqVersion";
 
 cleanTmp
 
-#kernel's components
 downloadMulti "$kernelmode" "" "$arch"
 
-#Kernel header
 downloadMulti "all" "headers" ""
 
-while execCmd "fuser /var/lib/dpkg/lock"; do
-	sleep 0.5
-done
+waitDpkg
 
 if ! execCmd "sudo dpkg -i /tmp/linux-*.deb"; then fatalError "Installation failed !!! Exiting"; fi
 

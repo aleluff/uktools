@@ -30,6 +30,7 @@ function keepBaseVersion(){
 }
 
 function remove() {
+
 	for kernel in "${kernels[@]}"
 	do
 		local tmpKer=$(dpkg -l | awk '{ print $2 }' | grep "$kernel");
