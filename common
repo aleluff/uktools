@@ -11,10 +11,10 @@ cfgPath="./uku.cfg";
 splPath="./sample.uku.cfg";
 
 function fctExist() {
-    if [[ $(type -t $1) == function ]]; then
-        return 0;
-    else
-       return 1;
+	if [[ $(type -t $1) == function ]]; then
+		return 0;
+	else
+		return 1;
 	fi
 }
 
