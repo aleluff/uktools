@@ -23,6 +23,8 @@ source ./common $$
 
 if ! execCmd "dpkg -s lynx"; then sudo apt-get install lynx -y; fi
 
+server="kernel.ubuntu.com";
+fullUrl="http://$server/~kernel-ppa/mainline/"
 arch=$(dpkg --print-architecture);
 trys=0;
 help="Usage: ukupgrade [OPTION]...
@@ -107,7 +109,7 @@ function waitDpkg() {
 
 displayTitle "UkTools Upgrade";
 
-if ! execCmd "wget -q --spider http://google.com"; then fatalError "No network available !!! Exiting"; fi
+if ! execCmd "ping -q -w 1 -c 1 $server"; then fatalError "No network available !!! Exiting"; fi
 
 if [[ "$1" = "--simple" ]]; then
 	source $splPath ;
@@ -134,17 +136,17 @@ else
 fi
 
 case "$kernelrc" in
-	1) kernelURL=$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | tail -1) ;;
-	*) kernelURL="http://kernel.ubuntu.com/~kernel-ppa/mainline/"$(lynx -dump -nonumbers http://kernel.ubuntu.com/~kernel-ppa/mainline/ | grep -v "rc" | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
+	1) kernelURL=$(lynx -dump -nonumbers $fullUrl | tail -1) ;;
+	*) kernelURL="$fullUrl"$(lynx -dump -nonumbers $fullUrl | grep -v "rc" | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
 esac
-
-checksums="$(wget -qO- $kernelURL/CHECKSUMS)"
 
 reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
 
 checkSameVersion
 
 if ! execCmd "sudo echo 0"; then fatalError "Permission denied. Require sudo access"; fi
+
+checksums="$(wget -qO- $kernelURL/CHECKSUMS)"
 
 displaySubTitle "Downloading Linux Kernel $reqVersion";
 
