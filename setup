@@ -41,7 +41,7 @@ elif [[ "$1" = "-h" ]]; then
 fi
 
 displayTitle "UkTools Setup";
-displayTitle "You can use this script as many time as you want";
+displaySubTitle "You can use this script as many time as you want";
 
 read -p "Do you want the Stable Release (if not sure, press y)? (y/n): " -n 1 -s rc
 case "$rc" in

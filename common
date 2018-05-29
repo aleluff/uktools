@@ -9,6 +9,8 @@
 logPath="/var/log/uku.log";
 cfgPath="./uku.cfg";
 splPath="./sample.uku.cfg";
+delimSub="-------------------------------------------------------------------------------";
+delimTit="———————————————————————————————————————————————————————————————————————————————";
 
 function fctExist() {
 	if [[ $(type -t $1) == function ]]; then
@@ -39,14 +41,20 @@ function fatalError() {
 }
 
 function displayTitle() {
-	echo ;
+	local lenTitle=${#1};
+	local lenDelim=${#delimTit};
+	local lenTot=$((lenDelim / 2 - lenTitle / 2));
+
+	echo $delimTit;
+	for i in `seq 0 $lenTot`;
+	do
+		echo -ne " ";
+	done
 	echo $1;
-	echo "------------------------------------------";
-	echo ;
+	echo $delimTit;
 }
 
 function displaySubTitle() {
-	echo ;
 	echo $1;
-	echo ;
+	echo $delimSub;
 }

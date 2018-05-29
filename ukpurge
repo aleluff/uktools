@@ -53,17 +53,17 @@ kernels=($(dpkg -l | grep "linux-headers" | grep -v "generic" | awk '{ print $2 
 keepBaseVersion
 
 displayTitle "UkTools Purge";
-displayTitle "This script will only keep three versions: the first and the last two, others will be purge";
+displaySubTitle "This script will only keep three versions: the first and the last two, others will be purge";
 
 echo "
------------- Current Version -------------
+------------------------------- Current Version -------------------------------
 Linux Kernel $current $(uname -r | cut -d'-' -f3) ($(uname -r))
 ";
 
 if [[ ${#kernels[@]} < 1 ]]; then
 	echo "Nothing to remove!" ;
 else
-	echo "----------- Versions to Remove -----------"
+	echo "------------------------------ Versions to Remove -----------------------------"
 	printf '%s\n' "${kernels[@]}"
 	sleep 2
 	echo
@@ -78,6 +78,7 @@ else
 		esac;
 	else
 		remove;
+		echo
 		displaySubTitle "Purge Finished";
 	fi
 fi

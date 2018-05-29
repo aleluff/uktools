@@ -164,6 +164,7 @@ cleanTmp
 
 notifyUpdate $reqVersion
 
+echo
 displaySubTitle "Upgrade Finished";
 
 if [[ $arm = 1 ]]; then ./ukpurge ; fi
