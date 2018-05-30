@@ -93,9 +93,9 @@ if [[ ! -f ./autoup.debug ]]; then checkTimeStamp; fi
 #Test if it's a valid git repo
 if [[ ! -d .git || $(git rev-list --all --count) == 0 ]]; then normalEx; fi
 
-echo
-echo "Autoup";
-echo "------------------------------------------";
+echo "———————————————————————————————————————————————————————————————————————————————";
+echo "                                     Autoup";
+echo "———————————————————————————————————————————————————————————————————————————————";
 echo
 
 gitOwner=$(stat -c '%U' $(basename $0));
