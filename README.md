@@ -108,9 +108,6 @@ make uninstall
 	- 4.16.6 updated kernel from script [to keep]
 	- 4.16.7 updated kernel from script [to keep]
 
-##### AutoUp
-* check if auto-update works well when current repo is outdated by running normal script (setup, ukupgrade, ukpurge) which update to last gihub version
-
 ### Any other contributions is welcome (trad, display, etc)
 
 [Project Status Image]: https://img.shields.io/badge/project-active-green.svg "Project Status: Active"
