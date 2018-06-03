@@ -1,6 +1,6 @@
 ![Project Status: Active][Project Status Image]
 
-UKTools - UkUpgrade/UkPurge
+UkTools - UkUpgrade/UkPurge
 ===========================
 
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
