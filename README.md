@@ -84,7 +84,7 @@ make uninstall
 ## TODO
 
 ### Canonical Livepatch
-* Implement Livepatch on Ubuntu Server
+* Implement [Livepatch](https://www.ubuntu.com/server/livepatch) on Ubuntu Server
 
 
 ### Bash Unit Test
