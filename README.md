@@ -81,18 +81,24 @@ cat /var/log/uku.log
 make uninstall
 ```
 
-## TODO (Bash Unit Test)
-### Qemu/KVM are the container tools for testing
+## TODO
+
+### Canonical Livepatch
+* Implement Livepatch on Ubuntu Server
+
+
+### Bash Unit Test
+#### Qemu/KVM are the container tools for testing
 
 * Test MakeFile
 
-#### Ukuprage
+##### Ukuprage
 * check install of each kernel's versions
 * check message of the day with ssh connection just after install
 * check call parameters
 * check "no need to upgrade" by running script two times in a row
 
-#### Ukpurge
+##### Ukpurge
 * check if script purge right versions and keep only 3 ones
 * check if script keep the very last version of base kernel
 * eg with Ubuntu 18.04 : 
@@ -102,34 +108,9 @@ make uninstall
 	- 4.16.6 updated kernel from script [to keep]
 	- 4.16.7 updated kernel from script [to keep]
 
-#### AutoUp
+##### AutoUp
 * check if auto-update works well when current repo is outdated by running normal script (setup, ukupgrade, ukpurge) which update to last gihub version
 
 ### Any other contributions is welcome (trad, display, etc)
-
-## Author's
-
-[Usb Key](https://github.com/usbkey9) - current maintainer and setup, cronjob and motd author
-
-| email | usbkey9@gmail.com |
-|:-:|:-:|
-
-[Mustafa Hasturk](https://www.linkedin.com/in/muhasturk) - ukupgrade author
-
-| homepage | [mustafahasturk.com](http://mustafahasturk.com "Official Web Site") |
-|:-:|:-:|
-| email | hi@mustafahasturk.com |
-
-[Caio Oliveira](https://plus.google.com/+CaioOBR) - ukpurge author
-
-| email | caiooliveirafarias0@gmail.com |
-|:-:|:-:|
-
-[Christoph Kepler](https://github.com/MarauderXtreme) - developer
-
-| homepage | [Kepler International](https://kepler.international/ "Kepler International") |
-|:-:|:-:|
-| email | development@kepler.international |
-
 
 [Project Status Image]: https://img.shields.io/badge/project-active-green.svg "Project Status: Active"
