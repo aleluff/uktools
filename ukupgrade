@@ -94,7 +94,7 @@ function checkSameVersion() {
 
 	local locVersion=$(dpkg -l |grep "linux-image" | grep "$kernelmode" | awk '{print $3}' | sed -e 's/-/./' | cut -d'.' -f-4 | sed -e 's/.0.*rc/-rc/' | cut -d'.' -f-3)
 
-	if echo "$locVersion" | grep -Fxq "$reqVersion"; then
+	if [[ $locVersion =~ $reqVersion ]]; then
 		echo "Kernel up to date. Finishing"
 		exit
 	fi
