@@ -137,7 +137,7 @@ fi
 
 case "$kernelrc" in
 	1) kernelURL=$(lynx -dump -nonumbers $fullUrl | tail -1) ;;
-	*) kernelURL="$fullUrl"$(lynx -dump -nonumbers $fullUrl | grep -v "rc" | rev | cut -d '/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d ' ' -f 1 | rev | tail -1)"/" ;;
+	*) kernelURL="$fullUrl"$(lynx -dump -nonumbers $fullUrl | grep -Ev "rc|keep" | rev | cut -d'/' -f 2 | rev | grep -E 'v.+' | sort -V | rev | cut -d' ' -f 1 | rev | tail -1)"/" ;;
 esac
 
 reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
