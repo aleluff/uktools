@@ -24,7 +24,7 @@ source ./common $$
 if ! execCmd "dpkg -s lynx"; then sudo apt-get install lynx -y; fi
 
 server="kernel.ubuntu.com";
-fullUrl="http://$server/~kernel-ppa/mainline/"
+fullUrl="http://$server/~kernel-ppa/mainline/";
 arch=$(dpkg --print-architecture);
 trys=0;
 help="Usage: ukupgrade [OPTION]...
