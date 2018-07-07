@@ -10,8 +10,7 @@ UkTools - UkUpgrade/UkPurge
 and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
 
 **UkPurge** stands for "Ubuntu Kernel Purge"
-* It provide to us remove old linux kernel images/headers in machine for Ubuntu/
-Mint and derivatives. Non-Based
+* It remove old linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
 
 **Auto Run** can be enabled/disabled in setup<br>
 * If enabled, upgrade will be done automatically by cronjob each 2hours.
