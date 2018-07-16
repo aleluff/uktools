@@ -53,8 +53,8 @@ It'll install necessary files and run setup
 * Now you can call the script whereever you are
 
 ```
-do-kernel-upgrade
-do-kernel-purge
+uktools-upgrade
+uktools-purge
 ```
 
 * You can re-run setup script by

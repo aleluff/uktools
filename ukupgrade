@@ -78,7 +78,6 @@ function downloadMulti() {
 }
 
 function notifyUpdate() {
-
 	if [[ -x "$(command -v notify-send)" ]]; then
 		user=$(w -h | awk '{print $1}' | head -n 1)
 		userId=$(id -u $user)
@@ -91,7 +90,6 @@ function notifyUpdate() {
 }
 
 function checkSameVersion() {
-
 	local locVersion=$(dpkg -l |grep "linux-image" | grep "$kernelmode" | awk '{print $3}' | sed -e 's/-/./' | cut -d'.' -f-4 | sed -e 's/.0.*rc/-rc/' | cut -d'.' -f-3)
 
 	if [[ $locVersion =~ $reqVersion ]]; then
@@ -101,7 +99,6 @@ function checkSameVersion() {
 }
 
 function waitDpkg() {
-
 	while execCmd "fuser /var/lib/dpkg/lock"; do
 		sleep 0.5
 	done

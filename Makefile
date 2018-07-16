@@ -12,14 +12,14 @@ install: ukupgrade ukpurge
 	@echo Linking profile.d file for reboot message
 	@sudo ln -s $(MY_DIR)/profile /etc/update-motd.d/85-ukupgrade
 	@echo Linking files to global sbin directory
-	@sudo ln -s $(MY_DIR)/ukupgrade $(DESTDIR)$(PREFIX)/do-kernel-upgrade
-	@sudo ln -s $(MY_DIR)/ukpurge $(DESTDIR)$(PREFIX)/do-kernel-purge
+	@sudo ln -s $(MY_DIR)/ukupgrade $(DESTDIR)$(PREFIX)/uktools-upgrade
+	@sudo ln -s $(MY_DIR)/ukpurge $(DESTDIR)$(PREFIX)/uktools-purge
 	@$(MY_DIR)/setup
 
 .PHONY: uninstall
 uninstall:
-	@echo Removing do-kernel- links
-	@sudo rm -f $(DESTDIR)$(PREFIX)/do-kernel-*
+	@echo Removing uktools- links
+	@sudo rm -f $(DESTDIR)$(PREFIX)/uktools-*
 	@echo Removing profile.d file
 	@sudo rm -f /etc/update-motd.d/85-ukupgrade
 	@echo Removing config file

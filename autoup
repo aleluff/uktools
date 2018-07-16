@@ -33,7 +33,6 @@ fi
 
 #Continue normal execution (not a git repo or up-to-date)
 function normalEx(){
-
 	exit;
 }
 
@@ -48,7 +47,6 @@ function reloadEx(){
 
 #All is in the name
 function errorEx(){
-
 	echo "Error while git auto-update. Exiting Now!";
 	exit;
 }
@@ -69,7 +67,6 @@ function checkTimeStamp() {
 }
 
 function execCmd() {
-
 	if [[ "$(whoami)" = $gitOwner ]]; then
 		$1;
 	else
@@ -78,9 +75,7 @@ function execCmd() {
 	fi
 }
 function isRepoUp() {
-
 	execCmd "git fetch -a $verbGit";
-
 	[[ $(git rev-parse HEAD) = $(git rev-parse @{u}) ]];
 }
 
