@@ -21,8 +21,6 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 source ./common $$
 
 
-if ! execCmd "dpkg -s lynx"; then sudo apt-get install lynx -y; fi
-
 server="kernel.ubuntu.com";
 fullUrl="http://$server/~kernel-ppa/mainline/";
 arch=$(dpkg --print-architecture);
@@ -103,6 +101,11 @@ function waitDpkg() {
 		sleep 0.5
 	done
 }
+
+if ! execCmd "dpkg -s lynx"; then
+    waitDpkg
+    sudo apt-get install lynx -y;
+fi
 
 displayTitle "UkTools Upgrade";
 
