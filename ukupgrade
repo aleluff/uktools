@@ -158,6 +158,8 @@ downloadMulti "all" "headers" ""
 
 waitDpkg
 
+displaySubTitle "Installing Linux Kernel $reqVersion";
+
 if ! execCmd "sudo dpkg -i /tmp/linux-*.deb"; then fatalError "Installation failed !!! Exiting"; fi
 
 cleanTmp
