@@ -160,7 +160,7 @@ waitDpkg
 
 displaySubTitle "Installing Linux Kernel $reqVersion";
 
-if ! execCmd "sudo dpkg -i /tmp/linux-*.deb"; then fatalError "Installation failed !!! Exiting"; fi
+if ! execCmd "sudo dpkg -i /tmp/linux-*.deb" 1; then fatalError "Installation failed !!! Exiting"; fi
 
 cleanTmp
 

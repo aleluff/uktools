@@ -23,11 +23,14 @@ function fctExist() {
 function execCmd() {
 	local cmd=$1;
 
-	if [[ ! $($cmd &>> /dev/null && echo 0) = 0 ]]; then
-		return 1;
-	else
-		return 0;
+    #Print error if $2 == 1
+    if [[ $2 == 1 ]] && [[ ! $($cmd > /dev/null && echo 0) = 0 ]]; then
+        return 1;
+    elif [[ ! $($cmd &>> /dev/null && echo 0) = 0 ]]; then
+        return 1;
 	fi
+
+	return 0;
 
 }
 
