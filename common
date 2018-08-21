@@ -9,29 +9,29 @@
 logPath="/var/log/uku.log";
 cfgPath="./uku.cfg";
 splPath="./sample.uku.cfg";
+comlog="/var/log/ukuerr.log";
 delimSub="-------------------------------------------------------------------------------";
 delimTit="———————————————————————————————————————————————————————————————————————————————";
-
-function fctExist() {
-	if [[ $(type -t $1) == function ]]; then
-		return 0;
-	else
-		return 1;
-	fi
-}
 
 function execCmd() {
 	local cmd=$1;
 
-    #Print error if $2 == 1
-    if [[ $2 == 1 ]] && [[ ! $($cmd > /dev/null && echo 0) = 0 ]]; then
-        return 1;
-    elif [[ ! $($cmd &>> /dev/null && echo 0) = 0 ]]; then
+    if [[ ! $($cmd &>> /dev/null && echo 0) = 0 ]]; then
         return 1;
 	fi
 
 	return 0;
+}
 
+function execCmdAndSoreErr() {
+	local cmd=$1;
+
+	rm -f $comlog
+    if [[ ! $($cmd &>> $comlog && echo 0) = 0 ]]; then
+        return 1;
+	fi
+
+	return 0;
 }
 
 function fatalError() {
@@ -39,7 +39,6 @@ function fatalError() {
 	local reset=$(tput sgr0)
 
 	echo "${red}$1${reset}"
-	if fctExist cleanTmp; then cleanTmp; fi
 	exit;
 }
 
@@ -60,4 +59,16 @@ function displayTitle() {
 function displaySubTitle() {
 	echo $1;
 	echo $delimSub;
+}
+
+function notify() {
+	if [[ -x "$(command -v notify-send)" ]]; then
+		user=$(w -h | awk '{print $1}' | head -n 1)
+		userId=$(id -u $user)
+
+		params="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$userId/bus";
+		params="$params DISPLAY=:0.0"
+
+		su $user -c "$params notify-send '$1' '$2' $3"
+	fi
 }

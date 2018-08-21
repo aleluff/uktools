@@ -83,7 +83,7 @@ make uninstall
 
 * Test MakeFile
 
-##### Ukuprage
+##### Ukupgrade
 * check install of each kernel's versions
 * check message of the day with ssh connection just after install
 * check call parameters
