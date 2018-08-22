@@ -13,6 +13,7 @@ comlog="/var/log/err.ukt.log";
 delimSub="-------------------------------------------------------------------------------";
 delimTit="———————————————————————————————————————————————————————————————————————————————";
 
+#You can only run one command at a time
 function execCmd() {
 	local cmd=$1;
 
@@ -23,10 +24,11 @@ function execCmd() {
 	return 0;
 }
 
+#TODO 16.04 headers bug : warm user of log content
+#You can only run one command at a time
 function execCmdAndSoreErr() {
 	local cmd=$1;
 
-	rm -f $comlog
     if [[ ! $($cmd &>> $comlog && echo 0) = 0 ]]; then
         return 1;
 	fi

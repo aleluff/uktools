@@ -148,7 +148,7 @@ waitDpkg
 echo
 displaySubTitle "Installing Linux Kernel $reqVersion. Please be patient, it may take a while";
 
-if ! execCmdAndSoreErr "sudo dpkg -i /tmp/linux-*.deb"; then
+if ! execCmd "sudo dpkg -i /tmp/linux-*.deb"; then
 	notify "Kernel Upgrade failed" "Please consult $comlog for details" "-u critical";
 	error "Kernel Upgrade failed! Please consult $comlog for details";
 fi

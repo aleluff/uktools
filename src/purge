@@ -61,7 +61,7 @@ Linux Kernel $current $(uname -r | cut -d'-' -f3) ($(uname -r))
 ";
 
 if [[ ${#kernels[@]} < 1 ]]; then
-	echo "Nothing to remove!" ;
+	echo "Nothing to remove";
 else
 	echo "------------------------------ Versions to Remove -----------------------------"
 	printf '%s\n' "${kernels[@]}";
