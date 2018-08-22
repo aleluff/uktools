@@ -25,19 +25,19 @@ server="kernel.ubuntu.com";
 fullUrl="http://$server/~kernel-ppa/mainline/";
 arch=$(dpkg --print-architecture);
 trys=0;
-help="Usage: ukupgrade [OPTION]...
+help="Usage: $(basename -- "$0") [OPTION]...
 Dowload and install last available kernel for ubuntu systems.
 Settings can be saved if no options provided or by running setup script
 
   -r,			Get Release Candidate kernel (default: Stable kernel)
   -l,			Get Low Latency kernel (default: Generic kernel)
-  -p,			Run ukpurge script after upgrade
+  -p,			Run Purge script after Upgrade
   -h,			Show this help
   --simple,		Use default settings (stable, generic, no auto run, no purge)
 
 Examples:
-  ukupgrade --simple	Download, install the last kernel using defaults settings
-  ukupgrade -p		Use default settings but uninstall old kernels
+  upgrade --simple	Download, install the last kernel using defaults settings
+  upgrade -p		Use default settings and run Purge
 ";
 
 function cleanTmp() {
@@ -87,12 +87,6 @@ function checkSameVersion() {
 		echo "Kernel up to date. Finishing";
 		exit
 	fi
-}
-
-function waitDpkg() {
-	while execCmd "fuser /var/lib/dpkg/lock"; do
-		sleep 0.5;
-	done
 }
 
 if ! execCmd "dpkg -s lynx"; then
@@ -151,22 +145,23 @@ downloadMulti "all" "headers" ""
 
 waitDpkg
 
-displaySubTitle "Installing Linux Kernel $reqVersion";
+echo
+displaySubTitle "Installing Linux Kernel $reqVersion. Please be patient, it may take a while";
 
 if ! execCmdAndSoreErr "sudo dpkg -i /tmp/linux-*.deb"; then
-	notify "Kernel upgrade failed" "Please consult $comlog for details" "-u critical";
-	error "Kernel upgrade failed! Please consult $comlog for details";
+	notify "Kernel Upgrade failed" "Please consult $comlog for details" "-u critical";
+	error "Kernel Upgrade failed! Please consult $comlog for details";
 fi
 
 cleanTmp
 
-notify "Kernel Updated to $reqVersion" "System restart required";
-touch /tmp/ukupgrade.nr;
+notify "Kernel Upgraded to $reqVersion" "System restart required";
+touch /tmp/upgrade.nr;
 
 echo
 displaySubTitle "Upgrade Finished";
 
-if [[ $arm = 1 ]]; then ./ukpurge ; fi
+if [[ $arm = 1 ]]; then ./purge ; fi
 
 if [[ $cron = 0 ]]; then
 	read -p "Do you want to reboot system now? (y/n)(10s to No):" -n 1 -t 10 -s rs

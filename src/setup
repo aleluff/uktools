@@ -20,7 +20,7 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 source ./common $$
 
 
-script="$(pwd)/ukupgrade";
+script="$(pwd)/upgrade";
 autoupFile="./autoup.on";
 help="Usage: setup [OPTION]...
 Create config file based on your chooses
@@ -66,7 +66,7 @@ esac
 
 deleteCron;
 
-read -p "Do you want to update the kernel automatically? (y/n): " -n 1 -s day
+read -p "Do you want to upgrade the kernel automatically? (y/n): " -n 1 -s day
 case "$day" in
 	y | Y)	echo "Cronning";
 			cron=1;
@@ -91,9 +91,9 @@ echo "cron=$cron" >> $cfgPath;
 
 if [[ "$1" = "-noup" ]]; then exit; fi
 
-read -p "Setup complete. Update the kernel right now? (y/n): " -n 1 -s now
+read -p "Setup complete. Upgrade the kernel right now? (y/n): " -n 1 -s now
 case "$now" in
-	y | Y)	echo "Downloading"; ./ukupgrade ;;
+	y | Y)	echo "Downloading"; ./upgrade ;;
 esac
 
 echo

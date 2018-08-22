@@ -73,11 +73,16 @@ else
 		case "$rr" in
 			Y)	echo "Purging";
 				sleep 2;
+
 				remove ;;
 			*)	echo "Keep old kernels untouched" ;;
 		esac;
 	else
+		echo
+		displaySubTitle "Purging";
+
 		remove;
+
 		echo
 		displaySubTitle "Purge Finished";
 	fi

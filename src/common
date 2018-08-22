@@ -6,10 +6,10 @@
 ./autoup $1
 
 
-logPath="/var/log/uku.log";
-cfgPath="./uku.cfg";
-splPath="./sample.uku.cfg";
-comlog="/var/log/ukuerr.log";
+logPath="/var/log/ukt.log";
+cfgPath="./ukt.config";
+splPath="./sample.config";
+comlog="/var/log/err.ukt.log";
 delimSub="-------------------------------------------------------------------------------";
 delimTit="———————————————————————————————————————————————————————————————————————————————";
 
@@ -71,4 +71,10 @@ function notify() {
 
 		su $user -c "$params notify-send '$1' '$2' $3"
 	fi
+}
+
+function waitDpkg() {
+	while execCmd "fuser /var/lib/dpkg/lock"; do
+		sleep 0.5;
+	done
 }

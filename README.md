@@ -1,16 +1,16 @@
 ![Project Status: Active][Project Status Image]
 
-UkTools - UkUpgrade/UkPurge
+UkTools - Upgrade/Purge
 ===========================
 
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
 
-**UkUpgrade** stands for "Ubuntu Kernel Upgrade"
-* It provides us to upgrade linux kernel to latest stable version for Ubuntu/Mint
+**Upgrade**
+* It provides to upgrade linux kernel to latest stable version for Ubuntu/Mint
 and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
 
-**UkPurge** stands for "Ubuntu Kernel Purge"
-* It remove old linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
+**Purge**
+* It removes old linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
 
 **Auto Run** can be enabled/disabled in setup<br>
 * If enabled, upgrade will be done automatically by cronjob each 2hours.
@@ -30,7 +30,7 @@ sudo tar -xvf master.tar.gz && \
 sudo rm -fr master.tar.gz && \
 cd uktools-master && \
 sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
-./ukupgrade --simple
+./src/upgrade --simple
 ```
 
 # Normal Setup
@@ -64,7 +64,7 @@ uktools-purge
 
 * Logs are available with
 ```
-cat /var/log/uku.log
+cat /var/log/ukt.log
 ```
 
 * Uninstall (cron job included)
@@ -83,13 +83,13 @@ make uninstall
 
 * Test MakeFile
 
-##### Ukupgrade
+##### Upgrade
 * check install of each kernel's versions
 * check message of the day with ssh connection just after install
 * check call parameters
 * check "no need to upgrade" by running script two times in a row
 
-##### Ukpurge
+##### Purge
 * check if script purge right versions and keep only 3 ones
 * check if script keep the very last version of base kernel
 * eg with Ubuntu 18.04 : 
