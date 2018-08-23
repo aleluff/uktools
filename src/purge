@@ -35,8 +35,9 @@ function remove() {
 		local tmpKer=$(dpkg -l | awk '{ print $2 }' | grep "$kernel");
 
 		if ! execCmd "sudo apt-get purge -y $tmpKer"; then
-			notify "Kernel purge failed" "Please consult $comlog for details" "-u critical";
-			fatalError "Kernel purge failed. Please consult $comlog for details";
+			touch /tmp/purge.err;
+			notify "Kernel purge failed" "Please consult $logPath for details" "-u critical";
+			fatalError "Kernel purge failed. See errors above";
 		fi
 	done
 }

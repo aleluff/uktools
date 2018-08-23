@@ -6,4 +6,10 @@
 if [[ -f /tmp/upgrade.nr ]]; then
 	echo
 	echo "*** Kernel out of date. System restart required ***"
+elif [[ -f /tmp/upgrade.err ]]; then
+	echo
+	echo "*** Kernel upgrade failed! Please consult /var/log/ukt.log for details ***"
+elif [[ -f /tmp/purge.err ]]; then
+	echo
+	echo "*** Kernel purge failed! Please consult /var/log/ukt.log for details ***"
 fi

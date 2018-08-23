@@ -9,7 +9,6 @@
 logPath="/var/log/ukt.log";
 cfgPath="./ukt.config";
 splPath="./sample.config";
-comlog="/var/log/err.ukt.log";
 delimSub="-------------------------------------------------------------------------------";
 delimTit="———————————————————————————————————————————————————————————————————————————————";
 
@@ -24,12 +23,12 @@ function execCmd() {
 	return 0;
 }
 
-#TODO 16.04 headers bug : warm user of log content
-#You can only run one command at a time
-function execCmdAndSoreErr() {
+#TODO 16.04 upgrade/purge without "headers" (bug with purge)
+# You can only run one command at a time
+function execCmdAndDisplayErr() {
 	local cmd=$1;
 
-    if [[ ! $($cmd &>> $comlog && echo 0) = 0 ]]; then
+    if [[ ! $($cmd > /dev/null && echo 0) = 0 ]]; then
         return 1;
 	fi
 
