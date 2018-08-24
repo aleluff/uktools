@@ -15,8 +15,9 @@ and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/ma
 **Auto Run** can be enabled/disabled in setup<br>
 * If enabled, upgrade will be done automatically by cronjob each 2hours.
 
-**Disclaimer**
-* Linux Tools (perf, usb over ether, kbuild) are not available with lastest kernel's versions so, if you need them, use regular kernels
+**Incompatibilities**
+* Linux Tools (perf, usb over ether, kbuild)
+* Canonical Livepatch
 
 -----------------------------------------
 
@@ -73,10 +74,6 @@ make uninstall
 ```
 
 ## TODO
-
-### Canonical Livepatch
-* Implement [Livepatch](https://www.ubuntu.com/server/livepatch) on Ubuntu Server
-
 
 ### Bash Unit Test
 #### Qemu/KVM are the container tools for testing
