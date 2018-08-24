@@ -23,7 +23,6 @@ function execCmd() {
 	return 0;
 }
 
-#TODO 16.04 upgrade/purge without "headers" (bug with purge)
 # You can only run one command at a time
 function execCmdAndDisplayErr() {
 	local cmd=$1;
@@ -75,7 +74,8 @@ function notify() {
 }
 
 function waitDpkg() {
-	while execCmd "fuser /var/lib/dpkg/lock"; do
+	while execCmd "sudo fuser /var/lib/dpkg/lock"; do
 		sleep 0.5;
+		echo "Waiting while dpkg is occupied";
 	done
 }
