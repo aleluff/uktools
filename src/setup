@@ -34,6 +34,7 @@ function deleteCron() {
 
 if [[ "$1" = "-unin" ]]; then
 	deleteCron;
+	sudo rm -f $rotatePath $cfgPath;
 	exit;
 elif [[ "$1" = "-h" ]]; then
 	echo "${help}";
@@ -88,6 +89,17 @@ echo "kernelrc=$kernelrc" >> $cfgPath;
 echo "kernelmode=$kernelmode" >> $cfgPath;
 echo "arm=$arm" >> $cfgPath;
 echo "cron=$cron" >> $cfgPath;
+
+echo "$logPath {
+      monthly
+      size 500M
+      rotate 12
+      compress
+      delaycompress
+      missingok
+      notifempty
+      create 644 root root
+}" | sudo tee $rotatePath > /dev/null;
 
 if [[ "$1" = "-noup" ]]; then exit; fi
 

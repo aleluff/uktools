@@ -9,6 +9,7 @@
 logPath="/var/log/ukt.log";
 cfgPath="./ukt.config";
 splPath="./sample.config";
+rotatePath="/etc/logrotate.d/ukt";
 delimSub="-------------------------------------------------------------------------------";
 delimTit="———————————————————————————————————————————————————————————————————————————————";
 

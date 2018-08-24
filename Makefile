@@ -24,9 +24,7 @@ uninstall:
 	@sudo rm -f $(DESTDIR)$(PREFIX)/uktools-*
 	@echo Removing profile.d file
 	@sudo rm -f $(MOTD_PATH)
-	@echo Removing config file
-	@sudo rm -f $(SRC_DIR)/ukt.cfg
-	@echo Removing other stuff
+	@echo Removing config file and other stuff
 	@sudo $(SRC_DIR)/setup -unin
 
 .PHONY: upgrade
