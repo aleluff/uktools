@@ -105,7 +105,7 @@ if [[ "$1" = "-noup" ]]; then exit; fi
 
 read -p "Setup complete. Upgrade the kernel right now? (y/n): " -n 1 -s now
 case "$now" in
-	y | Y)	echo "Downloading"; ./upgrade ;;
+	y | Y)	echo "Downloading"; sudo ./upgrade ;;
 esac
 
 echo
