@@ -54,8 +54,8 @@ It'll install necessary files and run setup
 * Now you can call the script whereever you are
 
 ```
-uktools-upgrade
-uktools-purge
+sudo uktools-upgrade
+sudo uktools-purge
 ```
 
 * You can re-run setup script by
