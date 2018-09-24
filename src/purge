@@ -17,16 +17,26 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 source ./common $$
 
 
-function keepBaseVersion(){
-	local nb=0;
-	local base=$(echo "${kernels[0]}" | cut -d'-' -f1);
+#Keep only up-to-date all minor versions
+function keepMinorVersion(){
+	local index=0;
+	local occurence=0;
+	local tmpKers=();
+
+	kernels=($(echo "${kernels[@]}" | sort -r));
 
 	for kernel in "${kernels[@]}"
 	do
-		if [[ $base = $(echo "$kernel" | cut -d'-' -f1) ]]; then ((nb++)) ;fi
+		occurence=$(echo "${kernels[@]}" | grep -o $(echo "$kernel" | cut -d'.' -f1,2) | wc -l)
+		if [[ $occurence > 1 ]]; then
+			tmpKers+=($kernel);
+			unset kernels[index];
+    	fi
+
+    	((index++));
 	done
 
-	if [[ $nb > 0 ]]; then unset 'kernels[nb-1]'; fi
+	kernels=($(echo "${tmpKers[@]}" | sort));
 }
 
 function remove() {
@@ -49,12 +59,12 @@ else
 fi
 
 current=$(uname -r | cut -d'-' -f-2);
-kernels=($(dpkg -l | grep "linux-headers" | grep -v "generic" | awk '{ print $2 }' | cut -d'-' -f3- | sort -uV | head -n -2 | grep -v "$current"));
+kernels=($(dpkg -l | grep "linux-headers" | grep -v "generic" | awk '{ print $2 }' | cut -d'-' -f3- | sort -uV | grep -v "$current" | head -n -1));
 
-keepBaseVersion
+keepMinorVersion
 
 displayTitle "UkTools Purge";
-displaySubTitle "This script will only keep three versions: the first and the last two, others will be purge";
+displaySubTitle "This script will only keep last versions of each installed minor versions";
 
 echo "
 ------------------------------- Current Version -------------------------------

@@ -87,14 +87,18 @@ make uninstall
 * check "no need to upgrade" by running script two times in a row
 
 ##### Purge
-* check if script purge right versions and keep only 3 ones
-* check if script keep the very last version of base kernel
-* eg with Ubuntu 18.04 : 
-	- 4.15.0-20.21 base kernel [to delete]
-	- 4.15.0.20.23 updated base kernel [to keep]
-	- 4.16.5 updated kernel from script [to delete]
-	- 4.16.6 updated kernel from script [to keep]
-	- 4.16.7 updated kernel from script [to keep]
+* check if script keep the very last version of minor kernel
+* eg with Ubuntu 18.04 :
+
+| Versions   | Keep |
+|------------|:----:|
+| 4.13.0-39  |✗|
+| 4.13.0-41  |✓|
+| 4.15.0-32  |✗|
+| 4.15.0.34  |✓|
+| 4.16.5     |✗|
+| 4.16.6     |✗|
+| 4.16.7     |✓|
 
 ### Any other contributions is welcome (trad, display, etc)
 
