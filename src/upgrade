@@ -85,7 +85,7 @@ function checkSameVersion() {
 
 	if [[ $locVersion =~ $reqVersion ]]; then
 		echo "Kernel up to date. Finishing";
-		exit
+		exit;
 	fi
 }
 

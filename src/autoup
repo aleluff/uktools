@@ -20,13 +20,18 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 if [[ -z "$1" ]]; then
 	echo "You have to pass caller script id as parameter (./autoup \$$)";
-	exit;
+	exit 2;
 fi
 
 ppid=$1;
+debugFile="./autoup.debug";
+activeFile="./autoup.on";
+tmpFile="./autoup.tmp";
+gitOwner=$(stat -c '%U' $(basename $0));
+
 verbGit=" -q";
 verbShell=" &>> /dev/null";
-if [[ -f ./autoup.debug ]]; then
+if [[ -f $debugFile ]]; then
 	verbGit="";
 	verbShell="";
 fi
@@ -48,42 +53,42 @@ function reloadEx(){
 #All is in the name
 function errorEx(){
 	echo "Error while git auto-update. Exiting Now!";
-	exit;
+	exit 2;
 }
 
 function checkTimeStamp() {
-	local file="autoup.tmp";
 	local ts=$(date +%s);
 	local fileTs=0;
 
-	if [[ -f $file ]]; then	fileTs=$(($(cat $file)+3600)); fi
+	if [[ -f $tmpFile ]]; then	fileTs=$(($(cat $tmpFile)+3600)); fi
 
 	if [[ $fileTs > $ts ]]; then
 		#Consider as up-to-date (useful when call multiple time by other script)
 		normalEx
 	else
-		echo $ts > $file
+		execCmd "echo $ts > $tmpFile";
 	fi
 }
 
 function execCmd() {
 	if [[ "$(whoami)" = $gitOwner ]]; then
-		$1;
+		$("$1");
 	else
 		echo "User for Git Update: $gitOwner";
 		su $gitOwner -c "$1 $verbShell";
 	fi
 }
+
 function isRepoUp() {
 	execCmd "git fetch -a $verbGit";
 	[[ $(git rev-parse HEAD) = $(git rev-parse @{u}) ]];
 }
 
 #Test if code auto update is activated
-if [[ ! -f ./autoup.on ]]; then normalEx; fi
+if [[ ! -f $activeFile ]]; then normalEx; fi
 
 #If debug, always update
-if [[ ! -f ./autoup.debug ]]; then checkTimeStamp; fi
+if [[ ! -f $debugFile ]]; then checkTimeStamp; fi
 
 #Test if it's a valid git repo
 if ! git rev-parse --git-dir &>> /dev/null; then normalEx; fi
@@ -91,8 +96,6 @@ if ! git rev-parse --git-dir &>> /dev/null; then normalEx; fi
 echo "———————————————————————————————————————————————————————————————————————————————";
 echo "                                     Autoup";
 echo "———————————————————————————————————————————————————————————————————————————————";
-
-gitOwner=$(stat -c '%U' $(basename $0));
 
 if ! isRepoUp; then
 	echo
@@ -111,5 +114,5 @@ if ! isRepoUp; then
 fi
 
 #Repo up-to-date
-if [[ -f ./autoup.debug ]]; then echo "Already Up To Date"; fi
+if [[ -f $debugFile ]]; then echo "Already Up To Date"; fi
 normalEx

@@ -50,7 +50,7 @@ case "$rc" in
 	n | N)	echo "Release Candidate"; kernelrc=1 ;;
 	*)		echo "Bad input. Using default config";
 			cp $splPath $cfgPath ;
-			exit ;;
+			exit 2;;
 esac
 
 read -p "Do you want the Generic kernel? (y/n): " -n 1 -s km

@@ -40,7 +40,7 @@ function fatalError() {
 	local reset=$(tput sgr0)
 
 	echo "${red}$1${reset}"
-	exit;
+	exit 2;
 }
 
 function displayTitle() {
