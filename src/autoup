@@ -60,9 +60,9 @@ function checkTimeStamp() {
 	local ts=$(date +%s);
 	local fileTs=0;
 
-	if [[ -f $tmpFile ]]; then	fileTs=$(($(cat $tmpFile)+3600)); fi
+	if [[ -f $tmpFile ]]; then fileTs=$(($(cat $tmpFile)+3600)); fi
 
-	if [[ $fileTs > $ts ]]; then
+	if [[ $fileTs -gt $ts ]]; then
 		#Consider as up-to-date (useful when call multiple time by other script)
 		normalEx
 	else
@@ -72,7 +72,7 @@ function checkTimeStamp() {
 
 function execCmd() {
 	if [[ "$(whoami)" = $gitOwner ]]; then
-		$("$1");
+		eval $1;
 	else
 		echo "User for Git Update: $gitOwner";
 		su $gitOwner -c "$1 $verbShell";
