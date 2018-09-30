@@ -18,7 +18,7 @@ and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/ma
 **Incompatibilities**
 * Linux Tools (perf, usb over ether, kbuild)
 * Canonical Livepatch
-* Some misconfigured packages (eg rtl8812au-dkms)
+* Some misconfigured packages (eg rtl8812au-dkms/4.3.8)
 * Obviously all packages not compatible with very last versions of kernel (eg sysdig)
 
 -----------------------------------------
