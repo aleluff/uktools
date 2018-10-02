@@ -5,17 +5,26 @@ UkTools - Upgrade/Purge
 
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
 
-**Upgrade**
-* It provides to upgrade linux kernel to latest stable version for Ubuntu/Mint
-and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
+####Upgrade
+* It provides to upgrade Linux kernel to latest version for Ubuntu/Mint
+and derivatives. 
 
-**Purge**
-* It removes old linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
+#####3 kernel version are available
+
+| Version          | Stability | Features & Performance | Security  | Compatibility |
+|-------------------|:---------:|:----------------------:|:---------:|:-------------:|
+| Release Candidate | Low       | Many                   | Very High | Low           |
+| Testing           | Normal    | Some                   | High      | Normal        |
+| Stable            | High      | Few                    | Low       | Very High     |
+Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
+
+####Purge
+* It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
 
 **Auto Run** can be enabled/disabled in setup<br>
 * If enabled, upgrade will be done automatically by cronjob each 2hours.
 
-**Incompatibilities**
+**Incompatibilities** with RC and testing version
 * Linux Tools (perf, usb over ether, kbuild)
 * Canonical Livepatch
 * Some misconfigured packages (eg rtl8812au-dkms/4.3.8)
@@ -24,8 +33,8 @@ and derivatives. Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/ma
 -----------------------------------------
 
 # One-line Install
-**Only use for testing, prefer normal setup for regular use**
-
+#####Only use for testing, prefer normal setup for regular use
+######It'll get Testing kernel
 ```
 cd /usr/src && \
 sudo wget https://github.com/usbkey9/uktools/archive/master.tar.gz && \

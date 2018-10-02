@@ -29,11 +29,11 @@ help="Usage: $(basename -- "$0") [OPTION]...
 Dowload and install last available kernel for ubuntu systems.
 Settings can be saved if no options provided or by running setup script
 
-  -r,			Get Release Candidate kernel (default: Stable kernel)
+  -r,			Get Release Candidate kernel (default: Testing kernel)
+  -s,			Get Stable kernel (default: Testing kernel)
   -l,			Get Low Latency kernel (default: Generic kernel)
   -p,			Run Purge script after Upgrade
   -h,			Show this help
-  --simple,		Use default settings (stable, generic, no auto run, no purge)
 
 Examples:
   upgrade --simple	Download, install the last kernel using defaults settings
@@ -109,7 +109,8 @@ else
 
 		while getopts 'rlph' flag; do
 			case "${flag}" in
-				r)	kernelrc=1 ;;
+				r)	kerneltype="rc" ;;
+				s)	kerneltype="stable" ;;
 				l)	kernelmode="lowlatency" ;;
 				p)	arm=1 ;;
 				h)	echo "${help}";
@@ -122,9 +123,10 @@ else
 	fi ;
 fi
 
-case "$kernelrc" in
-	1) kernelURL=$(lynx -dump -nonumbers $fullUrl | tail -1) ;;
-	*) kernelURL="$fullUrl"$(lynx -dump -nonumbers "$fullUrl" | rev | cut -d'/' -f 2 | rev | egrep "^v[0-9]*[.][0-9]*([.][0-9]*)?$" | sort -V | tail -1)"/" ;;
+case "$kerneltype" in
+	"rc") kernelURL=$(lynx -dump -nonumbers $fullUrl | tail -1) ;;
+	"testing") kernelURL="$fullUrl"$(lynx -dump -nonumbers "$fullUrl" | rev | cut -d'/' -f 2 | rev | egrep "^v[0-9]*[.][0-9]*([.][0-9]*)?$" | sort -V | tail -1)"/" ;;
+	"stable") kernelURL="" ;;
 esac
 
 reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)

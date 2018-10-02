@@ -44,13 +44,25 @@ fi
 displayTitle "UkTools Setup";
 displaySubTitle "You can use this script as many time as you want";
 
-read -p "Do you want the Stable Release (if not sure, press y)? (y/n): " -n 1 -s rc
-case "$rc" in
-	y | Y)	echo "Stable Release"; kernelrc=0 ;;
-	n | N)	echo "Release Candidate"; kernelrc=1 ;;
-	*)		echo "Bad input. Using default config";
+PS3='Please enter your choice: '
+options=("Option 1" "Option 2" "Option 3" "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Option 1") echo "you chose choice 1" ;;
+        "Option 2") echo "you chose choice 2" ;;
+        "Option 3") echo "you chose choice $REPLY which is $opt" ;;
+        *)  echo "Bad input. Using default config";
 			cp $splPath $cfgPath ;
 			exit 2;;
+    esac
+done
+
+read -p "Which kernel do you want ?" -n 1 -s kt
+case "$kt" in
+	y | Y)	echo "Testing kernel"; kerneltype="testing" ;;
+	n | N)	echo "Release Candidate"; kerneltype=1 ;;
+	*)
 esac
 
 read -p "Do you want the Generic kernel? (y/n): " -n 1 -s km
@@ -85,7 +97,7 @@ esac
 
 if [[ -f $cfgPath ]]; then rm $cfgPath; fi
 
-echo "kernelrc=$kernelrc" >> $cfgPath;
+echo "kerneltype=$kerneltype" >> $cfgPath;
 echo "kernelmode=$kernelmode" >> $cfgPath;
 echo "arm=$arm" >> $cfgPath;
 echo "cron=$cron" >> $cfgPath;
