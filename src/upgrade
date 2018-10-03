@@ -128,6 +128,7 @@ case "$kerneltype" in
 	"testing") kernelURL="$fullUrl"$(lynx -dump -nonumbers "$fullUrl" | rev | cut -d'/' -f 2 | rev | egrep "^v[0-9]*[.][0-9]*([.][0-9]*)?$" | sort -V | tail -1)"/" ;;
 	"stable") kernelURL="" ;;
 esac
+#TODO get last kernel from deb repo
 
 reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
 

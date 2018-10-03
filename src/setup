@@ -45,7 +45,7 @@ displayTitle "UkTools Setup";
 displaySubTitle "You can use this script as many time as you want";
 
 PS3='Please enter your choice: '
-options=("Option 1" "Option 2" "Option 3" "Quit")
+options=("Release" "Testing" "Option 3" "Quit")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -58,6 +58,8 @@ do
     esac
 done
 
+#TODO test with cron
+#TODO migration kernelrc -> kerneltype (sample + config)
 read -p "Which kernel do you want ?" -n 1 -s kt
 case "$kt" in
 	y | Y)	echo "Testing kernel"; kerneltype="testing" ;;
