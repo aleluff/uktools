@@ -5,11 +5,11 @@ UkTools - Upgrade/Purge
 
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
 
-####Upgrade
+#### Upgrade
 * It provides to upgrade Linux kernel to latest version for Ubuntu/Mint
 and derivatives. 
 
-#####3 kernel version are available
+##### 3 kernel version are available
 
 | Version          | Stability | Features & Performance | Security  | Compatibility |
 |-------------------|:---------:|:----------------------:|:---------:|:-------------:|
@@ -18,7 +18,7 @@ and derivatives.
 | Stable            | High      | Few                    | Low       | Very High     |
 Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
 
-####Purge
+#### Purge
 * It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
 
 **Auto Run** can be enabled/disabled in setup<br>
@@ -33,8 +33,8 @@ Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
 -----------------------------------------
 
 # One-line Install
-#####Only use for testing, prefer normal setup for regular use
-######It'll get Testing kernel
+##### Only use for testing, prefer normal setup for regular use
+###### It'll get Testing kernel
 ```
 cd /usr/src && \
 sudo wget https://github.com/usbkey9/uktools/archive/master.tar.gz && \
