@@ -90,37 +90,33 @@ function checkSameVersion() {
 }
 
 if ! execCmd "dpkg -s lynx"; then
-    waitDpkg
-    sudo apt-get install lynx -y;
+	waitDpkg
+	sudo apt-get install lynx -y;
 fi
 
 displayTitle "UkTools Upgrade";
 
 if ! execCmd "ping -q -w 1 -c 1 $server"; then error "No network available! Exiting"; fi
 
-if [[ "$1" = "--simple" ]]; then
-	source $splPath ;
+if [[ "$#" = "0" ]]; then
+	if [[ ! -f $cfgPath ]]; then ./setup -noup; fi
+	source $cfgPath ;
 else
-	if [[ "$#" = "0" ]]; then
-		if [[ ! -f $cfgPath ]]; then ./setup -noup; fi
-		source $cfgPath ;
-	else
-		source $splPath ;
+	source $splPath ;
 
-		while getopts 'rlph' flag; do
-			case "${flag}" in
-				r)	kerneltype="rc" ;;
-				s)	kerneltype="stable" ;;
-				l)	kernelmode="lowlatency" ;;
-				p)	arm=1 ;;
-				h)	echo "${help}";
-					exit ;;
-				*)	echo "Unexpected option ${flag}";
-					echo "${help}";
-					exit ;;
-			esac
-		done
-	fi ;
+	while getopts 'rlph' flag; do
+		case "${flag}" in
+			r)	kerneltype="rc" ;;
+			s)	kerneltype="stable" ;;
+			l)	kernelmode="lowlatency" ;;
+			p)	arm=1 ;;
+			h)	echo "${help}";
+				exit ;;
+			*)	echo "Unexpected option ${flag}";
+				echo "${help}";
+				exit ;;
+		esac
+	done
 fi
 
 case "$kerneltype" in
@@ -173,6 +169,6 @@ if [[ $cron = 0 ]]; then
 		y | Y)  echo "Rebooting";
 				sleep 2;
 				sudo reboot ;;
-		*)      echo "You have to reboot for using new kernel";
+		*)		echo "You have to reboot for using new kernel";
 	esac ;
 fi

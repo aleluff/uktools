@@ -48,14 +48,14 @@ PS3='Please enter your choice: '
 options=("Release" "Testing" "Option 3" "Quit")
 select opt in "${options[@]}"
 do
-    case $opt in
-        "Option 1") echo "you chose choice 1" ;;
-        "Option 2") echo "you chose choice 2" ;;
-        "Option 3") echo "you chose choice $REPLY which is $opt" ;;
-        *)  echo "Bad input. Using default config";
+	case $opt in
+		"Option 1") echo "you chose choice 1" ;;
+		"Option 2") echo "you chose choice 2" ;;
+		"Option 3") echo "you chose choice $REPLY which is $opt" ;;
+		*)  echo "Bad input. Using default config";
 			cp $splPath $cfgPath ;
 			exit 2;;
-    esac
+	esac
 done
 
 #TODO test with cron

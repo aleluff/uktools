@@ -31,9 +31,9 @@ function keepMinorVersion(){
 		if [[ $occurence > 1 ]]; then
 			tmpKers+=($kernel);
 			unset kernels[index];
-    	fi
+		fi
 
-    	((index++));
+		((index++));
 	done
 
 	kernels=($(echo "${tmpKers[@]}" | sort));
