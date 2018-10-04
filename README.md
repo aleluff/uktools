@@ -11,12 +11,13 @@ and derivatives.
 
 ##### 3 kernel version are available
 
-| Version          | Stability | Features & Performance | Security  | Compatibility |
+| Version           | Stability | Features & Performance | Security  | Compatibility |
 |-------------------|:---------:|:----------------------:|:---------:|:-------------:|
 | Release Candidate | Low       | Many                   | Very High | Low           |
 | Testing           | Normal    | Some                   | High      | Normal        |
 | Stable            | High      | Few                    | Low       | Very High     |
-Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
+
+*Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)*
 
 #### Purge
 * It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
