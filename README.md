@@ -42,7 +42,7 @@ sudo tar -xvf master.tar.gz && \
 sudo rm -fr master.tar.gz && \
 cd uktools-master && \
 sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
-./src/upgrade --simple
+./src/upgrade -s
 ```
 
 # Normal Setup
