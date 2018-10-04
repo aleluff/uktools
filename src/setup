@@ -22,6 +22,7 @@ source ./common $$
 
 script="$(pwd)/upgrade";
 autoupFile="./autoup.on";
+ktypes=("rc" "testing" "stable");
 help="Usage: setup [OPTION]...
 Create config file based on your chooses
 
@@ -44,28 +45,19 @@ fi
 displayTitle "UkTools Setup";
 displaySubTitle "You can use this script as many time as you want";
 
-PS3='Please enter your choice: '
-options=("Release" "Testing" "Option 3" "Quit")
-select opt in "${options[@]}"
+#TODO test with cron
+PS3='Which kernel do you want ? ';
+select kerneltype in "${ktypes[@]}"
 do
-	case $opt in
-		"Option 1") echo "you chose choice 1" ;;
-		"Option 2") echo "you chose choice 2" ;;
-		"Option 3") echo "you chose choice $REPLY which is $opt" ;;
-		*)  echo "Bad input. Using default config";
-			cp $splPath $cfgPath ;
-			exit 2;;
+	case $kerneltype in
+		"rc")		echo "Release Candidate kernel"; break; ;;
+		"testing")	echo "Testing kernel"; break; ;;
+		"stable")	echo "Stable kernel"; break; ;;
+		*)			echo "Bad input. Using default config";
+					cp $splPath $cfgPath ;
+					exit 2;;
 	esac
 done
-
-#TODO test with cron
-#TODO migration kernelrc -> kerneltype (sample + config)
-read -p "Which kernel do you want ?" -n 1 -s kt
-case "$kt" in
-	y | Y)	echo "Testing kernel"; kerneltype="testing" ;;
-	n | N)	echo "Release Candidate"; kerneltype=1 ;;
-	*)
-esac
 
 read -p "Do you want the Generic kernel? (y/n): " -n 1 -s km
 case "$km" in

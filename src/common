@@ -80,3 +80,5 @@ function waitDpkg() {
 		echo "Waiting while dpkg is occupied";
 	done
 }
+
+./migration
