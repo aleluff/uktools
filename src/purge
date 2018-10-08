@@ -76,11 +76,10 @@ if [[ ${#kernels[@]} < 1 ]]; then
 else
 	echo "------------------------------ Versions to Remove -----------------------------"
 	printf '%s\n' "${kernels[@]}";
-	sleep 2;
 	echo
 
 	if [[ $arm = 0 ]]; then
-		read -p "---Do you want to remove the old kernels/headers versions? (Y/n): " -n 1 -t 10 -s rr
+		read -p "Do you want to remove the old kernels/headers versions? (Y/n): " -n 1 -t 10 -s rr
 		case "$rr" in
 			Y)	echo "Purging";
 				sleep 2;
@@ -89,6 +88,7 @@ else
 			*)	echo "Keep old kernels untouched" ;;
 		esac;
 	else
+		sleep 2;
 		echo
 		displaySubTitle "Purging";
 
