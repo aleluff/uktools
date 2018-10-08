@@ -50,9 +50,9 @@ function error() {
 }
 
 function download() {
-	local filename=$(basename "$package");
+	local filename=$(basename "$1");
 
-	if ! execCmd "wget -q -P /tmp $package"; then error "Download of $package failed!"; fi
+	if ! execCmd "wget -q -P /tmp $1"; then error "Download of $1 failed!"; fi
 
 	if [[ ! "${checksums[@]}" =~ "$(shasum /tmp/$filename | awk '{ print $1 }')" ]]; then
 		echo "Checksum failed for $filename !!!";
@@ -78,15 +78,6 @@ function downloadMulti() {
 	do
 		download $package;
 	done
-}
-
-function checkSameVersion() {
-	local locVersion=$(dpkg -l |grep "linux-image" | grep "$kernelmode" | awk '{print $3}' | sed -e 's/-/./' | cut -d'.' -f-4 | sed -e 's/.0.*rc/-rc/' | cut -d'.' -f-3)
-
-	if [[ $locVersion =~ $reqVersion ]]; then
-		echo "Kernel up to date. Finishing";
-		exit;
-	fi
 }
 
 if ! execCmd "dpkg -s lynx"; then
@@ -119,16 +110,22 @@ else
 	done
 fi
 
+locVersion=$(dpkg -l |grep "linux-image" | grep "$kernelmode" | awk '{print $3}' | sed -e 's/-/./' | cut -d'.' -f-4 | sed -e 's/.0.*rc/-rc/' | cut -d'.' -f-3)
+
 case "$kerneltype" in
-	"rc") kernelURL=$(lynx -dump -nonumbers $fullUrl | tail -1) ;;
-	"testing") kernelURL="$fullUrl"$(lynx -dump -nonumbers "$fullUrl" | rev | cut -d'/' -f 2 | rev | egrep "^v[0-9]*[.][0-9]*([.][0-9]*)?$" | sort -V | tail -1)"/" ;;
-	"stable") kernelURL="" ;;
+	"rc")       kernelURL=$(lynx -dump -nonumbers $fullUrl | tail -1) ;;
+	"testing")  kernelURL="$fullUrl"$(lynx -dump -nonumbers "$fullUrl" | rev | cut -d'/' -f 2 | rev | egrep "^v[0-9]*[.][0-9]*([.][0-9]*)?$" | sort -V | tail -1)"/" ;;
+	"stable")   locals=($(echo "$locVersion" | sed 's/,/\n/g'))
+				baseKernel=${locals[$(( RANDOM % ${#locals[*]} ))]};
+				kernelURL="$fullUrl"$(lynx -dump -nonumbers "$fullUrl" | rev | cut -d'/' -f 2 | rev | egrep "^v[0-9]*[.][0-9]*([.][0-9]*)?$" | sort -V | grep $(echo "$baseKernel" | cut -d'.' -f-2) | tail -1)"/" ;;
 esac
-#TODO get last kernel from deb repo
 
 reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
 
-checkSameVersion
+if [[ $locVersion =~ $reqVersion ]]; then
+	echo "Kernel up to date. Finishing";
+	#exit;
+fi
 
 if ! execCmd "sudo echo 0"; then error "Permission denied. Require sudo access"; fi
 
