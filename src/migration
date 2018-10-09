@@ -13,11 +13,11 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 cfgFile="./ukt.config";
 
-if [[ -f $cfgFile ]]; then exit; fi
+if [[ ! -f $cfgFile ]]; then exit; fi
 
 source $cfgFile;
 
-if [[ -v kernelrc ]]; then exit; fi
+if [[ -v kerneltype ]]; then exit; fi
 
 if [[ $kernelrc -eq 1 ]]; then
 	kerneltype="rc";
@@ -27,5 +27,5 @@ fi
 
 sed -i.bak '/kernelrc/d' $cfgFile;
 echo "
-kerneltype=\"$kerneltype\"" >> $cfgFile;
+kerneltype=$kerneltype" >> $cfgFile;
 

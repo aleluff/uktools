@@ -124,7 +124,7 @@ reqVersion=$(echo $kernelURL | awk -F"/v" '{print $2}' | cut -d'/' -f 1)
 
 if [[ $locVersion =~ $reqVersion ]]; then
 	echo "Kernel up to date. Finishing";
-	#exit;
+	exit;
 fi
 
 if ! execCmd "sudo echo 0"; then error "Permission denied. Require sudo access"; fi
