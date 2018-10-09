@@ -1,4 +1,4 @@
-DESTDIR = 
+DESTDIR =
 PREFIX = /usr/sbin
 SRC_DIR := $(realpath ./src)
 MOTD_PATH = /etc/update-motd.d/85-upgrade
@@ -24,6 +24,8 @@ uninstall:
 	@sudo rm -f $(DESTDIR)$(PREFIX)/uktools-*
 	@echo Removing profile.d file
 	@sudo rm -f $(MOTD_PATH)
+	@echo Removing autoup files
+	@sudo $(SRC_DIR)/autoup -unin
 	@echo Removing config file and other stuff
 	@sudo $(SRC_DIR)/setup -unin
 
