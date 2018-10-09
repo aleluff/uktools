@@ -29,6 +29,11 @@ activeFile="./autoup.on";
 tmpFile="./autoup.tmp";
 gitOwner=$(stat -c '%U' $(basename $0));
 
+if [[ "$ppid" = "-unin" ]]; then
+	sudo rm -f $debugFile $activeFile $tmpFile;
+	exit;
+fi
+
 verbGit=" -q";
 verbShell=" &>> /dev/null";
 if [[ -f $debugFile ]]; then
