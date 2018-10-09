@@ -53,11 +53,14 @@ do
 		"rc")		echo "Release Candidate kernel"; break; ;;
 		"testing")	echo "Testing kernel"; break; ;;
 		"stable")	echo "Stable kernel"; break; ;;
-		*)			echo "Bad input. Using default config";
-					cp $splPath $cfgPath ;
-					exit 2;;
 	esac
 done
+
+if [[ -z $kerneltype ]]; then
+	echo "Bad input. Using default config";
+	cp $splPath $cfgPath ;
+	exit 2;
+fi
 
 read -p "Do you want the Generic kernel? (y/n): " -n 1 -s km
 case "$km" in
