@@ -117,6 +117,7 @@ case "$kerneltype" in
 	"testing")  kernelURL="$fullUrl"$(lynx -dump -nonumbers "$fullUrl" | rev | cut -d'/' -f 2 | rev | egrep "^v[0-9]*[.][0-9]*([.][0-9]*)?$" | sort -V | tail -1)"/" ;;
 	"stable")   locals=($(echo "$locVersion" | sed 's/,/\n/g'))
 				baseKernel=${locals[$(( RANDOM % ${#locals[*]} ))]};
+				#TODO apt search
 				kernelURL="$fullUrl"$(lynx -dump -nonumbers "$fullUrl" | rev | cut -d'/' -f 2 | rev | egrep "^v[0-9]*[.][0-9]*([.][0-9]*)?$" | sort -V | grep $(echo "$baseKernel" | cut -d'.' -f-2) | tail -1)"/" ;;
 esac
 
