@@ -16,7 +16,6 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source ./common $$
 
-#TODO test with true base kernel and updated one (4.15.18 vs 4.15.0-39)
 
 #Keep only up-to-date all minor versions
 function keepMinorVersion(){
