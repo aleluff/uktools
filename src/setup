@@ -46,7 +46,7 @@ displayTitle "UkTools Setup";
 displaySubTitle "You can use this script as many time as you want";
 
 #TODO test with cron
-PS3='Which kernel do you want ? ';
+PS3='Which kernel do you want [2]? ';
 select kerneltype in "${ktypes[@]}"
 do
 	case $kerneltype in
