@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# @author Usb Key
+# @mail usbkey9@gmail.com
+
+SOURCE="${BASH_SOURCE[0]}"
+while [[ -h "$SOURCE" ]]; do
+	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	SOURCE="$(readlink "$SOURCE")"
+	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+cfgFile="./ukt.config";
+
+if [[ ! -f $cfgFile ]]; then exit; fi
+
+source $cfgFile;
+
+if [[ -v kerneltype ]]; then exit; fi
+
+if [[ $kernelrc -eq 1 ]]; then
+	kerneltype="rc";
+else
+	kerneltype="testing";
+fi
+
+sed -i.bak '/kernelrc/d' $cfgFile;
+echo "
+kerneltype=$kerneltype" >> $cfgFile;
+

@@ -22,6 +22,7 @@ source ./common $$
 
 script="$(pwd)/upgrade";
 autoupFile="./autoup.on";
+ktypes=("rc" "testing" "stable");
 help="Usage: setup [OPTION]...
 Create config file based on your chooses
 
@@ -44,14 +45,22 @@ fi
 displayTitle "UkTools Setup";
 displaySubTitle "You can use this script as many time as you want";
 
-read -p "Do you want the Stable Release (if not sure, press y)? (y/n): " -n 1 -s rc
-case "$rc" in
-	y | Y)	echo "Stable Release"; kernelrc=0 ;;
-	n | N)	echo "Release Candidate"; kernelrc=1 ;;
-	*)		echo "Bad input. Using default config";
-			cp $splPath $cfgPath ;
-			exit 2;;
-esac
+#TODO test with cron
+PS3='Which kernel do you want ? ';
+select kerneltype in "${ktypes[@]}"
+do
+	case $kerneltype in
+		"rc")		echo "Release Candidate kernel"; break; ;;
+		"testing")	echo "Testing kernel"; break; ;;
+		"stable")	echo "Stable kernel"; break; ;;
+	esac
+done
+
+if [[ -z $kerneltype ]]; then
+	echo "Bad input. Using default config";
+	cp $splPath $cfgPath ;
+	exit 2;
+fi
 
 read -p "Do you want the Generic kernel? (y/n): " -n 1 -s km
 case "$km" in
@@ -85,7 +94,7 @@ esac
 
 if [[ -f $cfgPath ]]; then rm $cfgPath; fi
 
-echo "kernelrc=$kernelrc" >> $cfgPath;
+echo "kerneltype=$kerneltype" >> $cfgPath;
 echo "kernelmode=$kernelmode" >> $cfgPath;
 echo "arm=$arm" >> $cfgPath;
 echo "cron=$cron" >> $cfgPath;

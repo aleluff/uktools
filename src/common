@@ -17,8 +17,8 @@ delimTit="———————————————————————�
 function execCmd() {
 	local cmd=$1;
 
-    if [[ ! $($cmd &>> /dev/null && echo 0) = 0 ]]; then
-        return 1;
+	if [[ ! $($cmd &>> /dev/null && echo 0) = 0 ]]; then
+		return 1;
 	fi
 
 	return 0;
@@ -28,8 +28,8 @@ function execCmd() {
 function execCmdAndDisplayErr() {
 	local cmd=$1;
 
-    if [[ ! $($cmd > /dev/null && echo 0) = 0 ]]; then
-        return 1;
+	if [[ ! $($cmd > /dev/null && echo 0) = 0 ]]; then
+		return 1;
 	fi
 
 	return 0;
@@ -80,3 +80,5 @@ function waitDpkg() {
 		echo "Waiting while dpkg is occupied";
 	done
 }
+
+./migration

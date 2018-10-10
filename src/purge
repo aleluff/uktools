@@ -16,6 +16,7 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source ./common $$
 
+#TODO test with true base kernel and updated one (4.15.18 vs 4.15.0-39)
 
 #Keep only up-to-date all minor versions
 function keepMinorVersion(){
@@ -31,9 +32,9 @@ function keepMinorVersion(){
 		if [[ $occurence > 1 ]]; then
 			tmpKers+=($kernel);
 			unset kernels[index];
-    	fi
+		fi
 
-    	((index++));
+		((index++));
 	done
 
 	kernels=($(echo "${tmpKers[@]}" | sort));
@@ -76,11 +77,10 @@ if [[ ${#kernels[@]} < 1 ]]; then
 else
 	echo "------------------------------ Versions to Remove -----------------------------"
 	printf '%s\n' "${kernels[@]}";
-	sleep 2;
 	echo
 
 	if [[ $arm = 0 ]]; then
-		read -p "---Do you want to remove the old kernels/headers versions? (Y/n): " -n 1 -t 10 -s rr
+		read -p "Do you want to remove the old kernels/headers versions? (Y/n): " -n 1 -t 10 -s rr
 		case "$rr" in
 			Y)	echo "Purging";
 				sleep 2;
@@ -89,6 +89,7 @@ else
 			*)	echo "Keep old kernels untouched" ;;
 		esac;
 	else
+		sleep 2;
 		echo
 		displaySubTitle "Purging";
 
