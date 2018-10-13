@@ -3,7 +3,7 @@
 # @author Usb Key
 # @mail usbkey9@gmail.com
 
-./autoup $1
+./autoup/autoup $1
 
 
 logPath="/var/log/ukt.log";

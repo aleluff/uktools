@@ -1,0 +1,3 @@
+[submodule "src/autoup"]
+	path = src/autoup
+	url = https://github.com/usbkey9/autoup
