@@ -17,19 +17,8 @@ and derivatives.
 | Testing           | Normal    | Some                   | High      | Normal        |
 | Stable            | High      | Few                    | Low       | Very High     |
 
-*Based on [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)*
-
 #### Purge
 * It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
-
-**Auto Run** can be enabled/disabled in setup<br>
-* If enabled, upgrade will be done automatically by cronjob each 2hours.
-
-**Incompatibilities** with RC and testing version
-* Linux Tools (perf, usb over ether, kbuild)
-* Canonical Livepatch
-* Some misconfigured packages (eg rtl8812au-dkms/4.3.8)
-* Obviously all packages not compatible with very last versions of kernel (eg sysdig)
 
 -----------------------------------------
 
@@ -84,6 +73,19 @@ cat /var/log/ukt.log
 ```
 make uninstall
 ```
+
+## Additionnal Infos
+
+* Upgrade kernel source come from [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)*
+
+**Auto Run** can be enabled/disabled in setup<br>
+* If enabled, upgrade will be done automatically by cronjob each 2hours.
+
+**Incompatibilities** with RC and testing version
+* Linux Tools (perf, usb over ether, kbuild)
+* Canonical Livepatch
+* Some misconfigured packages (eg rtl8812au-dkms/4.3.8)
+* Obviously all packages not compatible with very last versions of kernel (eg sysdig)
 
 ## TODO
 
