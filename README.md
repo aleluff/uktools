@@ -22,7 +22,7 @@ and derivatives.
 
 -----------------------------------------
 
-# One-line Install
+## One-line Install
 ##### Only use for testing, prefer normal setup for regular use
 ###### It'll get Testing kernel
 ```
@@ -37,18 +37,12 @@ sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 
 # Normal Setup
 
-* Download
+* Download & Install
 
 ```
 git clone https://github.com/usbkey9/uktools && cd uktools
-```
-
-* Run the Makefile
-
-```
 make
 ```
-It'll install necessary files and run setup
 
 ### Optionnal
 
