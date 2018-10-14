@@ -21,20 +21,6 @@ and derivatives.
 * It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
 
 -----------------------------------------
-
-## One-line Install
-##### Only use for testing, prefer normal setup for regular use
-###### It'll get Testing kernel
-```
-cd /usr/src && \
-sudo wget https://github.com/usbkey9/uktools/archive/master.tar.gz && \
-sudo tar -xvf master.tar.gz && \
-sudo rm -fr master.tar.gz && \
-cd uktools-master && \
-sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
-./src/upgrade -d
-```
-
 # Normal Setup
 
 * Download & Install
@@ -66,6 +52,19 @@ cat /var/log/ukt.log
 * Uninstall
 ```
 make uninstall
+```
+
+## One-line Install
+##### Only use for testing, prefer normal setup for regular use
+###### It'll get Testing kernel
+```
+cd /usr/src && \
+sudo wget https://github.com/usbkey9/uktools/archive/master.tar.gz && \
+sudo tar -xvf master.tar.gz && \
+sudo rm -fr master.tar.gz && \
+cd uktools-master && \
+sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
+./src/upgrade -d
 ```
 
 ## Additionnal Infos
