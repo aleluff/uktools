@@ -29,15 +29,12 @@ help="Usage: $(basename -- "$0") [OPTION]...
 Dowload and install last available kernel for ubuntu systems.
 Settings can be saved if no options provided or by running setup script
 
+  -d,			Download and install the last kernel using defaults settings
   -r,			Get Release Candidate kernel (default: Testing kernel)
   -s,			Get Stable kernel (default: Testing kernel)
   -l,			Get Low Latency kernel (default: Generic kernel)
   -p,			Run Purge script after Upgrade
   -h,			Show this help
-
-Examples:
-  upgrade --simple	Download, install the last kernel using defaults settings
-  upgrade -p		Use default settings and run Purge
 ";
 
 function cleanTmp() {
@@ -95,8 +92,9 @@ if [[ "$#" = "0" ]]; then
 else
 	source $splPath ;
 
-	while getopts 'rlph' flag; do
+	while getopts 'rlphd' flag; do
 		case "${flag}" in
+			d)	;;
 			r)	kerneltype="rc" ;;
 			s)	kerneltype="stable" ;;
 			l)	kernelmode="lowlatency" ;;
