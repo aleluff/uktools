@@ -63,14 +63,14 @@ sudo uktools-purge
 cat /var/log/ukt.log
 ```
 
-* Uninstall (cron job included)
+* Uninstall
 ```
 make uninstall
 ```
 
 ## Additionnal Infos
 
-* Upgrade kernel source come from [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
+**Ubuntu kernel** packages comes from [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
 
 **Auto Run** can be enabled/disabled in setup<br>
 * If enabled, upgrade will be done automatically by cronjob each 2hours.
