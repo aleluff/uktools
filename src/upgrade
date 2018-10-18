@@ -113,7 +113,7 @@ locVersion=$(dpkg -l |grep "linux-image" | grep "$kernelmode" | awk '{print $3}'
 case "$kerneltype" in
 	"rc")       kernelURL=$(lynx -dump -nonumbers $fullUrl | tail -1) ;;
 	"testing")  kernelURL="$fullUrl"$(lynx -dump -nonumbers "$fullUrl" | rev | cut -d'/' -f 2 | rev | egrep "^v[0-9]*[.][0-9]*([.][0-9]*)?$" | sort -V | tail -1)"/" ;;
-	"stable")   baseKernel=$(apt-cache madison linux-headers-generic 2>/dev/null | awk '{ print $3 }' | cut -d'.' -f-2 | uniq)
+	"stable")   baseKernel=$(apt-cache madison linux-headers-generic | awk '{ print $3 }' | cut -d'.' -f-2)
 				kernelURL="$fullUrl"$(lynx -dump -nonumbers "$fullUrl" | rev | cut -d'/' -f 2 | rev | egrep "^v[0-9]*[.][0-9]*([.][0-9]*)?$" | sort -V | grep $(echo "$baseKernel" | cut -d'.' -f-2) | tail -1)"/" ;;
 esac
 

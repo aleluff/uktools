@@ -58,8 +58,9 @@ else
 	arm=0;
 fi
 
+base=$(apt-cache madison linux-headers-generic | awk '{ print $3 }' | sed -r 's/\./-/3')
 current=$(uname -r | cut -d'-' -f-2);
-kernels=($(dpkg -l | grep "linux-headers" | grep -v "generic" | awk '{ print $2 }' | cut -d'-' -f3- | sort -uV | grep -v "$current" | head -n -1));
+kernels=($(dpkg -l | grep "linux-headers" | grep -v "generic" | grep -v "$base" | awk '{ print $2 }' | cut -d'-' -f3- | sort -uV | grep -v "$current" | head -n -1));
 
 keepMinorVersion
 
