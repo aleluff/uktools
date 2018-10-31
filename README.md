@@ -6,7 +6,7 @@ UkTools
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
 
 #### Upgrade
-* It provides to upgrade Linux kernel to latest version for Ubuntu/Mint and derivatives.
+It provides to upgrade Linux kernel to latest version for Ubuntu/Mint and derivatives.
 
 ##### 4 kernel version are available
 
@@ -18,12 +18,12 @@ UkTools
 | CK                | Low       | Few      | Very High   | Low       | Low           |
 
 #### Purge
-* It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
+It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
 
 -----------------------------------------
 # Normal Setup
 
-* Download & Install
+Download & Install
 
 ```
 git clone https://github.com/usbkey9/uktools && cd uktools
@@ -32,26 +32,21 @@ make
 
 ### Optionnal
 
-* Now you can call the script whereever you are
+Now you can call the script whereever you are
 
 ```
 sudo uktools-upgrade
 sudo uktools-purge
 ```
 
-* You can re-run setup script by
+You can re-run setup script by
 ```
 ./setup
 ```
 
-* Logs are available with
+Logs are available with
 ```
 cat /var/log/ukt.log
-```
-
-* Uninstall
-```
-make uninstall
 ```
 
 ## One-line Install
@@ -69,7 +64,7 @@ sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 
 ## Additionnal Infos
 
-**Ubuntu kernel** packages comes from [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/), **except CK**
+**Ubuntu kernel** packages comes from [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/), except CK
 
 **CK kernel** is the stable kernel optimized for your CPU. More infos on [this page](https://wiki.archlinux.org/index.php/Linux-ck)
 
