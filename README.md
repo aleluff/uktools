@@ -1,21 +1,21 @@
 ![Project Status: Active][Project Status Image]
 
-UkTools - Upgrade/Purge
+UkTools
 ===========================
 
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
 
 #### Upgrade
-* It provides to upgrade Linux kernel to latest version for Ubuntu/Mint
-and derivatives. 
+* It provides to upgrade Linux kernel to latest version for Ubuntu/Mint and derivatives.
 
-##### 3 kernel version are available
+##### 4 kernel version are available
 
-| Version           | Stability | Features & Performance | Security  | Compatibility |
-|-------------------|:---------:|:----------------------:|:---------:|:-------------:|
-| Release Candidate | Low       | Many                   | Very High | Low           |
-| Testing           | Normal    | Some                   | High      | Normal        |
-| Stable            | High      | Few                    | Low       | Very High     |
+| Version           | Stability | Features | Performance | Security  | Compatibility |
+|-------------------|:---------:|:--------:|:-----------:|:---------:|:-------------:|
+| Release Candidate | Low       | Many     | Normal      | Very High | Low           |
+| Testing           | Normal    | Some     | Normal      | High      | Normal        |
+| Stable            | High      | Few      | Low         | Normal    | Very High     |
+| CK                | Low       | Few      | Very High   | Low       | Low           |
 
 #### Purge
 * It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
@@ -69,7 +69,9 @@ sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 
 ## Additionnal Infos
 
-**Ubuntu kernel** packages comes from [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/)
+**Ubuntu kernel** packages comes from [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/), **except CK**
+
+**CK kernel** is the stable kernel optimized for your CPU. More infos on [this page](https://wiki.archlinux.org/index.php/Linux-ck)
 
 **Auto Run** can be enabled/disabled in setup<br>
 * If enabled, upgrade will be done automatically by cronjob each 2hours.
