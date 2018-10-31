@@ -15,7 +15,7 @@ It provides to upgrade Linux kernel to latest version for Ubuntu/Mint and deriva
 | Release Candidate | Low       | Many     | Normal      | Very High | Low           |
 | Testing           | Normal    | Some     | Normal      | High      | Normal        |
 | Stable            | High      | Few      | Low         | Normal    | Very High     |
-| CK                | Low       | Few      | Very High   | Low       | Low           |
+| CK                | Normal    | Few      | Very High   | Low       | Low           |
 
 #### Purge
 It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
