@@ -66,7 +66,8 @@ sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 
 **Ubuntu kernel** packages comes from [this archive](http://kernel.ubuntu.com/~kernel-ppa/mainline/), except CK
 
-**CK kernel** is the stable kernel optimized for your CPU. More infos on [this page](https://wiki.archlinux.org/index.php/Linux-ck)
+**CK kernel** is the stable kernel optimized for your CPU. More infos on [this page](https://wiki.archlinux.org/index.php/Linux-ck)<br>
+**Not Recommanded** for servers
 
 **Auto Run** can be enabled/disabled in setup<br>
 * If enabled, upgrade will be done automatically by cronjob each 2hours.
