@@ -1,29 +1,28 @@
 ![Project Status: Active][Project Status Image]
 
-UkTools - Upgrade/Purge
+UkTools
 ===========================
 
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
 
 #### Upgrade
-* It provides to upgrade Linux kernel to latest version for Ubuntu/Mint
-and derivatives. 
+It provides to upgrade Linux kernel to latest version for Ubuntu/Mint and derivatives.
 
 ##### 3 kernel version are available
 
-| Version           | Stability | Features & Performance | Security  | Compatibility |
-|-------------------|:---------:|:----------------------:|:---------:|:-------------:|
-| Release Candidate | Low       | Many                   | Very High | Low           |
-| Testing           | Normal    | Some                   | High      | Normal        |
-| Stable            | High      | Few                    | Low       | Very High     |
+| Version           | Stability | Features | Performance | Security  | Compatibility |
+|-------------------|:---------:|:--------:|:-----------:|:---------:|:-------------:|
+| Release Candidate | Low       | Many     | Normal      | Very High | Low           |
+| Testing           | Normal    | Some     | Normal      | High      | Normal        |
+| Stable            | High      | Few      | Low         | Normal    | Very High     |
 
 #### Purge
-* It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
+It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
 
 -----------------------------------------
 # Normal Setup
 
-* Download & Install
+Download & Install
 
 ```
 git clone https://github.com/usbkey9/uktools && cd uktools
@@ -32,26 +31,21 @@ make
 
 ### Optionnal
 
-* Now you can call the script whereever you are
+Now you can call the script whereever you are
 
 ```
 sudo uktools-upgrade
 sudo uktools-purge
 ```
 
-* You can re-run setup script by
+You can re-run setup script by
 ```
 ./setup
 ```
 
-* Logs are available with
+Logs are available with
 ```
 cat /var/log/ukt.log
-```
-
-* Uninstall
-```
-make uninstall
 ```
 
 ## One-line Install
