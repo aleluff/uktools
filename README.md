@@ -76,6 +76,8 @@ sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 
 ## TODO
 
+### Choose next grub default kernel
+### Ask and allow to run purge periodically without upgrade
 ### Bash Unit Test
 #### Qemu/KVM are the container tools for testing
 
