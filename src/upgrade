@@ -92,7 +92,7 @@ if [[ "$#" = "0" ]]; then
 else
 	source $splPath ;
 
-	while getopts 'rlphd' flag; do
+	while getopts 'srlphd' flag; do
 		case "${flag}" in
 			d)	;;
 			r)	kerneltype="rc" ;;
