@@ -77,7 +77,7 @@ function downloadMulti() {
 	done
 }
 
-if ! execCmd "dpkg -s lynx"; then
+if ! execCmd "ls /usr/bin/lynx"; then
 	waitDpkg
 	sudo apt-get install lynx -y;
 fi
