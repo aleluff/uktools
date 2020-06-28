@@ -48,7 +48,6 @@ function error() {
 
 function download() {
 	local filename=$(basename "$1");
-	echo "$filename"
 	filename="$arch/$filename"
 	echo "$filename"
 
