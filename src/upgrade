@@ -48,6 +48,9 @@ function error() {
 
 function download() {
 	local filename=$(basename "$1");
+	echo "$filename"
+	filename="$arch/$filename"
+	echo "$filename"
 
 	if ! execCmd "wget -q -P /tmp $1"; then error "Download of $1 failed!"; fi
 
