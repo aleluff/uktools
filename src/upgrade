@@ -52,7 +52,6 @@ function download() {
 	if [[ ! $reqVersion < 5.7.2 ]]; then
 		filename="$arch/$filename"
 	fi
-	echo "$filename"
 
 	if ! execCmd "wget -q -P /tmp $1"; then error "Download of $1 failed!"; fi
 
