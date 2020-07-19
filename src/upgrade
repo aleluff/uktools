@@ -47,8 +47,11 @@ function error() {
 }
 
 function download() {
-	local filename=$(basename "$1");
-	filename="$arch/$filename"
+	local filename
+	filename=$(basename "$1");
+	if [[ ! $reqVersion < 5.7.2 ]]; then
+		filename="$arch/$filename"
+	fi
 	echo "$filename"
 
 	if ! execCmd "wget -q -P /tmp $1"; then error "Download of $1 failed!"; fi
