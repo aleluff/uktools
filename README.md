@@ -76,6 +76,7 @@ sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 
 ## TODO
 
+### Handle user interupt during install
 ### Choose next grub default kernel
 ### Ask and allow to run purge periodically without upgrade
 ### Bash Unit Test
