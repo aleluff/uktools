@@ -80,7 +80,7 @@ sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 ### Choose next grub default kernel
 ### Ask and allow to run purge periodically without upgrade
 ### Bash Unit Test
-#### Qemu/KVM are the container tools for testing
+#### Docker for testing
 
 * Test MakeFile
 
