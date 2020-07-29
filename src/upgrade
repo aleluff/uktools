@@ -25,6 +25,7 @@ server="kernel.ubuntu.com";
 fullUrl="http://$server/~kernel-ppa/mainline/";
 arch=$(dpkg --print-architecture);
 trys=0;
+checksums=();
 help="Usage: $(basename -- "$0") [OPTION]...
 Dowload and install last available kernel for ubuntu systems.
 Settings can be saved if no options provided or by running setup script
@@ -51,17 +52,19 @@ function download() {
 
 	if ! execCmd "wget -q -P /tmp $1"; then error "Download of $1 failed!"; fi
 
-	if [[ ! "${checksums[@]}" =~ "$(shasum /tmp/$filename | awk '{ print $1 }')" ]]; then
-		echo "Checksum failed for $filename !!!";
+	if [[ ! ${#checksums[@]} = 0 ]]; then
+                if  [["${checksums[@]}" =~ "$(shasum /tmp/$filename | awk '{ print $1 }')" ]]; then
+                        echo "Checksum failed for $filename !!!";
 
-		((trys++))
-		if [[ $trys > 3 ]]; then error "Too many checksums fails! Exiting"; fi
+                        ((trys++))
+                        if [[ $trys > 3 ]]; then error "Too many checksums fails! Exiting"; fi
 
-		echo "Redownloading ...";
-		download "$@";
-	else
-		echo "Checksum for $filename succeed";
-	fi
+                        echo "Redownloading ...";
+                        download "$@";
+                else
+                        echo "Checksum for $filename succeed";
+                fi
+        fi
 }
 
 function downloadMulti() {
@@ -126,7 +129,9 @@ fi
 
 if ! execCmd "sudo echo 0"; then error "Permission denied. Require sudo access"; fi
 
-checksums="$(wget -qO- $kernelURL/CHECKSUMS)"
+if ! execCmd "wget -q $kernelURL/crack.bundle"; then 
+        checksums=("$(wget -qO- $kernelURL/CHECKSUMS)")
+fi
 
 displaySubTitle "Downloading Linux Kernel $reqVersion";
 
