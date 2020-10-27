@@ -12,10 +12,10 @@ install:
 	@echo Creating the directories if neccessary
 	@mkdir -p $(DESTDIR)$(PREFIX)
 	@echo Linking profile.d file for reboot message
-	@sudo ln -s $(SRC_DIR)/profile $(MOTD_PATH)
+	@sudo ln -sf $(SRC_DIR)/profile $(MOTD_PATH)
 	@echo Linking files to global sbin directory
-	@sudo ln -s $(SRC_DIR)/upgrade $(DESTDIR)$(PREFIX)/uktools-upgrade
-	@sudo ln -s $(SRC_DIR)/purge $(DESTDIR)$(PREFIX)/uktools-purge
+	@sudo ln -sf $(SRC_DIR)/upgrade $(DESTDIR)$(PREFIX)/uktools-upgrade
+	@sudo ln -sf $(SRC_DIR)/purge $(DESTDIR)$(PREFIX)/uktools-purge
 	@$(SRC_DIR)/setup
 
 .PHONY: uninstall
