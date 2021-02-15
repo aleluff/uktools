@@ -80,7 +80,7 @@ else
 	echo
 
 	if [[ $arm = 0 ]]; then
-		read -p "Do you want to remove the old kernels/headers versions? (Y/n): " -n 1 -t 10 -s rr
+		read -p "Do you want to remove the old kernels/headers versions? (Y/[n]): " -n 1 -t 10 -s rr
 		case "$rr" in
 			Y)	echo "Purging";
 				sleep 2;

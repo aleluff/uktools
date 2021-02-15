@@ -129,7 +129,7 @@ fi
 
 if ! execCmd "sudo echo 0"; then error "Permission denied. Require sudo access"; fi
 
-if ! execCmd "wget -q $kernelURL/crack.bundle"; then 
+if ! execCmd "wget -q $kernelURL/crack.bundle"; then
         checksums=("$(wget -qO- $kernelURL/CHECKSUMS)")
 fi
 
@@ -163,7 +163,7 @@ displaySubTitle "Upgrade Finished";
 if [[ $arm = 1 ]]; then ./purge ; fi
 
 if [[ $cron = 0 ]]; then
-	read -p "Do you want to reboot system now? (y/n)(10s to No):" -n 1 -t 10 -s rs
+	read -p "Do you want to reboot system now? (y/[n]):" -n 1 -t 10 -s rs
 	case "$rs" in
 		y | Y)  echo "Rebooting";
 				sleep 2;

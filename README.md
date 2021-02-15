@@ -22,6 +22,12 @@ It removes old Linux kernel images/headers in machine for Ubuntu/Mint and deriva
 -----------------------------------------
 # Normal Setup
 
+Dependencies
+
+```
+sudo apt install git make wget
+```
+
 Download & Install
 
 ```

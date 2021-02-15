@@ -49,9 +49,9 @@ PS3='Which kernel do you want [2]? ';
 select kerneltype in "${ktypes[@]}"
 do
 	case $kerneltype in
-		"rc")		echo "Release Candidate kernel"; break; ;;
-		"testing")	echo "Testing kernel"; break; ;;
-		"stable")	echo "Stable kernel"; break; ;;
+		"rc")		    echo "Release Candidate kernel"; break; ;;
+		"testing")  echo "Testing kernel"; break; ;;
+		"stable")	  echo "Stable kernel"; break; ;;
 	esac
 done
 
@@ -61,34 +61,34 @@ if [[ -z $kerneltype ]]; then
 	exit 2;
 fi
 
-read -p "Do you want the Generic kernel? (y/n): " -n 1 -s km
+read -p "Do you want the Generic kernel? ([y]/n): " -n 1 -s km
 case "$km" in
-	y | Y)	echo "Generic"; kernelmode="generic" ;;
-	*)		echo "LowLatency"; kernelmode="lowlatency" ;;
+	n | N)	echo "LowLatency"; kernelmode="lowlatency" ;;
+	*)	    echo "Generic"; kernelmode="generic" ;;
 esac
 
-read -p "Do you want to autoremove old kernel? (y/n): " -n 1 -s arm
+read -p "Do you want to autoremove old kernel? (y/[n]): " -n 1 -s arm
 case "$arm" in
 	y | Y)	echo "Auto Remove"; arm=1 ;;
-	*)		echo "Manual Remove"; arm=0 ;;
+	*)		  echo "Manual Remove"; arm=0 ;;
 esac
 
 deleteCron;
 
-read -p "Do you want to upgrade the kernel automatically? (y/n): " -n 1 -s day
+read -p "Do you want to upgrade the kernel automatically? (y/[n]): " -n 1 -s day
 case "$day" in
 	y | Y)	echo "Cronning";
 			cron=1;
 			date="[\$(date '+\%Y-\%m-\%d \%H:\%M:\%S')]";
 			(sudo crontab -u root -l ; echo "0 */2 * * * $script | while IFS= read -r line; do echo \"$date \$line\" ; done >> $logPath 2>&1") | sudo crontab -u root - ;;
-	*)		echo "Deleting cron daily";
+	*)		  echo "Deleting cron daily";
 			cron=0 ;;
 esac
 
-read -p "Do you want to activate code auto update (if not sure, press y)? (y/n): " -n 1 -s aup
+read -p "Do you want to activate code auto update? ([y]/n): " -n 1 -s aup
 case "$aup" in
-	y | Y)	echo "Enable"; touch $autoupFile ;;
-	*)		echo "Disable"; if [[ -f $autoupFile ]]; then rm $autoupFile; fi ;;
+	n | N)	echo "Disable"; if [[ -f $autoupFile ]]; then rm $autoupFile; fi ;;
+	*)		  echo "Enable"; touch $autoupFile ;;
 esac
 
 if [[ -f $cfgPath ]]; then rm $cfgPath; fi
@@ -111,7 +111,7 @@ echo "$logPath {
 
 if [[ "$1" = "-noup" ]]; then exit; fi
 
-read -p "Setup complete. Upgrade the kernel right now? (y/n): " -n 1 -s now
+read -p "Setup complete. Upgrade the kernel right now? (y/[n]): " -n 1 -s now
 case "$now" in
 	y | Y)	echo "Downloading"; sudo ./upgrade ;;
 esac
