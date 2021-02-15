@@ -163,7 +163,7 @@ displaySubTitle "Upgrade Finished";
 if [[ $arm = 1 ]]; then ./purge ; fi
 
 if [[ $cron = 0 ]]; then
-	read -p "Do you want to reboot system now? (y/[n]):" -n 1 -t 10 -s rs
+	read -p "Do you want to reboot system now? (y/[n]):" -t 10  rs
 	case "$rs" in
 		y | Y)  echo "Rebooting";
 				sleep 2;
