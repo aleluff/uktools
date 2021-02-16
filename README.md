@@ -6,7 +6,7 @@ UkTools
 <img align="right" src="https://www.kernel.org/theme/images/logos/tux.png" alt="Linux Logo" title="Tux">
 
 #### Upgrade
-It provides to upgrade Linux kernel to latest version for Ubuntu/Mint and derivatives.
+It provides to upgrade Linux kernel to latest version for Debian/Ubuntu and derivatives.
 
 ##### 3 kernel version are available
 
@@ -17,7 +17,7 @@ It provides to upgrade Linux kernel to latest version for Ubuntu/Mint and deriva
 | Stable            | High      | Few      | Low         | Normal    | Very High     |
 
 #### Purge
-It removes old Linux kernel images/headers in machine for Ubuntu/Mint and derivatives.
+It removes old Linux kernel images/headers in machine for Debian/Ubuntu and derivatives.
 
 -----------------------------------------
 # Normal Setup
@@ -58,6 +58,7 @@ cat /var/log/ukt.log
 ##### Only use for testing, prefer normal setup for regular use
 ###### It'll get Testing kernel
 ```
+sudo apt install wget && \
 cd /usr/src && \
 sudo wget https://github.com/usbkey9/uktools/archive/master.tar.gz && \
 sudo tar -xvf master.tar.gz && \
@@ -86,7 +87,6 @@ sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 ### Choose next grub default kernel
 ### Ask and allow to run purge periodically without upgrade
 ### Bash Unit Test
-#### Docker for testing
 
 * Test MakeFile
 
