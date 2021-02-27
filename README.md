@@ -81,8 +81,8 @@ sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 * Some misconfigured packages (eg rtl8812au-dkms/4.3.8)
 * Obviously all packages not compatible with very last versions of kernel (eg sysdig)
 
-## TODO
-
+<details><summary>TODO</summary>
+  
 ### Handle user interupt during install
 ### Choose next grub default kernel
 ### Ask and allow to run purge periodically without upgrade
@@ -109,6 +109,8 @@ sudo chown ${USER:=$(id -run)}:$USER ../uktools-master && \
 | 4.16.5     |✗|
 | 4.16.6     |✗|
 | 4.16.7     |✓|
+  
+</details>
 
 ### Any other contributions is welcome (trad, display, etc)
 
